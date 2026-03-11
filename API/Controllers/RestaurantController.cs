@@ -113,6 +113,9 @@ namespace API.Controllers
                 return BadRequest($"No restaurant with id {id} exists");
             }
 
+            _dbContext.Restaurants.Remove(restaurantToDelete);
+            await _dbContext.SaveChangesAsync();
+
             return NoContent();
         }
     }
