@@ -15,12 +15,12 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 ---
 
 ## Checklista för inlämning
-- [ ] Jag har läst instruktionerna noggrant.
+- [x] Jag har läst instruktionerna noggrant.
 - [ ] Jag har ställt frågor om det är något som är otydligt.
 - [ ] Jag har tagit bort oanvänd kod.
 - [ ] Jag har tagit bort onödiga kommentarer.
 - [ ] Jag har formaterat min kod fint.
-- [ ] Jag har förstått hur min kod fungerar.  
+- [ ] Jag har förstått hur min kod fungerar.
   *Prova att förklara högt för dig själv vad din kod gör. Fråga dig t.ex.: "Hur går det till när jag lägger till ett objekt av typen X?" eller "Vad händer när jag kör funktion X?"*
 - [ ] Jag har checkat av vilka funktionskrav jag anser att jag klarat genom att skriva ett x innanför [ ] i denna readmefil.
 
@@ -44,7 +44,7 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
   - [ ] Minst 7 av 14 extrakrav:
   - [ ] God felhantering av data.
 
-**Viktigt:**  
+**Viktigt:**
 Se till att kryssa i alla krav du lyckats med. Sätt bara ett x innanför [ ] i denna readmefil så bockas de i.
 
 ---
@@ -117,19 +117,19 @@ Funktioner via REST API:
 ### Hemsidan:
 - [ ] Det ska gå att lägga till **flera maträtter** till en beställning.
 - [ ] Det ska vara möjligt att **avbryta en order**.
-- [ ] **Externt API:**  
+- [ ] **Externt API:**
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
 - [ ] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
-- **Rekommendationer:**  
+- **Rekommendationer:**
   - [ ] Populära restauranger visas på förstasidan.
   - [ ] Populära rätter visas överst på menysidorna.
-- [ ] **Betalning:**  
+- [ ] **Betalning:**
   Använd det fejkade API:et *Swipe* för kortbetalningar innan en order godkänns. Se separat dokumentation.
-- [ ] **Leverans eller Upphämtning:**  
+- [ ] **Leverans eller Upphämtning:**
   Möjlighet att välja mellan leverans (med utkomstningskostnad) eller att hämta upp ordern.
-- [ ] **Pay It Forward:**  
+- [ ] **Pay It Forward:**
   När en order betalas kan en extra summa läggas till i en gemensam pott. Vid senare beställning kan ordern betalas helt eller delvis från den ihopsamlade potten (kräver Swipe-betalningslösningen).
-- [ ] **Dricks:**  
+- [ ] **Dricks:**
   Efter mottagen order kan användaren välja att ge dricks till restaurangen eller budet (kräver Swipe-betalningslösningen).
 
 ### REST API:
@@ -150,7 +150,7 @@ Hur du väljer att strukturera uppgiften är upp till dig, men du måste använd
 - **Blazor WASM** som frontend med ett separat REST API som backend.
 
 ### Databas
-- **SQLite** ska användas i projektet som committas.  
+- **SQLite** ska användas i projektet som committas.
   (Under utvecklingen kan du använda InMemory med seeding, men för inlämningen ska SQLite användas.)
 
 ---
@@ -160,7 +160,7 @@ Hur du väljer att strukturera uppgiften är upp till dig, men du måste använd
 - Angrip projektet **lugnt och metodiskt** – gör inte allt på en gång!
 - Analysera kravspecifikationen och identifiera vilka objekt du behöver. Tänk på de tidigare övningarna med att analysera substantiv och verb.
 - Det är okej att skapa extra endpoints och klasser utöver de som beskrivs, men ovanstående är **minimumkrav**.
-- Se detta som ett **uppdrag från en kund** snarare än en vanlig inlämningsuppgift.  
+- Se detta som ett **uppdrag från en kund** snarare än en vanlig inlämningsuppgift.
   Ställ frågor och kom med förslag om du tror att projektet kan förbättras.
 - **Testning** är en del av uppgiften – se till att läsa dokumentet för testning!
 
