@@ -15,7 +15,7 @@ namespace Models
         public string OpeningHours { get; set; }
         public decimal MinimumOrderValue { get; set; }
         public decimal ServiceFee { get; set; }
-        public List<MenuItem> MenuItems { get; set; }
+        public List<MenuItem>? MenuItems { get; set; }
     }
 }
 
