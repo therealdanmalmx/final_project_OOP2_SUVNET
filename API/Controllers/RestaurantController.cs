@@ -102,5 +102,18 @@ namespace API.Controllers
 
             return Ok(resturantToUpdate);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GetRestaurantsDTO>> DeleteRestaurant(Guid id)
+        {
+            var restaurantToDelete = await _dbContext.Restaurants.FindAsync(id);
+
+            if (restaurantToDelete is null)
+            {
+                return BadRequest($"No restaurant with id {id} exists");
+            }
+
+            return NoContent();
+        }
     }
 }
