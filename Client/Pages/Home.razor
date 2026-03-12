@@ -1,7 +1,26 @@
 ﻿@page "/"
+@using Client.Components
+@using Client.DTO
+@inject HttpClient Http
 
-<PageTitle>Home</PageTitle>
+<PageTitle>FoodGetAboutIt</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="flex justify-start gap-4">
+    @if(restaurants is not null)
+    {
+        @foreach(var restaurant in restaurants)
+        {
+            <RestaurantCard restaurant="restaurant" />
+        }
+    }
+</div>
 
-Welcome to your new app.
+@code {
+    public List<GetRestaurantsDTO> restaurants {get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        restaurants = await Http.GetFromJsonAsync<List<GetRestaurantsDTO>>("api/restaurant");
+
+    }
+}

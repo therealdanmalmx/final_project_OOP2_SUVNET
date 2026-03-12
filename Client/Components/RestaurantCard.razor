@@ -1,12 +1,21 @@
+@using Client.DTO
 @inject HttpClient Http
 
-<h1>@name</h1>
+<BbCard class="w-[350px] overflow-hidden">
+    <img src="/images/@(restaurant.Id).jpg" alt="Mountain retreat" class="aspect-video w-full object-cover" />
+    <BbCardHeader>
+        <BbCardTitle>@restaurant.Name</BbCardTitle>
+        <BbCardDescription>@restaurant.Description</BbCardDescription>
+    </BbCardHeader>
+    <BbCardFooter class="flex justify-between">
+        <NavLink href="/restaurant/@restaurant.Id">
+            <BbButton>Se meny</BbButton>
+        </NavLink>
+    </BbCardFooter>
+</BbCard>
 
 @code {
-    private string name;
 
-    protected override async Task OnInitializedAsync()
-    {
-        name = await Http.GetFromJsonAsync<string>("api/");
-    }
+    [Parameter]
+    public GetRestaurantsDTO restaurant { get; set; }
 }
