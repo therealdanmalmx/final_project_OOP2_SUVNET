@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor", policy =>
-        policy.WithOrigins("http://localhost:5086")
+        policy.WithOrigins("http://localhost:5224")
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
