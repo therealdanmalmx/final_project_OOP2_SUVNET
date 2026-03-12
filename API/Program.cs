@@ -13,8 +13,18 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("foodgetitDb")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor", policy =>
+        policy.WithOrigins("http://localhost:5086")
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
+
 
 var app = builder.Build();
+
+app.UseCors("AllowBlazor");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -27,6 +37,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
+
 
 app.Run();
