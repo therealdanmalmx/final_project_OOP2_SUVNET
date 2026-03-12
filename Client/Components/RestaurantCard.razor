@@ -1,3 +1,4 @@
+@using AngleSharp.Text
 @using Client.DTO
 
 <BbCard class="w-[350px] overflow-hidden">
@@ -7,7 +8,8 @@
         <BbCardDescription>@restaurant.Description</BbCardDescription>
     </BbCardHeader>
     <BbCardFooter class="flex justify-between">
-        <NavLink href="@($"/restaurant/{restaurant.Id}")">
+        <NavLink href="@($"/restaurant/{string.Join("-", restaurant.Name.Split(' '))}")">
+
             <BbButton>Se meny</BbButton>
         </NavLink>
     </BbCardFooter>
