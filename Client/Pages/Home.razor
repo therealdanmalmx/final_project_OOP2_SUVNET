@@ -1,0 +1,26 @@
+﻿@page "/"
+@using Client.DTOs
+@inject HttpClient Http
+
+
+<PageTitle>Home</PageTitle>
+
+<h1>FoodGetAboutIt!</h1>
+
+Your entry to culinary delights
+
+<div>
+    @foreach(var r in restaurants)
+    {
+        <p>@r.Name</p>
+    }
+</div>
+
+@code {
+    public List<GetRestaurantDTO> restaurants {get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        restaurants = await Http.GetFromJsonAsync<List<GetRestaurantDTO>>("api/restaurant");
+    }
+
+}
