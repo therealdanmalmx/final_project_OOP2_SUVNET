@@ -1,14 +1,13 @@
 @using Client.DTO
-@inject HttpClient Http
 
 <BbCard class="w-[350px] overflow-hidden">
-    <img src="/images/@(restaurant.Id).jpg" alt="Mountain retreat" class="aspect-video w-full object-cover" />
+    <img src="/images/@(restaurant.Id).jpg" alt=@restaurant.Name class="w-full h-64 object-cover" />
     <BbCardHeader>
         <BbCardTitle>@restaurant.Name</BbCardTitle>
         <BbCardDescription>@restaurant.Description</BbCardDescription>
     </BbCardHeader>
     <BbCardFooter class="flex justify-between">
-        <NavLink href="/restaurant/@restaurant.Id">
+        <NavLink href="@($"/restaurant/{restaurant.Id}")">
             <BbButton>Se meny</BbButton>
         </NavLink>
     </BbCardFooter>
