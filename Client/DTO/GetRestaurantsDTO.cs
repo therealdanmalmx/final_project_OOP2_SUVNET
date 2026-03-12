@@ -16,5 +16,6 @@ namespace Client.DTO
         public string OpeningHours { get; set; }
         public decimal MinimumOrderValue { get; set; }
         public decimal ServiceFee { get; set; }
+        public string Image { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 @using Client.DTO
 
 <BbCard class="w-[350px] overflow-hidden">
-    <img src="/images/@(restaurant.Id).jpg" alt=@restaurant.Name class="w-full h-64 object-cover" />
+    <img src=@restaurant.Image alt=@restaurant.Name class="w-full h-64 object-cover" />
     <BbCardHeader>
         <BbCardTitle>@restaurant.Name</BbCardTitle>
         <BbCardDescription>@restaurant.Description</BbCardDescription>
