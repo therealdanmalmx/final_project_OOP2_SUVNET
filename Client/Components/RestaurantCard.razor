@@ -1,0 +1,12 @@
+@inject HttpClient Http
+
+<h1>@name</h1>
+
+@code {
+    private string name;
+
+    protected override async Task OnInitializedAsync()
+    {
+        name = await Http.GetFromJsonAsync<string>("api/");
+    }
+}

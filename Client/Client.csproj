@@ -7,7 +7,12 @@
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
   </PropertyGroup>
 
+  <Target Name="Tailwind" BeforeTargets="Build">
+    <Exec Command="./tailwindcss -i ./Styles/input.css -o ./wwwroot/css/output.css --minify" />
+  </Target>
+
   <ItemGroup>
+    <PackageReference Include="BlazorBlueprint.Components" Version="3.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
   </ItemGroup>
