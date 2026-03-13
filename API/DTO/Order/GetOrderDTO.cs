@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTO.OrderItem;
 using API.Models;
 
 namespace API.DTO.Order
@@ -14,5 +15,6 @@ namespace API.DTO.Order
         public string Phone { get; set; }
         public string Instructions { get;}
         public Status Status { get;  }
+        public List<GetOrderItemDTO> OrderItems { get; set; }
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTO.OrderItem;
 using API.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace API.DTO.Order
 {
@@ -14,6 +16,7 @@ namespace API.DTO.Order
         public required string Phone { get; set; }
         public string? Email { get; set; }
         public string? Instructions { get; set; }
+        public List<CreateOrderItemDTO> OrderItems { get; set; } = [];
         public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
     }
