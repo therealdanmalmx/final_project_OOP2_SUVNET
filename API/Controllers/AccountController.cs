@@ -7,6 +7,7 @@ using API.DTO.Courier;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,6 +20,19 @@ namespace API.Controllers
         public AccountController(AppDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            var accounts = await _dbContext.Accounts.ToListAsync();
+
+            if(accounts is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(accounts);
         }
 
         [HttpPost]
