@@ -9,9 +9,7 @@ namespace API.Models
 {
     public class Courier
     {
-        [Key]
-        public Guid AccountId { get; set; }
-        public Account Account { get; set; }
+        public Guid Id { get; set; }
         public bool IsAvailable { get; set; }
         public List<Order> OrderDeliveries { get; set; }
     }

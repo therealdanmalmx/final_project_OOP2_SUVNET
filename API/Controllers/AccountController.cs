@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO.Account;
+using API.DTO.Courier;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
@@ -36,18 +37,6 @@ namespace API.Controllers
                 Email = newAccount.Email,
                 Role = newAccount.Role
             };
-
-            Courier? courier = null;
-
-            if (newAccount.Role == Role.Courier)
-            {
-                courier = new Courier
-                {
-                    Account = account,
-                };
-                _dbContext.Couriers.Add(courier);
-            }
-
 
             _dbContext.Accounts.Add(account);
             await _dbContext.SaveChangesAsync();
