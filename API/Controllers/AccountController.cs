@@ -43,10 +43,11 @@ namespace API.Controllers
             {
                 courier = new Courier
                 {
-                    AccountId = newAccount.Id,
-                    IsAvailable = courier!.IsAvailable
+                    Account = account,
                 };
+                _dbContext.Couriers.Add(courier);
             }
+
 
             _dbContext.Accounts.Add(account);
             await _dbContext.SaveChangesAsync();
