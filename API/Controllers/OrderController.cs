@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO.Order;
+using API.DTO.OrderItem;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
@@ -37,8 +38,27 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewOrder(CreateOrderDTO newOrder)
         {
+            if(newOrder is null)
+            {
+                return BadRequest("Order can't be empty");
+            }
 
-            var createOrder = new Order
+            if (string.IsNullOrWhiteSpace(newOrder.Name))
+            {
+                return BadRequest("Name is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(newOrder.Address))
+            {
+                return BadRequest("Address is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(newOrder.Phone))
+            {
+                return BadRequest("Phone is required");
+            }
+
+            var order = new Order
             {
                 Name = newOrder.Name,
                 Address = newOrder.Address,
@@ -46,28 +66,15 @@ namespace API.Controllers
                 Instructions = newOrder.Instructions,
             };
 
-            if(newOrder is null)
+            foreach (var item in newOrder.OrderItems)
             {
-                return BadRequest("Order cn't be empty");
+                order.AddOrderItem(item.Name, item.Price, item.Quantity);
             }
 
-            if (string.IsNullOrWhiteSpace(newOrder.Name))
-            {
-                return BadRequest("Name is required");
-            }
-            if (string.IsNullOrWhiteSpace(newOrder.Address))
-            {
-                return BadRequest("Address is required");
-            }
-            if (string.IsNullOrWhiteSpace(newOrder.Phone))
-            {
-                return BadRequest("Phone is required");
-            }
-
-            _dbContext.Orders.Add(createOrder);
+            _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
 
-            return Created("/api/order", createOrder);
+            return Created($"/api/order/{order.Id}", order);
         }
     }
 }
