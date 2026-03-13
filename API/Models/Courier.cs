@@ -5,6 +5,6 @@ namespace API.Models
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public bool IsAvailable { get; set; }
-        public List<Order> OrderDeliveries { get; set; }
+        public List<Order>? OrderDeliveries { get; set; }
     }
 }
