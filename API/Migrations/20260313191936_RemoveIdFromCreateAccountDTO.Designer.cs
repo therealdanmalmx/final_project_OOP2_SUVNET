@@ -3,6 +3,7 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260313191936_RemoveIdFromCreateAccountDTO")]
+    partial class RemoveIdFromCreateAccountDTO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CourierId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -52,21 +52,18 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourierId");
-
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("API.Models.Courier", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean");
 
-                    b.HasKey("Id");
+                    b.HasKey("AccountId");
 
                     b.ToTable("Couriers");
                 });
@@ -178,13 +175,15 @@ namespace API.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("API.Models.Account", b =>
+            modelBuilder.Entity("API.Models.Courier", b =>
                 {
-                    b.HasOne("API.Models.Courier", "Courier")
-                        .WithMany()
-                        .HasForeignKey("CourierId");
+                    b.HasOne("API.Models.Account", "Account")
+                        .WithOne("Courier")
+                        .HasForeignKey("API.Models.Courier", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Courier");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("API.Models.Order", b =>
@@ -232,6 +231,11 @@ namespace API.Migrations
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Account", b =>
+                {
+                    b.Navigation("Courier");
                 });
 
             modelBuilder.Entity("API.Models.Courier", b =>
