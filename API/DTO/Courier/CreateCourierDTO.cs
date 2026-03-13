@@ -7,8 +7,7 @@ namespace API.DTO.Courier
 {
     public class CreateCourierDTO
     {
-        public Guid AccountId { get; set; }
-        public Models.Account Account { get; set; }
+        public Guid Id { get; set; }
         public bool IsAvailable { get; set; }
         public List<Models.Order> OrderDeliveries { get; set; }
     }
