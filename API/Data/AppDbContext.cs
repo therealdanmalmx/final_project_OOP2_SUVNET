@@ -17,6 +17,7 @@ namespace Data
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Account> Accounts => Set<Account>();
+        public DbSet<Courier> Couriers => Set<Courier>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
