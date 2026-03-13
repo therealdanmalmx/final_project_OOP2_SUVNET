@@ -12,11 +12,5 @@ namespace API.Models
         public required decimal Price { get; set; }
         public required int Quantity { get; set; }
 
-        public OrderItem(string name, decimal price, int quantity)
-        {
-            Name = name;
-            Price = price;
-            Quantity = quantity;
-        }
     }
 }
