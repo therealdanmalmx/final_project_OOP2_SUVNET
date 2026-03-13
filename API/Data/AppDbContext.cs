@@ -16,5 +16,17 @@ namespace Data
         public DbSet<Restaurant> Restaurants => Set<Restaurant>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<Order> Orders => Set<Order>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .OwnsMany(o => o.OrderItems, oi =>
+                {
+                    oi.WithOwner().HasForeignKey("OrderId");
+                    oi.Property<Guid>("Id");
+                    oi.HasKey("Id");
+                });
+        }
     }
+
 }
