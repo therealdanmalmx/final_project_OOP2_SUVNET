@@ -18,6 +18,19 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrder()
+        {
+            var orders = await _dbContext.Orders.ToListAsync();
+
+            if(orders is null)
+            {
+                return BadRequest("No orders have been created");
+            }
+
+            return Ok(orders);
+        }
+
         [HttpGet("{status}")]
         public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrder(Status status)
         {
