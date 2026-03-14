@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using API.DTO.Order;
-using API.DTO.OrderItem;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +71,28 @@ namespace API.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Created($"/api/order/{order.Id}", order);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDTO dto)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+
+            if (order is null)
+            {
+                return BadRequest($"Order with id {id} does not exist");
+            }
+
+            if (!Enum.TryParse<Status>(dto.Status.ToString(), true, out var status))
+            {
+                return BadRequest("Invalid status value");
+            }
+
+            order.Status = status;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(order);
         }
     }
 }
