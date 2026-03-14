@@ -9,6 +9,6 @@ namespace API.DTO.Courier
     {
         public string Name { get; set; } = string.Empty;
         public bool IsAvailable { get; set; }
-        public List<Models.Order>? OrderDeliveries { get; set; }
+        public List<Guid>? Orders { get; set; }
     }
 }
