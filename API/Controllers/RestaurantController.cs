@@ -34,6 +34,26 @@ namespace API.Controllers
             return Ok(existingRestaurants);
         }
 
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<GetRestaurantsDTO>> GetRestaurantById(Guid id)
+        {
+            var restaurant = await _dbContext.Restaurants
+                .Where(r => r.Id == id)
+                .Select(r => new GetRestaurantsDTO
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Image = r.Image
+                })
+                .FirstOrDefaultAsync();
+
+            if (restaurant is null)
+                return NotFound($"Restaurant with id {id} not found");
+
+            return Ok(restaurant);
+        }
+
         [HttpPost]
         public async Task<ActionResult<GetRestaurantsDTO>> AddNewRestaurant(CreateRestaurantsDTO restaurant)
         {
