@@ -100,15 +100,14 @@ namespace API.Controllers
 
             if (courier is null)
             {
-                return NotFound($"courier with id {orderId} not found");
+                return NotFound($"Courier with id {courierId} not found");
             }
-
 
             order.CourierId = courierId;
 
             await _dbContext.SaveChangesAsync();
 
-            return Ok(order);
+            return Ok(order.Id);
 
         }
 
