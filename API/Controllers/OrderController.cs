@@ -32,7 +32,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{status}")]
-        public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrder(Status status)
+        public async Task<ActionResult<List<GetOrderDTO>>> GetlOrderByStatus(Status status)
         {
             var orders = await _dbContext.Orders.Where(s => s.Status == status).ToListAsync();
 
@@ -84,6 +84,32 @@ namespace API.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Created($"/api/order/{order.Id}", order);
+        }
+
+        [HttpPut("{orderId}/{courierId}")]
+        public async Task<IActionResult> AssignOrderToCourier(Guid orderId, Guid courierId)
+        {
+            var order = await _dbContext.Orders.FindAsync(orderId);
+
+            if (order is null)
+            {
+                return NotFound($"Order with id {orderId} not found");
+            }
+
+            var courier = await _dbContext.Couriers.FindAsync(courierId);
+
+            if (courier is null)
+            {
+                return NotFound($"courier with id {orderId} not found");
+            }
+
+
+            order.CourierId = courierId;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(order);
+
         }
 
         [HttpPut("{id}")]
