@@ -8,8 +8,7 @@
         <BbCardDescription>@restaurant.Description</BbCardDescription>
     </BbCardHeader>
     <BbCardFooter class="flex justify-between">
-        <NavLink href="@($"/restaurant/{string.Join("-", restaurant.Name.Split(' '))}")">
-
+        <NavLink href="@($"/restaurant/{restaurant.Id}")">
             <BbButton>Se meny</BbButton>
         </NavLink>
     </BbCardFooter>
