@@ -89,5 +89,29 @@ namespace API.Controllers
 
             return Created($"/api/order/{order.Id}", order);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDTO dto)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+
+            if (order is null)
+            {
+                return BadRequest($"Order with id {id} does not exist");
+            }
+
+            if (!Enum.TryParse<Status>(dto.Status.ToString(), true, out var status))
+            {
+            return BadRequest("Invalid status value");
+
+            }
+
+            order.Status = status;
+
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(order);
+        }
     }
 }
