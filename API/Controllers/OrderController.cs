@@ -107,7 +107,7 @@ namespace API.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            return Ok(order.Id);
+            return Ok(order);
 
         }
 
