@@ -13,6 +13,7 @@ namespace API.Models
         public string? Instructions { get; set; }
         public Status Status { get; set; } = Status.received;
         public Guid? CourierId { get; set; }
+        public Courier? Courier { get; set; }
         public Guid? AccountId { get; set; }
         public List<OrderItem> OrderItems { get; private set; } = new();
 
