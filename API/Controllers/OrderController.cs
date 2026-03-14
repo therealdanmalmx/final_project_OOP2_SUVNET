@@ -22,6 +22,19 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrder()
+        {
+            var orders = await _dbContext.Orders.ToListAsync();
+
+            if(orders is null)
+            {
+                return BadRequest("No orders have been created");
+            }
+
+            return Ok(orders);
+        }
+
         [HttpGet("{status}")]
         public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrder(Status status)
         {
@@ -75,6 +88,30 @@ namespace API.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Created($"/api/order/{order.Id}", order);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDTO dto)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+
+            if (order is null)
+            {
+                return BadRequest($"Order with id {id} does not exist");
+            }
+
+            if (!Enum.TryParse<Status>(dto.Status.ToString(), true, out var status))
+            {
+            return BadRequest("Invalid status value");
+
+            }
+
+            order.Status = status;
+
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(order);
         }
     }
 }
