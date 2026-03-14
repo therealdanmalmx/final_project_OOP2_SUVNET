@@ -1,0 +1,23 @@
+@page "/restaurant/{Id:guid}"
+@using Client.DTO
+@inject HttpClient Http
+
+@if (restaurant is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>@restaurant.Name</div>
+}
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private GetRestaurantsDTO? restaurant;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant");
+    }
+}
