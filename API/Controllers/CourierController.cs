@@ -1,3 +1,4 @@
+using API.DTO.Courier;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,18 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAvailableCouriers()
         {
-            var availableCouriers = await _dbContext.Couriers.Where(c => c.IsAvailable == true).ToListAsync();
+            var availableCouriers = await _dbContext.Couriers
+                .Where(c => c.IsAvailable)
+                .Select(c => new GetCourierDTO
+                {
+                    Name = c.Name,
+                    IsAvailable = c.IsAvailable,
+                    OrderDeliveries = c.OrderDeliveries.
+                }).ToListAsync();
 
-            if (availableCouriers is null)
+            if(!availableCouriers.Any())
             {
-                return BadRequest("No couriers availale");
+                return NotFound("No available couriers");
             }
 
             return Ok(availableCouriers);
