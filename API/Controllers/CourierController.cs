@@ -21,12 +21,12 @@ namespace API.Controllers
         public async Task<IActionResult> GetAvailableCouriers()
         {
             var availableCouriers = await _dbContext.Couriers
-                .Where(c => c.IsAvailable)
-                .Select(c => new GetCourierDTO
+                .Where(static c => c.IsAvailable)
+                .Select(static c => new GetCourierDTO
                 {
                     Name = c.Name,
                     IsAvailable = c.IsAvailable,
-                    OrderDeliveries = c.OrderDeliveries.
+                    Orders = c.Orders.Select(static o => o.Id).ToList()
                 }).ToListAsync();
 
             if(!availableCouriers.Any())
