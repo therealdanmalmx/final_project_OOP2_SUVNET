@@ -2,7 +2,7 @@
 @using Client.DTO
 @inject HttpClient Http
 
-<PageTitle>@restaurant.Name</PageTitle>
+<PageTitle>@restaurant?.Name</PageTitle>
 
 @if (restaurant is null)
 {
@@ -34,7 +34,7 @@ else
         </div>
     </div>
 
-    <div class="flex flex-wrap justify-start">
+    <div class="flex flex-wrap justify-start w-full">
         @if (restaurant.MenuItems is not null)
         {
             @foreach (var item in restaurant.MenuItems)
