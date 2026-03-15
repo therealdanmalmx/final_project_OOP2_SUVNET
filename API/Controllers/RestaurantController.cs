@@ -24,14 +24,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<GetRestaurantsDTO>> GetAllRestaurants()
         {
-            var existingRestaurants = await _dbContext.Restaurants.ToListAsync();
+            var existingRestaurants = await _dbContext.Restaurants.Include(r => r.MenuItems).ToListAsync();
 
             if (existingRestaurants is null)
             {
-                return BadRequest("No restaurants have been added");
+                return NotFound("No restaurants found");
             }
 
             return Ok(existingRestaurants);
+
         }
 
         [HttpGet("{id:guid}")]
@@ -44,7 +45,12 @@ namespace API.Controllers
                     Id = r.Id,
                     Name = r.Name,
                     Description = r.Description,
-                    Image = r.Image
+                    Image = r.Image,
+                    Review = r.Review,
+                    OpeningHours = r.OpeningHours,
+                    MinimumOrderValue = r.MinimumOrderValue,
+                    ServiceFee = r.ServiceFee,
+                    MenuItems = r.MenuItems
                 })
                 .FirstOrDefaultAsync();
 
