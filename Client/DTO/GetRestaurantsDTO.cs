@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Models;
 
 namespace Client.DTO
 {
@@ -17,5 +14,6 @@ namespace Client.DTO
         public decimal MinimumOrderValue { get; set; }
         public decimal ServiceFee { get; set; }
         public string Image { get; set; }
+        public List<MenuItem>? MenuItems { get; set; }
     }
 }
