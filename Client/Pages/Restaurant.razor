@@ -39,10 +39,10 @@ else
         {
             @foreach (var item in restaurant.MenuItems)
             {
-                <div class="flex items-center w-80 px-10">
-                    <div class="h-48 w-48 border-2 border-amber-500"></div>
+                <div class="flex items-center w-1/4 px-10 space-x-4">
+                    <div class="h-[100px] w-[150px] border-2 border-black"></div>
                     @* <img src=@restaurant.Image alt=@restaurant.Name class="size-96 object-cover"/> *@
-                    <div class="flex flex-col">
+                    <div class="flex flex-col w-96">
                         <span class="text-xl font-black">
                             @item.Name
                         </span>
