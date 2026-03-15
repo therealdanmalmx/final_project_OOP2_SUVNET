@@ -8,7 +8,39 @@
 }
 else
 {
-    <div>@restaurant.Name</div>
+    <div class="flex items-center gap-8 w-full px-10 py-12">
+        <img src=@restaurant.Image alt=@restaurant.Name class="size-96 object-cover"/>
+        <div class="flex flex-col gap-0.5">
+        <h1 class="text-4xl font-black tracking-tight leading-none" style="color: #1a1a1a;">
+            @restaurant.Name
+        </h1>
+        <h3 class="text-sm mt-1" style="color: #3a3a3a;">
+            @restaurant.Description
+        </h3>
+
+        <div class="mt-3 flex flex-col gap-0.5">
+            <p class="text-base" style="color: #1a1a1a;">
+            Öppet: <span class="font-bold">@restaurant.OpeningHours</span>
+            </p>
+            <p class="text-base font-bold" style="color: #1a1a1a;">
+            3.7/5 <span class="underline">Se recensioner</span>
+            </p>
+            <p class="text-base" style="color: #1a1a1a;">39 kr leveransavgift</p>
+            <p class="text-base" style="color: #1a1a1a;">Min. order @restaurant.MinimumOrderValue kr</p>
+            <p class="text-base" style="color: #1a1a1a;">@restaurant.ServiceFee % Serviceavgift (minimum 6 kr)</p>
+        </div>
+        </div>
+    </div>
+
+    <div>
+        @if (restaurant.MenuItems is not null)
+        {
+            @foreach (var item in restaurant.MenuItems)
+            {
+                <p>@item.Name</p>
+            }
+        }
+    </div>
 }
 @code {
     [Parameter]
