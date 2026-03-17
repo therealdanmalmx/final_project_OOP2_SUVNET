@@ -10,6 +10,5 @@ namespace Client.Models
         public string strMeal { get; set; }
         public string strMealThumb { get; set; }
         public string idMeal { get; set; }
-
     }
 }
