@@ -45,6 +45,7 @@ namespace API.Controllers
                     Id = r.Id,
                     Name = r.Name,
                     Description = r.Description,
+                    Category = r.Category,
                     Image = r.Image,
                     Review = r.Review,
                     OpeningHours = r.OpeningHours,
