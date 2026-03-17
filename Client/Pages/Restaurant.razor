@@ -2,6 +2,7 @@
 @using Client.Components
 @using Client.DTO
 @using Client.Models
+@using System.Runtime.InteropServices
 @inject HttpClient Http
 
 <PageTitle>@restaurant?.Name</PageTitle>
@@ -38,7 +39,6 @@ else
 @code {
     [Parameter]
     public Guid Id { get; set; }
-
     private GetRestaurantsDTO? restaurant;
     private List<Meals>? meals;
 
@@ -46,23 +46,24 @@ else
     {
         restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{Id}");
 
+
         var response = await Http.GetFromJsonAsync<MealList>(
-            $"https://www.themealdb.com/api/json/v1/1/filter.php?a=Italian"
+            $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
         );
 
         meals = response?.Meals;
-    }
 
+    }
     public string GetImage(string name)
     {
         var mealImage = "";
-        foreach(var item in meals!)
+        if(meals is null || meals.Count == 0)
         {
-            if(item.strMeal.ToLower() == name.ToLower()){
-                mealImage = item.strMealThumb;
-            }
+            return "";
         }
 
-        return mealImage;
+        return meals.FirstOrDefault(m => m.strMeal.ToLower() == name.ToLower()) ? .strMealThumb ?? "";
+
     }
+
 }
