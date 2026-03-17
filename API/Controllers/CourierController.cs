@@ -26,7 +26,7 @@ namespace API.Controllers
                 {
                     Name = c.Name,
                     IsAvailable = c.IsAvailable,
-                    Orders = c.Orders.Select(static o => o.Id).ToList()
+                    Orders = c.Orders.Select(o => o.Id).ToList()
                 }).ToListAsync();
 
             if(!availableCouriers.Any())

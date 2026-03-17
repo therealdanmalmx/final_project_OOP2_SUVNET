@@ -1,0 +1,15 @@
+@page "/order/{id}"
+@inject HttpClient Http
+
+<h1>@name</h1>
+
+@code {
+    [Parameter]
+    public string Quantity { get; set; }
+    private string name;
+
+    protected override async Task OnInitializedAsync()
+    {
+        name = await Http.GetFromJsonAsync<string>("api/");
+    }
+}

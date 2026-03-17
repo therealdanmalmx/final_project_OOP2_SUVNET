@@ -28,10 +28,24 @@ namespace API.Controllers
 
             if (menuItems is null)
             {
-                return BadRequest($"No restaurant with id {id} exists");
+                return NotFound($"No menu item with id {id} exists");
             }
 
             return Ok(menuItems);
+        }
+
+        [HttpGet("dish/{id}")]
+        public async Task<IActionResult> GetMenuItem(Guid id)
+        {
+            var menuItem = await _dbContext.MenuItems.FindAsync(id);
+
+            if (menuItem is null)
+            {
+                return NotFound($"No menu item with id {id} exists");
+            }
+
+            Console.WriteLine("Hello");
+            return Ok(menuItem);
         }
 
         [HttpPost]

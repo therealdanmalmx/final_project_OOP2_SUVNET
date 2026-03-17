@@ -38,7 +38,7 @@ namespace API.Controllers
 
             if(orders is null)
             {
-                return BadRequest("No orders have been created");
+                return NotFound("No orders have been created");
             }
 
             return Ok(orders);

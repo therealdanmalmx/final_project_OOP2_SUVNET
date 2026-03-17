@@ -1,0 +1,108 @@
+@page "/menuitem/dish/{Id:guid}"
+@using Client.DTO
+@using Client.Models
+@inject HttpClient Http
+
+@if(menuitem is not null)
+{
+    <div class="w-2/5 mx-auto">
+        <div class="flex gap-2">
+            <img src=@GetImage(menuitem.Name) alt=@menuitem.Name class="size-48 object-cover">
+            <div class="flex flex-col w-[500px]">
+                <h1 class="text-3xl font-bold">@menuitem.Name</h1>
+                <p class="text-lg">@menuitem.Description</p>
+
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="flex flex-col items-center gap-3 py-2 w-full">
+                <span class="font-bold">Quantity: </span>
+                <div class="flex items-center">
+                    <BbButton Color="ButtonColor.Secondary"
+                            Size="ButtonSize.Small"
+                            Outline="true"
+                            onclick="@DecreaseQuantity"
+                            Class="w-8 h-8 flex items-center justify-center rounded-lg font-bold text-lg leading-none">
+                        −
+                    </BbButton>
+                    <span class="w-16 text-center text-xl font-semibold text-gray-800 tabular-nums select-none">
+                        @Quantity
+                    </span>
+
+                    <BbButton Color="ButtonColor.Primary"
+                            Size="ButtonSize.Small"
+                            onclick="@IncreaseQuantity"
+                            Class="w-8 h-8 flex items-center justify-center rounded-lg font-bold text-lg leading-none">
+                        +
+                    </BbButton>
+                </div>
+                <BbButton Color="ButtonColor.Secondary"
+                        Size="ButtonSize.IconLarge"
+                        Outline="true"
+                        onclick="@SendOrder"
+                        Class="h-8 w-full px-4">
+                    Beställ
+                </BbButton>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    public int Quantity { get; set; } = 1;
+    private List<Meals>? meals;
+    private GetRestaurantsDTO? restaurant;
+
+
+    private GetMenuItemDTO? menuitem;
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        menuitem = await Http.GetFromJsonAsync<GetMenuItemDTO>($"/api/menuitem/dish/{Id}");
+        restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{menuitem.RestaurantId}");
+        var response = await Http.GetFromJsonAsync<MealList>(
+            $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
+        );
+
+        meals = response?.Meals;
+    }
+
+    public string GetImage(string name)
+    {
+        var mealImage = "";
+        if(meals is null || meals.Count == 0)
+        {
+            return "";
+        }
+
+        return meals.FirstOrDefault(m => m.strMeal.Trim().ToLower() == name.Trim().ToLower()) ? .strMealThumb ?? "";
+
+    }
+
+    public void IncreaseQuantity()
+    {
+        Quantity++;
+        if (Quantity >= 10)
+        {
+            Quantity = 10;
+        }
+
+    }
+    public void DecreaseQuantity()
+    {
+        Quantity--;
+        if (Quantity <= 1)
+        {
+            Quantity = 1;
+        }
+    }
+
+    public void SendOrder()
+    {
+        Console.WriteLine($"Order: {menuitem.Name}, {menuitem.Price} x {Quantity} + {restaurant.ServiceFee}% = {menuitem.Price * Quantity * (1 + restaurant.ServiceFee/100)}");
+    }
+}
