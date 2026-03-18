@@ -1,8 +1,10 @@
 @page "/restaurant/{Id:guid}"
+@inject NavigationManager Nav;
 @using Client.Components
 @using Client.DTO
 @using Client.Models
 @using System.Runtime.InteropServices
+
 @inject HttpClient Http
 
 <PageTitle>@restaurant?.Name</PageTitle>
@@ -32,9 +34,8 @@ else
                         </p>
                     </div>
                 </div>
-                <NavLink href=@($"/menuitem/dish/{item.Id}")>
-                    <BbButton>Välj</BbButton>
-                </NavLink>
+
+                <BbButton onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}"))">Välj</BbButton>
             }
         }
     </div>

@@ -1,3 +1,4 @@
+@inject NavigationManager Nav
 @using AngleSharp.Text
 @using Client.DTO
 
@@ -8,14 +9,11 @@
         <BbCardDescription>@restaurant.Description</BbCardDescription>
     </BbCardHeader>
     <BbCardFooter class="flex justify-between">
-        <NavLink href="@($"/restaurant/{restaurant.Id}")">
-            <BbButton>Se meny</BbButton>
-        </NavLink>
+        <BbButton onclick="@(() => Nav.NavigateTo($"/restaurant/{restaurant.Id}"))">Se meny</BbButton>
     </BbCardFooter>
 </BbCard>
 
 @code {
-
     [Parameter]
     public GetRestaurantsDTO restaurant { get; set; }
 }
