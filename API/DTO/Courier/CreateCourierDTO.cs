@@ -7,8 +7,8 @@ namespace API.DTO.Courier
 {
     public class CreateCourierDTO
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public bool IsAvailable { get; set; }
-        public List<Models.Order> Orders { get; set; }
+        public List<Models.Order>? Orders { get; set; }
     }
 }

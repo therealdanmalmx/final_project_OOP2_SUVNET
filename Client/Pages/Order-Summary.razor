@@ -1,0 +1,65 @@
+@page "/order-summary"
+
+<div class="min-h-screen bg-[#e8e6df] p-6">
+    <div class="w-full max-w-md mx-auto">
+
+        <!-- Order Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] uppercase">
+                Order &nbsp; @OrderId
+            </h1>
+            <p class="text-base text-[#1a1a1a] mt-1">
+                <span class="font-bold">Maträtt #1 x2</span>
+                <span> från </span>
+                <span class="font-bold">Restaurant #1</span>
+            </p>
+        </div>
+
+        <!-- Delivery Info -->
+        <div class="mb-10 space-y-1 text-base text-[#1a1a1a]">
+            <p>
+                Din order levereras till dig av:
+                <span class="font-bold">@CourierName (@CourierRating/5)</span>
+            </p>
+            <p>
+                Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
+            </p>
+            <p>
+                Status: <span class="font-bold">@Status</span>
+            </p>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="mb-16 text-base text-[#1a1a1a]">
+            <p class="font-bold mb-3">Levereras till:</p>
+            <p>@CustomerName</p>
+            <p>@CustomerAddress</p>
+        </div>
+
+        <!-- Cancel Button -->
+        <button
+            class="w-full py-5 bg-[#ccc9be] hover:bg-[#b8b5aa] text-[#888580] font-black text-base tracking-widest uppercase transition-colors duration-200 cursor-pointer"
+            @onclick="CancelOrder">
+            Avbryt!
+        </button>
+
+    </div>
+</div>
+
+@code {
+    [Parameter] public string OrderId { get; set; } = "23459823";
+
+    // These would come from your order service / injected state
+    private string CourierName { get; set; } = "Krister T";
+    private string CourierRating { get; set; } = "4.8";
+    private int DeliveryMinutes { get; set; } = 8;
+    private string Status { get; set; } = "Tillagas...";
+
+    private string CustomerName { get; set; } = "Britta Bengtsson";
+    private string CustomerAddress { get; set; } = "Skovägen 79, 123 54 Borås";
+
+    private void CancelOrder()
+    {
+        // Handle cancellation
+    }
+}
