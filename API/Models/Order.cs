@@ -15,7 +15,7 @@ namespace API.Models
         public Guid? CourierId { get; set; }
         public Courier? Courier { get; set; }
         public Guid? AccountId { get; set; }
-        public List<OrderItem> OrderItems { get; private set; } = new();
+        public List<OrderItem> OrderItems { get; private set; } = [];
 
         public void AddOrderItem(string name, decimal price, int quantity)
         {
