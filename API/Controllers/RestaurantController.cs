@@ -44,6 +44,7 @@ namespace API.Controllers
                     Image = r.Image,
                     Review = r.Review,
                     OpeningHours = r.OpeningHours,
+                    DeliveyCharge = r.DeliveyCharge,
                     MinimumOrderValue = r.MinimumOrderValue,
                     ServiceFee = r.ServiceFee,
                     MenuItems = r.MenuItems
@@ -65,6 +66,7 @@ namespace API.Controllers
                 Description = restaurant.Description,
                 Address = restaurant.Address,
                 OpeningHours = restaurant.OpeningHours,
+                DeliveyCharge = restaurant.DeliveyCharge,
                 MinimumOrderValue = restaurant.MinimumOrderValue,
                 ServiceFee = restaurant.ServiceFee
             };
