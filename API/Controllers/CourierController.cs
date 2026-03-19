@@ -1,4 +1,5 @@
-using API.DTO.Courier;
+using API.DTO;
+using API.DTO.Order;
 using API.Models;
 using Data;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAvailableCouriers()
+        public async Task<ActionResult<GetCourierDTO>> GetAvailableCouriers()
         {
             var availableCouriers = await _dbContext.Couriers
-                .Where(static c => c.IsAvailable)
-                .Select(static c => new GetCourierDTO
+                .Where(c => c.IsAvailable)
+                .Select(c => new GetCourierDTO
                 {
+                    Id = c.Id,
                     Name = c.Name,
                     IsAvailable = c.IsAvailable,
                     Orders = c.Orders.Select(o => o.Id).ToList()
@@ -36,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewCourier(Courier newCourier)
+        public async Task<ActionResult<CreateCourierDTO>> AddNewCourier(Courier newCourier)
         {
             if (newCourier is null)
             {
