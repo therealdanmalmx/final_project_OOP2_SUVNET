@@ -11,6 +11,7 @@ namespace DTO
         public float Review { get; set; }
         public string OpeningHours { get; set; } = string.Empty;
         public decimal MinimumOrderValue { get; set; }
+        public decimal DeliveyCharge { get; set; }
         public decimal ServiceFee { get; set; }
         public string Image { get; set; } = string.Empty;
         public List<MenuItem>? MenuItems { get; set; }
