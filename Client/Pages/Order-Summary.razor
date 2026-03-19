@@ -35,13 +35,11 @@
                 </p>
 
             }
-            <p>
-                Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
-            </p>
-            @if(Order is not null)
+            @if(OrderState is not null)
             {
                 <p>
-                    Status: <span class="font-bold">@ConvertStatusCode(Order.Status)</span>
+                    Status: <span class="font-bold">@ConvertStatusCode(OrderState.Order.Status).</span>
+                    Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
                 </p>
             }
         </div>
@@ -76,7 +74,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{Order?.Id}");
+        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{OrderState.Order?.Id}");
     }
     private void CancelOrder()
     {
