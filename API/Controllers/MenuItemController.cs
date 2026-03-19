@@ -2,7 +2,7 @@ using API.DTO.MenuItem;
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models;
+using API.Models;
 namespace API.Controllers
 {
     [ApiController]

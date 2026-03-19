@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-using Models;
+using API.Models;
 
 namespace Data
 {

@@ -1,4 +1,4 @@
-using Models;
+using API.Models;
 namespace DTO
 {
     public class GetRestaurantsDTO
