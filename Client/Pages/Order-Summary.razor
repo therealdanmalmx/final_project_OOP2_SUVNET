@@ -1,5 +1,6 @@
 @page "/order-summary"
-@using API.DTO.Order
+@using Client.DTO
+@using API.Models
 @using Client.Services
 @inject OrderStateService OrderState
 
@@ -8,35 +9,51 @@
 
         <!-- Order Header -->
         <div class="mb-6">
-            <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] uppercase">
-                Order &nbsp; @Order.Number
-            </h1>
+            @if(OrderState is not null)
+            {
+                <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] uppercase">
+                    Order: #@OrderState?.Order?.Number
+                </h1>
+            }
             <p class="text-base text-[#1a1a1a] mt-1">
-                <span class="font-bold">@OrderState.MenuItem?.Name x @OrderState.Quantity</span>
-                <span> från </span>
-                <span class="font-bold">Restaurant #1</span>
+                @if(OrderState is not null)
+                {
+                    <div class="font-bold">@OrderState?.MenuItem?.Name x @OrderState?.Quantity</div>
+                    <span> från </span>
+                    <span class="font-bold">@OrderState?.Restaurant?.Name</span>
+                }
             </p>
         </div>
 
         <!-- Delivery Info -->
         <div class="mb-10 space-y-1 text-base text-[#1a1a1a]">
-            <p>
-                Din order levereras till dig av:
-                <span class="font-bold">@CourierName</span>
-            </p>
+            @if(OrderState is not null)
+            {
+                <p>
+                    Din order levereras till dig av:
+                    <span class="font-bold">@OrderState?.Order?.CourierId.ToString()</span>
+                </p>
+
+            }
             <p>
                 Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
             </p>
-            <p>
-                Status: <span class="font-bold">@ConvertStatusCode(Order.Status)</span>
-            </p>
+            @if(Order is not null)
+            {
+                <p>
+                    Status: <span class="font-bold">@ConvertStatusCode(Order.Status)</span>
+                </p>
+            }
         </div>
 
         <!-- Delivery Address -->
         <div class="mb-16 text-base text-[#1a1a1a]">
-            <p class="font-bold mb-3">Levereras till:</p>
-            <p>@Order.Name</p>
-            <p>@Order.Address</p>
+            @if(OrderState is not null)
+            {
+                <div class="font-bold mb-3">Levereras till:</div>
+                    <div>@OrderState?.Order?.Name</div>
+                    <div>@OrderState?.Order?.Address</div>
+            }
         </div>
 
         <!-- Cancel Button -->
@@ -59,7 +76,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{OrderState?.Order?.Id}");
+        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{Order?.Id}");
     }
     private void CancelOrder()
     {

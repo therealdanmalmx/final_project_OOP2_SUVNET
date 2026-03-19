@@ -1,11 +1,8 @@
 @page "/order/"
-@inject HttpClient Http
 @inject NavigationManager Nav
 @inject OrderStateService OrderState
 
 @using API.Models
-@using API.DTO.Order
-@using API.DTO.OrderItem
 @using Client.DTO
 @using Client.Services
 @using System.ComponentModel.DataAnnotations
@@ -19,22 +16,22 @@
 
         <div class="mb-6 space-y-2 text-[#1a1a1a]">
             <div class="flex justify-between items-center">
-                <span class="font-bold text-base">@OrderState.MenuItem.Name &nbsp; x(@OrderState.Quantity)</span>
-                <span class="text-base">@(OrderState.Quantity * OrderState.MenuItem.Price):-</span>
+                <span class="font-bold text-base">@OrderState?.MenuItem?.Name &nbsp; x(@OrderState?.Quantity)</span>
+                <span class="text-base">@(OrderState?.Quantity * OrderState?.MenuItem?.Price):-</span>
             </div>
 
             <div class="flex justify-between items-center text-sm mt-3">
                 <span>Leveransavgift</span>
-                <span>29:-</span>
+                <span>@OrderState?.Restaurant?.DeliveyCharge:-</span>
             </div>
             <div class="flex justify-between items-center text-sm">
-                <span>Serviceavgift (@OrderState.Restaurant.ServiceFee%)</span>
-                <span>@((OrderState.Quantity * OrderState.MenuItem.Price) * (OrderState.Restaurant.ServiceFee/100))kr</span>
+                <span>Serviceavgift (@OrderState?.Restaurant?.ServiceFee%)</span>
+                <span>@((OrderState?.Quantity * OrderState?.MenuItem?.Price) * (OrderState?.Restaurant?.ServiceFee/100))kr</span>
             </div>
 
             <div class="flex justify-between items-center font-bold text-base pt-2">
                 <span>Summa</span>
-                <span>@(OrderState.Quantity * OrderState.MenuItem.Price * (1 + OrderState.Restaurant.ServiceFee/100) + 29):-</span>
+                <span>@(OrderState?.Quantity * OrderState?.MenuItem?.Price * (1 + OrderState?.Restaurant?.ServiceFee/100) + OrderState?.Restaurant?.DeliveyCharge):-</span>
             </div>
         </div>
 
@@ -72,7 +69,7 @@
                 <button
                     type="submit"
                     class="w-full mt-0 py-4 bg-[#b5ae9d] hover:bg-[#a8a18f] text-[#1a1a1a] font-black text-base tracking-widest uppercase transition-colors duration-200">
-                    Bekräfta order (@(OrderState.Quantity * OrderState.MenuItem.Price * (1 + @OrderState.Restaurant.ServiceFee/100) + 29):-)
+                    Bekräfta order (@(OrderState?.Quantity * OrderState?.MenuItem?.Price * (1 + OrderState?.Restaurant?.ServiceFee/100) + OrderState?.Restaurant?.DeliveyCharge):-)
                 </button>
             </EditForm>
         </div>
@@ -84,19 +81,13 @@
     private CreateOrderDTO createOrder {get; set;} = new();
     public async Task ConfirmOrder()
     {
-        if (OrderState.Order != null)
-        {
-            OrderState.Order.Name = createOrder.Name;
-            OrderState.Order.Address = createOrder.Address;
-            OrderState.Order.Phone = createOrder.Phone;
-            OrderState.Order.Email = createOrder.Email;
-            OrderState.Order.Instructions = createOrder.Instructions;
-        }
 
         var response = await Http.PostAsJsonAsync("/api/order", createOrder);
 
         if (response.IsSuccessStatusCode)
         {
+            var createdOrder = await response.Content.ReadFromJsonAsync<CreateOrderDTO>();
+            OrderState.Order = createdOrder;
             Nav.NavigateTo("/order-summary");
         }
 
