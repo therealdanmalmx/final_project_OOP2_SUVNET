@@ -8,19 +8,23 @@ namespace API.Models
         public string Description { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public float Review { get; set; }
-        public string OpeningHours { get; set; } = string.Empty;
+        public string OpeningHours { get; set; }
+        // public TimeOnly Opens { get; set; }
+        // public TimeOnly Closes { get; set; }
         public decimal MinimumOrderValue { get; set; }
         public decimal ServiceFee { get; set; }
+        public decimal DeliveyCharge { get; set; }
         public string Image { get; set; } = string.Empty;
         public List<MenuItem>? MenuItems { get; set; }
 
         public Restaurant() { }
-        public Restaurant(string name, string description, string address, string openingHours, decimal minimumOrderValue, decimal serviceFee)
+        public Restaurant(string name, string description, string address, string openingHours, decimal deliveyCharge, decimal minimumOrderValue, decimal serviceFee)
         {
             Name = name;
             Description = description;
             Address = address;
             OpeningHours = openingHours;
+            DeliveyCharge = deliveyCharge;
             MinimumOrderValue = minimumOrderValue;
             ServiceFee = serviceFee;
         }
