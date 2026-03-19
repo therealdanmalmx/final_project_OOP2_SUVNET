@@ -25,13 +25,37 @@ namespace API.Controllers
 
             if(orders is null)
             {
-                return BadRequest("No orders have been created");
+                return NotFound("No orders have been created");
             }
 
             return Ok(orders);
         }
 
-        [HttpGet("{status}")]
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<GetOrderDTO>> GetOrderById(Guid id)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+
+            if (order is null)
+            {
+                return NotFound("Not able to find order");
+            }
+
+            var getOrder = new Order
+            {
+                Name = order.Name,
+                Address = order.Address,
+                Phone = order.Phone,
+                Status = order.Status,
+                Courier = order.Courier,
+                AccountId = order.AccountId
+            };
+
+
+            return Ok(getOrder);
+        }
+
+        [HttpGet("{status:Status}")]
         public async Task<ActionResult<List<GetOrderDTO>>> GetlOrderByStatus(Status status)
         {
             var orders = await _dbContext.Orders.Where(s => s.Status == status).ToListAsync();
