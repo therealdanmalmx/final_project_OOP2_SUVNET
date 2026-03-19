@@ -43,19 +43,19 @@ namespace API.Controllers
 
             var getOrder = new Order
             {
+                Id = order.Id,
                 Name = order.Name,
                 Address = order.Address,
                 Phone = order.Phone,
                 Status = order.Status,
-                Courier = order.Courier,
+                CourierId = order.CourierId,
                 AccountId = order.AccountId
             };
-
 
             return Ok(getOrder);
         }
 
-        [HttpGet("{status:Status}")]
+        [HttpGet("{status}")]
         public async Task<ActionResult<List<GetOrderDTO>>> GetlOrderByStatus(Status status)
         {
             var orders = await _dbContext.Orders.Where(s => s.Status == status).ToListAsync();
@@ -91,6 +91,7 @@ namespace API.Controllers
                 return BadRequest("Phone is required");
             }
 
+
             var order = new Order
             {
                 Name = newOrder.Name,
@@ -101,13 +102,17 @@ namespace API.Controllers
 
             foreach (var item in newOrder.OrderItems)
             {
+                if (string.IsNullOrWhiteSpace(item.Name))
+                {
+                    return BadRequest("Name of the dish is required");
+                }
                 order.AddOrderItem(item.Name, item.Price, item.Quantity);
             }
 
             _dbContext.Orders.Add(order);
             await _dbContext.SaveChangesAsync();
 
-            return Created($"/api/order/{order.Id}", order);
+            return Created($"/api/order", order);
         }
 
         [HttpPut("{orderId}/{courierId}")]
