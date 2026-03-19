@@ -10,13 +10,14 @@ namespace API.DTO.Order
 {
     public class GetOrderDTO
     {
-        public int Number { get; }
-        public string Name { get; }
-        public string Address { get; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Instructions { get;}
-        public Status Status { get;  }
-        public List<GetOrderItemDTO> OrderItems { get; set; }
+        public Guid Id { get; }
+        public int Number { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public string Address { get; init;} = string.Empty;
+        public string Phone { get; init; } = string.Empty;
+        public string Email { get; init; } = string.Empty;
+        public string Instructions { get; init;} = string.Empty;
+        public Status Status { get;  init; }
+        // public List<GetOrderItemDTO> OrderItems { get; set; }
     }
 }
