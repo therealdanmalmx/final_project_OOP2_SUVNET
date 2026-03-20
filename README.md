@@ -16,7 +16,7 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 
 ## Checklista för inlämning
 - [x] Jag har läst instruktionerna noggrant.
-- [ ] Jag har ställt frågor om det är något som är otydligt.
+- [x] Jag har ställt frågor om det är något som är otydligt.
 - [ ] Jag har tagit bort oanvänd kod.
 - [ ] Jag har tagit bort onödiga kommentarer.
 - [ ] Jag har formaterat min kod fint.
@@ -29,10 +29,10 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 ## Betygskriterier
 
 ### För G
-- [ ] Användning av **Asp.Net**, **EF Core** och **SQLite**.
+- [x] Användning av **Asp.Net**, **EF Core** och **SQLite**.
 - [ ] Samtliga krav för hemsidan är uppfyllda.
 - [ ] Samtliga krav för REST-APIet är uppfyllda.
-- [ ] Minst 2 av 4 systemregler implementerade.
+- [x] Minst 2 av 4 systemregler implementerade.
 - [ ] Checklista för inlämning (se ovan) har genomförts.
 - [ ] Förståelse kring vilka eventuella säkerhetsproblem applikationen kan ha.
 - [ ] Testerna beskrivna längst ner i projektet är gjorda.
@@ -67,11 +67,11 @@ Projektet består av **två delar**:
 ## Publik Hemsida
 
 Besökare ska kunna:
-- [ ] **Se vilka restauranger** som finns.
-- [ ] **Se restaurangers menyer**.
-- [ ] **Välja en maträtt** som ska beställas samt ange antal.
-- [ ] **Lägga en order** på vald maträtt, där totalpriset visas (summan för maten plus leveransavgift plus 5% serviceavgift).
-- [ ] **Se status för ordern** och hur lång tid det är kvar innan den levereras.
+- [x] **Se vilka restauranger** som finns.
+- [x] **Se restaurangers menyer**.
+- [x] **Välja en maträtt** som ska beställas samt ange antal.
+- [x] **Lägga en order** på vald maträtt, där totalpriset visas (summan för maten plus leveransavgift plus 5% serviceavgift).
+- [x] **Se status för ordern** och hur lång tid det är kvar innan den levereras.
 
 ---
 
@@ -80,19 +80,19 @@ Besökare ska kunna:
 API:et ska fungera som ett administrationsverktyg (investeraren har för närvarande inte råd med ett användarvänligt gränssnitt).
 
 Funktioner via REST API:
-- [ ] **Registrera** nya restauranger.
-- [ ] **Lägga till** maträtter till restaurangers menyer.
-- [ ] **Hämta** en lista på alla ordrar.
-- [ ] **Hämta** en lista på ordrar med en specifik status (t.ex. alla ordrar som väntar på ett bud) och för en specifik restaurang.
-- [ ] **Ändra orderstatus** på en order.
-- [ ] **Tilldela** en viss order till ett specifikt bud.
+- [x] **Registrera** nya restauranger.
+- [x] **Lägga till** maträtter till restaurangers menyer.
+- [x] **Hämta** en lista på alla ordrar.
+- [x] **Hämta** en lista på ordrar med en specifik status (t.ex. alla ordrar som väntar på ett bud) och för en specifik restaurang.
+- [x] **Ändra orderstatus** på en order.
+- [x] **Tilldela** en viss order till ett specifikt bud.
 
 ---
 
 ## Regler för Systemet
 
 ### Order
-- [ ] En order får bara skapas om den innehåller all nödvändig information:
+- [x] En order får bara skapas om den innehåller all nödvändig information:
   - Beställd maträtt
   - Namn
   - Telefonnummer
@@ -117,7 +117,7 @@ Funktioner via REST API:
 ### Hemsidan:
 - [ ] Det ska gå att lägga till **flera maträtter** till en beställning.
 - [ ] Det ska vara möjligt att **avbryta en order**.
-- [ ] **Externt API:**
+- [x] **Externt API:**
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
 - [ ] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
 - **Rekommendationer:**
