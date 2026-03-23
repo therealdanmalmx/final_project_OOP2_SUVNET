@@ -1,7 +1,6 @@
+using API.Data;
 using API.DTO;
-using API.DTO.Order;
 using API.Models;
-using Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
@@ -35,6 +34,19 @@ namespace API.Controllers
             }
 
             return Ok(availableCouriers);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<GetCourierDTO>> GetCourierById(Guid id)
+        {
+            var courier = await _dbContext.Couriers.FindAsync(id);
+
+            if (courier is null)
+            {
+                return BadRequest($"No courier with id {id} exists.");
+            };
+
+            return Ok(courier);
         }
 
         [HttpPost]
