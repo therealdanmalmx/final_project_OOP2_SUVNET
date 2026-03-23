@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using API.Models;
 
 namespace Client.DTO
@@ -18,7 +19,16 @@ namespace Client.DTO
         public Status Status { get; set; }
         public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
-        public List<OrderItem> OrderItems { get; private set; } = [];
+        public List<CreateOrderItemDTO> OrderItems { get; set; } = [];
 
+        public void AddOrderItem(string name, decimal price, int quantity)
+        {
+            OrderItems.Add(new CreateOrderItemDTO
+            {
+                Name = name,
+                Price = price,
+                Quantity = quantity
+            });
+        }
     }
 }
