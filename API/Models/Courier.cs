@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace API.Models
 {
     public class Courier
@@ -5,6 +7,8 @@ namespace API.Models
         public Guid Id { get; set; } = Guid.CreateVersion7();
         public string Name { get; set; } = string.Empty;
         public bool IsAvailable { get; set; }
+
+        [JsonIgnore]
         public List<Order>? Orders { get; set; }
 
         public Courier(string name, bool isAvailable)
