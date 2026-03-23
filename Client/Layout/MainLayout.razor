@@ -1,8 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using Client.Components
+@inherits LayoutComponentBase
 <div class="page">
-    @* <div class="sidebar">
-        <NavMenu />
-    </div> *@
+    <div>
+        <Navbar />
+    </div>
 
     <main>
         @* <div class="top-row px-4">
@@ -15,5 +16,5 @@
     </main>
 
     <!-- Required for portal-based components -->
-    <BbPortalHost />
+    @* <BbPortalHost /> *@
 </div>
