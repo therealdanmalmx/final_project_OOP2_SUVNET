@@ -7,7 +7,8 @@ namespace DTO
         public string Category { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public float Review { get; set; }
-        public string OpeningHours { get; set; } = string.Empty;
+        public TimeOnly Opens { get; set; }
+        public TimeOnly Closes { get; set; }
         public decimal MinimumOrderValue { get; set; }
         public decimal DeliveyCharge { get; set; }
         public decimal ServiceFee { get; set; }

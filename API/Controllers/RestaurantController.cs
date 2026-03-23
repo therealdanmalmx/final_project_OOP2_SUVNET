@@ -43,7 +43,8 @@ namespace API.Controllers
                     Category = r.Category,
                     Image = r.Image,
                     Review = r.Review,
-                    OpeningHours = r.OpeningHours,
+                    Opens = r.Opens,
+                    Closes = r.Closes,
                     DeliveyCharge = r.DeliveyCharge,
                     MinimumOrderValue = r.MinimumOrderValue,
                     ServiceFee = r.ServiceFee,
@@ -65,7 +66,8 @@ namespace API.Controllers
                 Name = restaurant.Name,
                 Description = restaurant.Description,
                 Address = restaurant.Address,
-                OpeningHours = restaurant.OpeningHours,
+                Opens = restaurant.Opens,
+                Closes = restaurant.Closes,
                 DeliveyCharge = restaurant.DeliveyCharge,
                 MinimumOrderValue = restaurant.MinimumOrderValue,
                 ServiceFee = restaurant.ServiceFee
@@ -104,9 +106,13 @@ namespace API.Controllers
             {
                 resturantToUpdate.Address = updateRestaurant.Address;
             }
-            if (!string.IsNullOrWhiteSpace(updateRestaurant.OpeningHours))
+            if (updateRestaurant.Opens != default)
             {
-                resturantToUpdate.OpeningHours = updateRestaurant.OpeningHours;
+                resturantToUpdate.Opens = updateRestaurant.Opens;
+            }
+            if (updateRestaurant.Closes != default)
+            {
+                resturantToUpdate.Closes = updateRestaurant.Closes;
             }
             if (updateRestaurant.MinimumOrderValue != 0.0m)
             {
