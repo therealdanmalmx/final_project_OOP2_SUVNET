@@ -4,6 +4,7 @@
 @using API.Models
 @using Blazored.LocalStorage
 @using Client.Models
+@using System.Security.Principal
 @inject HttpClient Http
 @inject ILocalStorageService LocalStorage
 
@@ -38,7 +39,7 @@
                 </p>
                 <p>
                     Status: <span class="font-bold">@ConvertStatusCode(Order.Status)</span>
-                    Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
+                    Leveranstid: <span class="font-bold">@GetDeliveryTimes(Order.Status) minuter</span>
                 </p>
             </div>
 
@@ -113,6 +114,19 @@
             Status.in_transit => "På väg",
             Status.delivered => "Levererad",
             _ => "Okänd"
+        };
+    }
+
+    public string GetDeliveryTimes(Status status)
+    {
+        return status switch
+        {
+            Status.received => Random.Shared.Next(40, 50).ToString(),
+            Status.confirmed => Random.Shared.Next(30, 40).ToString(),
+            Status.courier_accepted => Random.Shared.Next(20, 30).ToString(),
+            Status.preparing => Random.Shared.Next(20, 25).ToString(),
+            Status.ready_for_pickup => Random.Shared.Next(15, 20).ToString(),
+            Status.in_transit => Random.Shared.Next(5, 15).ToString()
         };
     }
 }
