@@ -1,11 +1,14 @@
+@using Blazored.LocalStorage
+@using Client.Models
 @inject IJSRuntime JS
-@implements IAsyncDisposable
+@inject ILocalStorageService LocalStorage
+@implements IDisposable
 
 <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-16
             bg-neutral-900 border-b border-neutral-800 shadow-lg">
 
     <!-- Brand -->
-    <a href="/" class="text-white font-bold text-xl tracking-tight no-underline">
+    <a href="/" class="text-white font-bold text-xl tracking-tight" style="text-decoration: none;">
         FoodGetAboutIt
     </a>
 
@@ -20,8 +23,8 @@
         @if (cartCount > 0)
         {
             <span class="absolute -top-1 -right-1 flex items-center justify-center
-                         min-w-[1.25rem] h-5 px-1 rounded-full
-                         bg-orange-500 text-white text-[0.65rem] font-bold leading-none">
+                        min-w-[1.25rem] h-5 px-1 rounded-full
+                        bg-orange-500 text-white text-[0.65rem] font-bold leading-none">
                 @(cartCount > 99 ? "99+" : cartCount.ToString())
             </span>
         }
@@ -33,33 +36,35 @@
 
 @code {
     private int cartCount;
-    private DotNetObjectReference<Array>? objRef;
 
-    @* protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("cartBadge.init", objRef);
-            await RefreshCount();
+            LocalStorage.Changed += OnLocalStorageChanged;
+            await UpdateCartCount();
         }
-    } *@
+    }
 
-    [JSInvokable]
-    public async Task OnCartChanged()
+    private async void OnLocalStorageChanged(object? sender, ChangedEventArgs e)
     {
-        await RefreshCount();
+        if (e.Key == "cart")
+        {
+            await UpdateCartCount();
+            StateHasChanged();
+        }
+    }
+
+    private async Task UpdateCartCount()
+    {
+        var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
+        cartCount = cart?.Count ?? 0;
         StateHasChanged();
     }
 
-    private async Task RefreshCount()
+@* Necessary? *@
+    public void Dispose()
     {
-        cartCount = await JS.InvokeAsync<int>("cartBadge.getCount");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await JS.InvokeVoidAsync("cartBadge.dispose");
-        objRef?.Dispose();
+        LocalStorage.Changed -= OnLocalStorageChanged;
     }
 }
