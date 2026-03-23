@@ -115,6 +115,10 @@
     }
     public async Task ConfirmOrder()
     {
+        foreach(var item in cart)
+        {
+            createOrder.AddOrderItem(item.MenuItem.Name, item.MenuItem.Price, item.Quantity);
+        }
 
         var response = await Http.PostAsJsonAsync("/api/order", createOrder);
 
@@ -122,7 +126,7 @@
         {
             var createdOrder = await response.Content.ReadFromJsonAsync<CreateOrderDTO>();
 
-            Nav.NavigateTo("/order-summary");
+            Nav.NavigateTo($"/order-summary/{createdOrder?.Id}");
         }
     }
 }
