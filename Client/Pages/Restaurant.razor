@@ -41,7 +41,7 @@ else
                     Disabled=@(!isopen)
                     Class="disabled:cursor-default"
                     title=@(!isopen ? "Restaurant closed" : "")
-                    onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}");"
+                    onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}"))";
                 >Välj
                 </BbButton>
             }
