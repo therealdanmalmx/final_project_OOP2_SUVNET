@@ -1,10 +1,12 @@
-@page "/menuitem/dish/{Id:guid}"
-@inject OrderStateService OrderState
-@inject HttpClient Http
-@inject NavigationManager Nav
+@using Blazored.LocalStorage
 @using Client.DTO
 @using Client.Models
-@using Client.Services
+@using System.Runtime.InteropServices
+@page "/menuitem/dish/{Id:guid}"
+@inject HttpClient Http
+@inject NavigationManager Nav
+@inject ILocalStorageService LocalStorage
+
 
 @if(menuitem is not null)
 {
@@ -77,18 +79,43 @@
         meals = response?.Meals;
     }
 
-    private void ProceedToOrder()
-    {
-        OrderState.MenuItem = menuitem;
-        OrderState.Restaurant = restaurant;
-        OrderState.Quantity = Quantity;
 
-        Nav.NavigateTo("/order");
+
+    private async Task ProceedToOrder()
+    {
+        if (restaurant is null || menuitem is null)
+        {
+            return;
+        }
+        
+        var orderState = new OrderState {
+            MenuItem = menuitem,
+            Restaurant = restaurant,
+            Quantity = Quantity
+        };
+
+        @* await LocalStorage.RemoveItemAsync("menuItem"); *@
+
+        var exists = await LocalStorage.ContainKeyAsync("cart");
+
+        if (exists)
+        {
+            var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
+            cart.Add(orderState);
+            await LocalStorage.SetItemAsync("cart", cart);
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync("cart", new List<OrderState> { orderState });
+        }
+
+        var getMenuItems = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
+
+        Nav.NavigateTo($"/restaurant/{menuitem?.RestaurantId}");
     }
 
     public string GetImage(string name)
     {
-        var mealImage = "";
         if(meals is null || meals.Count == 0)
         {
             return "";
