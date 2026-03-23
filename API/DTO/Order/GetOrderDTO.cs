@@ -5,7 +5,7 @@ namespace API.DTO.Order
 {
     public class GetOrderDTO
     {
-        public int Number { get; }
+        public int Number { get; set;}
         public string Name { get; } = string.Empty;
         public string Address { get; } = string.Empty;
         public string Phone { get; set; } = string.Empty;

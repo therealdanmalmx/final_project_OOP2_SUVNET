@@ -44,6 +44,7 @@ namespace API.Controllers
             var getOrder = new Order
             {
                 Id = order.Id,
+                Number = order.Number,
                 Name = order.Name,
                 Address = order.Address,
                 Phone = order.Phone,
@@ -94,6 +95,7 @@ namespace API.Controllers
 
             var order = new Order
             {
+                Number = (int)Random.Shared.NextInt64(1000, 100000),
                 Name = newOrder.Name,
                 Address = newOrder.Address,
                 Phone = newOrder.Phone,

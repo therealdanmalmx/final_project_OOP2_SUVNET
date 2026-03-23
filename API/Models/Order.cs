@@ -5,7 +5,7 @@ namespace API.Models
     public class Order
     {
         public Guid Id { get; set; }
-        public int Number { get; init; } = (int)Random.Shared.NextInt64(1000, 100000);
+        public int Number { get; set; }
         public required string Name { get; set; }
         public required string Address { get; set; }
         public required string Phone { get; set; }
