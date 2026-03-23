@@ -1,6 +1,6 @@
 using API.DTO.Account;
 using API.Models;
-using Data;
+using API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace API.Controllers

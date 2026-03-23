@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
 
-namespace Data
+namespace API.Data
 {
     public class AppDbContext : DbContext
     {
