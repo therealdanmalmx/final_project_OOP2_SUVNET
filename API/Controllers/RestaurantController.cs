@@ -44,6 +44,7 @@ namespace API.Controllers
                     Image = r.Image,
                     Review = r.Review,
                     Opens = r.Opens,
+                    OrderCutOffTime = r.OrderCutOffTime,
                     Closes = r.Closes,
                     DeliveyCharge = r.DeliveyCharge,
                     MinimumOrderValue = r.MinimumOrderValue,
@@ -68,6 +69,7 @@ namespace API.Controllers
                 Address = restaurant.Address,
                 Opens = restaurant.Opens,
                 Closes = restaurant.Closes,
+                OrderCutOffTime = restaurant.OrderCutOffTime,
                 DeliveyCharge = restaurant.DeliveyCharge,
                 MinimumOrderValue = restaurant.MinimumOrderValue,
                 ServiceFee = restaurant.ServiceFee
@@ -113,6 +115,10 @@ namespace API.Controllers
             if (updateRestaurant.Closes != default)
             {
                 resturantToUpdate.Closes = updateRestaurant.Closes;
+            }
+            if (updateRestaurant.OrderCutOffTime != default)
+            {
+                resturantToUpdate.OrderCutOffTime = updateRestaurant.OrderCutOffTime;
             }
             if (updateRestaurant.MinimumOrderValue != 0.0m)
             {
