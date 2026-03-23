@@ -12,11 +12,11 @@
 
 @if (restaurant is null)
 {
-    <p>Loading...</p>
+    <div id="app"></div>
 }
 else
 {
-    <RestaurantInfo restaurant="restaurant" />
+    <RestaurantInfo restaurant="restaurant" isopen="isopen"/>
 
     <div class="flex flex-wrap justify-start w-full mx-auto">
         @if (restaurant.MenuItems is not null)
@@ -36,7 +36,14 @@ else
                     </div>
                 </div>
 
-                <BbButton onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}"))">Välj</BbButton>
+                <BbButton
+                    Variant=@(isopen ? ButtonVariant.Default : ButtonVariant.Ghost)
+                    Disabled=@(!isopen)
+                    Class="disabled:cursor-default"
+                    title=@(!isopen ? "Restaurant closed" : "")
+                    onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}");"
+                >Välj
+                </BbButton>
             }
         }
     </div>
@@ -46,6 +53,7 @@ else
     public Guid Id { get; set; }
     private GetRestaurantsDTO? restaurant;
     private List<Meals>? meals;
+    public bool isopen {get; set; } = true;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -58,6 +66,11 @@ else
 
         meals = response?.Meals;
 
+        if(TimeOnly.FromDateTime(DateTime.UtcNow) < restaurant.Opens || TimeOnly.FromDateTime(DateTime.UtcNow) > restaurant.Closes)
+        {
+            isopen = false;
+        }
+
     }
     public string GetImage(string name)
     {
@@ -69,6 +82,11 @@ else
 
         return meals.FirstOrDefault(m => m.strMeal.Trim().ToLower() == name.Trim().ToLower()) ? .strMealThumb ?? "";
 
+    }
+
+    public void ChoseDish(Guid itemId)
+    {
+        Nav.NavigateTo($"/menuitem/dish/{itemId}");
     }
 
 }
