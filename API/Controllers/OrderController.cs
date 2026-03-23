@@ -1,7 +1,7 @@
 
 using API.DTO.Order;
 using API.Models;
-using Data;
+using API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -123,6 +123,11 @@ namespace API.Controllers
             if (order is null)
             {
                 return NotFound($"Order with id {orderId} not found");
+            }
+
+            if (order.Status > Status.confirmed && order.Status < Status.courier_accepted)
+            {
+                return BadRequest($"Only confirmed and not yet accepted orders can be assigned to a courier");
             }
 
             var courier = await _dbContext.Couriers.FindAsync(courierId);
