@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Client.DTO;
+
+namespace Client.Models
+{
+    public class OrderState
+    {
+        public GetMenuItemDTO? MenuItem { get; set; }
+        public GetRestaurantsDTO? Restaurant { get; set; }
+        public int Quantity { get; set; }
+    }
+}
