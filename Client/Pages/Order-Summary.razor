@@ -1,97 +1,113 @@
-@page "/order-summary"
+@page "/order-summary/{Id:guid}"
+@using API.DTO
 @using Client.DTO
 @using API.Models
-@using Client.Services
-@inject OrderStateService OrderState
+@using Blazored.LocalStorage
+@using Client.Models
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
 
 <div class="min-h-screen bg-[#e8e6df] p-6">
     <div class="w-full max-w-md mx-auto">
 
-        <!-- Order Header -->
-        <div class="mb-6">
-            @if(OrderState is not null)
-            {
-                <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] uppercase">
-                    Order: #@OrderState?.Order?.Number
-                </h1>
-            }
-            <p class="text-base text-[#1a1a1a] mt-1">
-                @if(OrderState is not null)
-                {
-                    <div class="font-bold">@OrderState?.MenuItem?.Name x @OrderState?.Quantity</div>
-                    <span> från </span>
-                    <span class="font-bold">@OrderState?.Restaurant?.Name</span>
-                }
-            </p>
-        </div>
+        @if (Order is null)
+        {
+            <div id="app"> </div>
+        }
+        else
+        {
+            <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] uppercase">
+                Order: #@Order.Number
+            </h1>
 
-        <!-- Delivery Info -->
-        <div class="mb-10 space-y-1 text-base text-[#1a1a1a]">
-            @if(OrderState is not null)
-            {
+            <div class="mb-6">
+                <p class="text-base text-[#1a1a1a] mt-1">
+                    @foreach (var item in Order.OrderItems)
+                    {
+                        <div class="font-bold">@item.Name x @item.Quantity</div>
+                    }
+                    <span> från </span>
+                    <span class="font-bold">@restaurantName</span>
+                </p>
+            </div>
+
+            <div class="mb-10 space-y-1 text-base text-[#1a1a1a]">
                 <p>
                     Din order levereras till dig av:
-                    <span class="font-bold">@OrderState?.Order?.CourierId.ToString()</span>
+                    <span class="font-bold">@courierName</span>
                 </p>
-
-            }
-            @if(OrderState is not null)
-            {
                 <p>
-                    Status: <span class="font-bold">@ConvertStatusCode(OrderState.Order.Status).</span>
+                    Status: <span class="font-bold">@ConvertStatusCode(Order.Status)</span>
                     Leveranstid: <span class="font-bold">@DeliveryMinutes minuter</span>
                 </p>
-            }
-        </div>
+            </div>
 
-        <!-- Delivery Address -->
-        <div class="mb-16 text-base text-[#1a1a1a]">
-            @if(OrderState is not null)
-            {
+            <div class="mb-16 text-base text-[#1a1a1a]">
                 <div class="font-bold mb-3">Levereras till:</div>
-                    <div>@OrderState?.Order?.Name</div>
-                    <div>@OrderState?.Order?.Address</div>
-            }
-        </div>
+                <div>@Order.Name</div>
+                <div>@Order.Address</div>
+            </div>
 
-        <!-- Cancel Button -->
-        <button
-            class="w-full py-4 bg-[#ccc9be] hover:bg-[#b8b5aa] text-[#888580] font-black text-base tracking-widest uppercase transition-colors duration-200 cursor-pointer"
-            @onclick="CancelOrder">
-            Avbryt!
-        </button>
-
+            <button
+                class="w-full py-4 bg-[#ccc9be] hover:bg-[#b8b5aa] text-[#888580] font-black text-base tracking-widest uppercase transition-colors duration-200 cursor-pointer"
+                @onclick="CancelOrder">
+                Avbryt!
+            </button>
+        }
     </div>
 </div>
 
 @code {
-    // These would come from your order service / injected state
-    private string CourierName { get; set; } = "Krister T";
-    private string CourierRating { get; set; } = "4.8";
-    private int DeliveryMinutes { get; set; } = 8;
+    [Parameter]
+    public Guid Id { get; set; }
 
-    public GetOrderDTO? Order {get; set; }
+    private int DeliveryMinutes { get; set; } = 8;
+    private string restaurantName { get; set; } = "";
+    private string courierName { get; set; } = "";
+    public GetOrderDTO? Order { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{OrderState.Order?.Id}");
+        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"/api/order/{Id}");
+
+        var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
+        restaurantName = cart?.FirstOrDefault()?.Restaurant?.Name ?? "";
+
+        if (Order?.CourierId is not null)
+        {
+            courierName = await GetCourierName(Order.CourierId);
+        }
+
+        StateHasChanged();
     }
-    private void CancelOrder()
+
+    private async Task<string> GetCourierName(Guid? courierId)
     {
-        // Handle cancellation
+        var response = await Http.GetAsync($"/api/courier/{courierId}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return "Ej tilldelad";
+        }
+
+        var courier = await response.Content.ReadFromJsonAsync<GetCourierDTO>();
+        return courier?.Name ?? "Ej tilldelad";
     }
+
+    private void CancelOrder() { }
 
     public string ConvertStatusCode(Status code)
     {
         return code switch
         {
-            Status.received => "received",
-            Status.confirmed => "confirmed",
-            Status.courier_accepted => "courier_accepted",
-            Status.preparing => "preparing",
-            Status.ready_for_pickup => "ready_for_pickup",
-            Status.in_transit => "in_transit",
-            Status.delivered => "delivered",
+            Status.received => "Mottagen",
+            Status.confirmed => "Bekräftad",
+            Status.courier_accepted => "Bud accepterat",
+            Status.preparing => "Förberedes",
+            Status.ready_for_pickup => "Redo för upphämtning",
+            Status.in_transit => "På väg",
+            Status.delivered => "Levererad",
+            _ => "Okänd"
         };
     }
 }
