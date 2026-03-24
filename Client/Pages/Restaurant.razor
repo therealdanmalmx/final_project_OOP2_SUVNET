@@ -1,92 +1,40 @@
 @page "/restaurant/{Id:guid}"
 @inject NavigationManager Nav;
+@using Blazored.LocalStorage
 @using Client.Components
 @using Client.DTO
 @using Client.Models
 @using System.Runtime.InteropServices
 
 @inject HttpClient Http
+@inject ILocalStorageService LocalStorage
 
-<PageTitle>@restaurant?.Name</PageTitle>
 
-
+<PageTitle>@restaurant.Name</PageTitle>
 @if (restaurant is null)
 {
-    <div id="app"></div>
+    return;
 }
-else
-{
-    <RestaurantInfo restaurant="restaurant" isopen="isopen"/>
+<RestaurantInfo restaurant="restaurant" isopen="isopen"/>
 
-    <div class="flex flex-wrap justify-start w-full mx-auto">
-        @if (restaurant.MenuItems is not null)
-        {
-            @foreach (var item in restaurant.MenuItems)
-            {
-                <div class="flex items-center w-[450px] h-28 px-10 space-x-4">
-                    <img src=@GetImage(item.Name) alt=@item.Name class="size-24 object-cover"/>
-                    <div class="flex flex-col w-96 h-full">
-                        <span class="text-xl font-black">
-                            @item.Name
-                        </span>
-                        <p class="text-base font-bold">Pris: @item.Price kr</p>
-                        <p class="text-sm">
-                            @item.Description
-                        </p>
-                    </div>
-                </div>
+<MenuItemCard restaurant="restaurant" isopen="isopen" />
 
-                <BbButton
-                    Variant=@(isopen ? ButtonVariant.Default : ButtonVariant.Ghost)
-                    Disabled=@(!isopen)
-                    Class="disabled:cursor-default"
-                    title=@(!isopen ? "Restaurant closed" : "")
-                    onclick="@(() => Nav.NavigateTo($"/menuitem/dish/{item.Id}"))";
-                >Välj
-                </BbButton>
-            }
-        }
-    </div>
-}
+
 @code {
     [Parameter]
     public Guid Id { get; set; }
     private GetRestaurantsDTO? restaurant;
-    private List<Meals>? meals;
-    public bool isopen {get; set; } = true;
+    private bool isopen {get; set; } = true;
 
     protected override async Task OnParametersSetAsync()
     {
         restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{Id}");
 
-
-        var response = await Http.GetFromJsonAsync<MealList>(
-            $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
-        );
-
-        meals = response?.Meals;
-
-        if(TimeOnly.FromDateTime(DateTime.UtcNow) < restaurant.Opens || TimeOnly.FromDateTime(DateTime.UtcNow) > restaurant.Closes)
+        if(TimeOnly.FromDateTime(DateTime.Now) < restaurant.Opens || TimeOnly.FromDateTime(DateTime.Now) > restaurant.Closes)
         {
             isopen = false;
         }
 
-    }
-    public string GetImage(string name)
-    {
-        var mealImage = "";
-        if(meals is null || meals.Count == 0)
-        {
-            return "";
-        }
-
-        return meals.FirstOrDefault(m => m.strMeal.Trim().ToLower() == name.Trim().ToLower()) ? .strMealThumb ?? "";
-
-    }
-
-    public void ChoseDish(Guid itemId)
-    {
-        Nav.NavigateTo($"/menuitem/dish/{itemId}");
     }
 
 }

@@ -9,75 +9,109 @@
 @using Client.Models
 @using System.ComponentModel.DataAnnotations
 
-<div class="min-h-screen flex items-center justify-center p-6">
-    <div class="w-full max-w-md">
+<div class="h-full flex items-start justify-center">
+    <div class="w-full max-w-lg">
 
-        <h1 class="text-3xl font-black tracking-tight text-[#1a1a1a] mb-6 uppercase">
-            Orderbekräftelse
-        </h1>
-            <div class="mb-6 space-y-2 text-[#1a1a1a]">
-                @foreach(var item in cart)
+        <div class="mb-8">
+            <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
+                Orderbekräftelse
+            </h1>
+            <p class="text-sm text-gray-500 mt-1.5">Granska din beställning och fyll i leveransuppgifter</p>
+        </div>
+
+        <BbCard class="rounded-2xl shadow-sm overflow-hidden mb-5">
+            <BbCardHeader class="px-6 pt-5 pb-3">
+                <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
+                    Din beställning
+                </BbCardTitle>
+            </BbCardHeader>
+
+            <div class="px-6 pb-2 space-y-3">
+                @foreach (var item in cart)
                 {
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-base">@item?.MenuItem?.Name &nbsp; x(@item?.Quantity)</span>
-                        <span class="text-base">@(item?.Quantity * item?.MenuItem?.Price):-</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold text-gray-900">@item?.MenuItem?.Name</span>
+                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">x@(item?.Quantity)</span>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-800 tabular-nums">
+                            @(item?.Quantity * item?.MenuItem?.Price) kr
+                        </span>
                     </div>
-
                 }
-                <div class="flex justify-between items-center text-sm mt-3">
-                    <span>Leveransavgift</span>
-                    <span>@restaurantDeliveryCharge:-</span>
-                </div>
-                <div class="flex justify-between items-center text-sm">
-                    <span>Serviceavgift (@restaurantServiceFee% )</span>
-                    <span>@(itemTotal * (restaurantServiceFee/100))kr</span>
-                </div>
-
-                <div class="flex justify-between items-center font-bold text-base pt-2">
-                    <span>Summa</span>
-                    <span>@(itemTotal * (1 + restaurantServiceFee/100) + restaurantDeliveryCharge):-</span>
-                </div>
             </div>
 
-            <div class="space-y-0 border border-[#c8c5bb]">
+            <div class="mx-6 my-3 border-t border-gray-100" />
+
+            <div class="px-6 pb-5 space-y-2">
+                <div class="flex justify-between items-center text-sm text-gray-500">
+                    <span>Leveransavgift</span>
+                    <span class="tabular-nums">@restaurantDeliveryCharge kr</span>
+                </div>
+                <div class="flex justify-between items-center text-sm text-gray-500">
+                    <span>Serviceavgift (@restaurantServiceFee%)</span>
+                    <span class="tabular-nums">@(itemTotal * (restaurantServiceFee / 100)) kr</span>
+                </div>
+                <div class="flex justify-between items-center font-black text-gray-900 text-base pt-2">
+                    <span>Totalt</span>
+                    <span class="tabular-nums">
+                        @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                    </span>
+                </div>
+            </div>
+        </BbCard>
+
+<BbCard class="rounded-2xl shadow-sm overflow-hidden">
+            <BbCardHeader class="px-6 pt-5 pb-3">
+                <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
+                    Leveransuppgifter
+                </BbCardTitle>
+            </BbCardHeader>
+
+            <div class="p-6">
                 <EditForm Model="@createOrder" OnValidSubmit="ConfirmOrder">
                     <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <input
-                        class="w-full px-4 py-4 bg-[#f5f3e8] text-[#1a1a1a] placeholder-[#1a1a1a] border-b border-[#c8c5bb] outline-none text-base focus:bg-[#edebd8]"
-                        placeholder="Namn"
-                        @bind="createOrder.Name" />
+                    <ValidationSummary class="text-sm text-red-500 mb-4" />
 
-                    <input
-                        class="w-full px-4 py-4 bg-[#f5f3e8] text-[#1a1a1a] placeholder-[#1a1a1a] border-b border-[#c8c5bb] outline-none text-base focus:bg-[#edebd8]"
-                        placeholder="Adress"
-                        @bind="createOrder.Address" />
+                    <div class="flex flex-col gap-4">
+                        <input
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="Namn"
+                            @bind="createOrder.Name" />
 
-                    <input
-                        class="w-full px-4 py-4 bg-[#f5f3e8] text-[#1a1a1a] placeholder-[#1a1a1a] border-b border-[#c8c5bb] outline-none text-base focus:bg-[#edebd8]"
-                        placeholder="Telefon"
-                        @bind="createOrder.Phone" />
+                        <input
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="Adress"
+                            @bind="createOrder.Address" />
 
-                    <input
-                        class="w-full px-4 py-4 bg-[#f5f3e8] text-[#1a1a1a] placeholder-[#1a1a1a] border-b border-[#c8c5bb] outline-none text-base focus:bg-[#edebd8]"
-                        placeholder="Email"
-                        type="email"
-                        @bind="createOrder.Email" />
+                        <input
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="Telefon"
+                            @bind="createOrder.Phone" />
 
-                    <textarea
-                        class="w-full px-4 py-4 bg-[#f5f3e8] text-[#1a1a1a] placeholder-[#1a1a1a] outline-none text-base resize-none h-32 focus:bg-[#edebd8]"
-                        placeholder="Instruktioner"
-                        @bind="createOrder.Instructions">
-                    </textarea>
+                        <input
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="Email"
+                            type="email"
+                            @bind="createOrder.Email" />
 
-                    <button
-                        type="submit"
-                        class="w-full mt-0 py-4 bg-[#b5ae9d] hover:bg-[#a8a18f] text-[#1a1a1a] font-black text-base tracking-widest uppercase transition-colors duration-200">
+                        <textarea
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150 resize-none h-28"
+                            placeholder="Leveransinstruktioner (valfritt)"
+                            @bind="createOrder.Instructions">
+                        </textarea>
+                    </div>
 
-                        Bekräfta order (@(itemTotal * (1 + restaurantServiceFee/100) + restaurantDeliveryCharge):-)
-                    </button>
+                    <BbButton
+                        Type="ButtonType.Submit"
+                        Color="ButtonColor.Primary"
+                        Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
+                        Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                    </BbButton>
+
                 </EditForm>
             </div>
+        </BbCard>
     </div>
 </div>
 
