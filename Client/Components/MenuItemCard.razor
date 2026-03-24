@@ -1,0 +1,188 @@
+@using Blazored.LocalStorage
+@using Client.Components
+@using Client.DTO
+@using Client.Models
+@using System.Runtime.InteropServices
+
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Nav;
+@inject HttpClient Http
+
+
+@if (restaurant is null)
+{
+    return;
+}
+else
+{
+    <div class="flex flex-wrap gap-6 justify-start w-full mx-auto">
+        @if (restaurant.MenuItems is not null)
+        {
+            @foreach (var item in restaurant.MenuItems)
+            {
+                <BbCard class="w-[350px] flex flex-col overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white group">
+
+    <div class="relative shrink-0">
+        <img src="@GetImage(item.Name)"
+             alt="@item.Name"
+             class="w-full h-44 object-cover transition-transform duration-500 group-hover:scale-105" />
+
+        <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
+
+        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-semibold tracking-widest uppercase text-gray-700 px-3 py-1 rounded-full shadow-sm">
+            @item.Price kr
+        </span>
+    </div>
+
+    <BbCardHeader class="flex-1 pb-2 pt-4 px-5">
+        <BbCardTitle class="text-base font-bold tracking-tight text-gray-900 leading-snug line-clamp-2 min-h-[2.75rem]">
+            @item.Name
+        </BbCardTitle>
+        <BbCardDescription class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed min-h-[2.5rem]">
+            @item.Description
+        </BbCardDescription>
+    </BbCardHeader>
+
+    <BbCardFooter class="px-5 pb-5 pt-1 shrink-0">
+        @if (isopen)
+        {
+            <div class="flex items-center gap-2 w-full">
+                <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                    <BbButton Color="ButtonColor.Secondary"
+                              Size="ButtonSize.Small"
+                              Outline="true"
+                              onclick="@(() => DecreaseQuantity())"
+                              Class="w-8 h-9 flex items-center justify-center border-0 rounded-none font-bold text-base leading-none hover:bg-gray-100">
+                        −
+                    </BbButton>
+                    <span class="w-9 text-center text-sm font-semibold text-gray-800 tabular-nums select-none">
+                        @Quantity
+                    </span>
+                    <BbButton Color="ButtonColor.Secondary"
+                              Size="ButtonSize.Small"
+                              Outline="true"
+                              onclick="@(() => IncreaseQuantity())"
+                              Class="w-8 h-9 flex items-center justify-center border-0 rounded-none font-bold text-base leading-none hover:bg-gray-100">
+                        +
+                    </BbButton>
+                </div>
+
+                <BbButton Color="ButtonColor.Primary"
+                          Size="ButtonSize.Small"
+                          onclick=@(() => ProceedToOrder(item))"
+                          Class="flex-1 h-9 text-sm font-semibold tracking-wide rounded-xl">
+                    Lägg till →
+                </BbButton>
+            </div>
+        }
+        else
+        {
+            <span class="flex items-center mx-auto gap-1.5 bg-red-600 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                Restaurangen är stängd
+            </span>
+            @* <span class="w-full text-center text-xs text-gray-400 py-1 block">
+            </span> *@
+        }
+    </BbCardFooter>
+
+</BbCard>
+            }
+        }
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    [Parameter]
+    public bool isopen {get; set; }
+
+    [Parameter]
+    public GetRestaurantsDTO? restaurant {get; set;}
+    public GetMenuItemDTO? menuitem;
+    public List<Meals>? meals;
+    public int Quantity { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var response = await Http.GetFromJsonAsync<MealList>(
+            $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
+        );
+
+        meals = response?.Meals;
+
+    }
+    public string GetImage(string name)
+    {
+        if(meals is null || meals.Count == 0)
+        {
+            return "";
+        }
+
+        return meals.FirstOrDefault(m => m.strMeal.Trim().ToLower() == name.Trim().ToLower()) ? .strMealThumb ?? "";
+
+    }
+        private async Task ProceedToOrder(GetMenuItemDTO menuitem)
+    {
+        if (restaurant is null || menuitem is null)
+        {
+            return;
+        }
+
+        var orderState = new OrderState {
+            MenuItem = menuitem,
+            Restaurant = restaurant,
+            Quantity = Quantity
+        };
+
+        var exists = await LocalStorage.ContainKeyAsync("cart");
+
+        if (exists)
+        {
+            var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
+            cart.Add(orderState);
+            await LocalStorage.SetItemAsync("cart", cart);
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync("cart", new List<OrderState> { orderState });
+        }
+
+        var getMenuItems = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
+
+        Console.WriteLine(getMenuItems);
+
+        Nav.NavigateTo($"/restaurant/{menuitem?.RestaurantId}");
+    }
+
+    @* private Dictionary<Guid, int> quantities = new();
+
+    private int GetQuantity(Guid id) =>
+        quantities.TryGetValue(id, out var q) ? q : 1;
+
+    private void IncreaseQuantity(Guid id) =>
+        quantities[id] = Math.Min(GetQuantity(id) + 1, 10);
+
+    private void DecreaseQuantity(Guid id) =>
+        quantities[id] = Math.Max(GetQuantity(id) - 1, 1); *@
+
+            public void IncreaseQuantity()
+    {
+        Quantity++;
+        if (Quantity >= 10)
+        {
+            Quantity = 10;
+        }
+
+    }
+    public void DecreaseQuantity()
+    {
+        Quantity--;
+        if (Quantity <= 1)
+        {
+            Quantity = 1;
+        }
+    }
+
+}
