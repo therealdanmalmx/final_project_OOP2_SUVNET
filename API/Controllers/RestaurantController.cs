@@ -3,60 +3,40 @@ using DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using API.Services;
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class RestaurantController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IRestaurantService _restaurantService;
 
-        public RestaurantController(AppDbContext dbContext)
+        public RestaurantController(IRestaurantService restaurantService)
         {
-            _dbContext = dbContext;
+            _restaurantService = restaurantService;
         }
 
         [HttpGet]
         public async Task<ActionResult<GetRestaurantsDTO>> GetAllRestaurants()
         {
-            var existingRestaurants = await _dbContext.Restaurants.Include(r => r.MenuItems).ToListAsync();
-
-            if (existingRestaurants is null)
+            try
             {
-                return NotFound("No restaurants found");
+                var existingRestaurants = await _restaurantService.GetAllRestaurants();
+
+                return Ok(existingRestaurants);
+
             }
-
-            return Ok(existingRestaurants);
-
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<GetRestaurantsDTO>> GetRestaurantById(Guid id)
         {
-            var restaurant = await _dbContext.Restaurants
-                .Where(r => r.Id == id)
-                .Select(r => new GetRestaurantsDTO
-                {
-                    Id = r.Id,
-                    Name = r.Name,
-                    Description = r.Description,
-                    Category = r.Category,
-                    Image = r.Image,
-                    Review = r.Review,
-                    Opens = r.Opens,
-                    OrderCutOffTime = r.OrderCutOffTime,
-                    Closes = r.Closes,
-                    DeliveyCharge = r.DeliveyCharge,
-                    MinimumOrderValue = r.MinimumOrderValue,
-                    ServiceFee = r.ServiceFee,
-                    MenuItems = r.MenuItems
-                })
-                .FirstOrDefaultAsync();
-
-            if (restaurant is null)
-                return NotFound($"Restaurant with id {id} not found");
-
-            return Ok(restaurant);
+           
         }
 
         [HttpPost]
@@ -89,54 +69,38 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<GetRestaurantsDTO>> UpdateRestaurant(UpdateRestaurantsDTO updateRestaurant, Guid id)
         {
-            var resturantToUpdate = await _dbContext.Restaurants.FindAsync(id);
+        try
+            {
+                var restaurant = await _restaurantService.UpdateRestaurantAsync(dto, id);
 
-            if (resturantToUpdate is null)
-            {
-                return BadRequest($"No restaurant with id {id} exists");
-            }
+                var result = new GetRestaurantsDTO
+                {
+                    Id = restaurant.Id,
+                    Name = restaurant.Name,
+                    Description = restaurant.Description,
+                    Address = restaurant.Address,
+                    Opens = restaurant.Opens,
+                    Closes = restaurant.Closes,
+                    OrderCutOffTime = restaurant.OrderCutOffTime,
+                    DeliveyCharge = restaurant.DeliveyCharge,
+                    MinimumOrderValue = restaurant.MinimumOrderValue,
+                    ServiceFee = restaurant.ServiceFee
+                };
 
-            if (!string.IsNullOrWhiteSpace(updateRestaurant.Name))
-            {
-                resturantToUpdate.Name = updateRestaurant.Name;
+                return Ok(result);
             }
-            if (!string.IsNullOrWhiteSpace(updateRestaurant.Description))
+            catch (KeyNotFoundException ex)
             {
-                resturantToUpdate.Description = updateRestaurant.Description;
+                return NotFound(ex.Message);
             }
-            if (!string.IsNullOrWhiteSpace(updateRestaurant.Address))
+            catch (ArgumentNullException ex)
             {
-                resturantToUpdate.Address = updateRestaurant.Address;
+                return BadRequest(ex.Message);
             }
-            if (updateRestaurant.Opens != default)
+            catch (InvalidOperationException ex)
             {
-                resturantToUpdate.Opens = updateRestaurant.Opens;
+                return StatusCode(500, ex.Message);
             }
-            if (updateRestaurant.Closes != default)
-            {
-                resturantToUpdate.Closes = updateRestaurant.Closes;
-            }
-            if (updateRestaurant.OrderCutOffTime != default)
-            {
-                resturantToUpdate.OrderCutOffTime = updateRestaurant.OrderCutOffTime;
-            }
-            if (updateRestaurant.MinimumOrderValue != 0.0m)
-            {
-                resturantToUpdate.MinimumOrderValue = updateRestaurant.MinimumOrderValue;
-            }
-            if (updateRestaurant.MinimumOrderValue != 0.0m)
-            {
-                resturantToUpdate.MinimumOrderValue = updateRestaurant.MinimumOrderValue;
-            }
-            if (updateRestaurant.ServiceFee != 0.0m)
-            {
-                resturantToUpdate.ServiceFee = updateRestaurant.ServiceFee;
-            }
-
-            _dbContext.Restaurants.Update(resturantToUpdate);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(resturantToUpdate);
         }
 
         [HttpDelete("{id}")]
