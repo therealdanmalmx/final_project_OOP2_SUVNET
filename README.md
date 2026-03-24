@@ -20,9 +20,9 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 - [ ] Jag har tagit bort oanvänd kod.
 - [ ] Jag har tagit bort onödiga kommentarer.
 - [ ] Jag har formaterat min kod fint.
-- [ ] Jag har förstått hur min kod fungerar.
+- [x] Jag har förstått hur min kod fungerar.
   *Prova att förklara högt för dig själv vad din kod gör. Fråga dig t.ex.: "Hur går det till när jag lägger till ett objekt av typen X?" eller "Vad händer när jag kör funktion X?"*
-- [ ] Jag har checkat av vilka funktionskrav jag anser att jag klarat genom att skriva ett x innanför [ ] i denna readmefil.
+- [x] Jag har checkat av vilka funktionskrav jag anser att jag klarat genom att skriva ett x innanför [ ] i denna readmefil.
 
 ---
 
