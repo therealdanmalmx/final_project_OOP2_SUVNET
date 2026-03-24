@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using API.Models;
 
 namespace Client.DTO
@@ -7,13 +6,19 @@ namespace Client.DTO
     public class CreateOrderDTO
     {
         public Guid Id { get; set; }
-        [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Address is required")]
-        public string Address { get; set; }
+        [Required(ErrorMessage = "Namn är obligatoriskt")]
+        [StringLength(30, MinimumLength = 10,
+        ErrorMessage = "Namn måste vara minst 10 bokstävder låmgt")]
+        public string Name { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Adress är obligatoriskt")]
+        [StringLength(50, MinimumLength = 5,
+        ErrorMessage = "Adress måste vara minst 5 bokstävder låmgt")]
+        public string Address { get; set; } = string.Empty;
         public int Number { get; set; }
-        [Required(ErrorMessage = "Phone is required")]
-        public string Phone { get; set; }
+        [Required(ErrorMessage = "Telefon är obligatoriskt")]
+        [StringLength(10, MinimumLength = 10,
+        ErrorMessage = "Telefonnummer skall ha 10 siffror")]
+        public string Phone { get; set; } = string.Empty;
         public string? Email { get; set; }
         public string? Instructions { get; set; }
         public Status Status { get; set; }
