@@ -11,7 +11,7 @@
         FoodGetAboutIt
     </a>
 
-    <a href="/cart" class="relative p-2 text-neutral-300 hover:text-orange-400 transition-colors duration-200">
+    <a href="@(cartCount > 0 ? "/cart" : null)" class="relative p-2 text-neutral-300 hover:text-orange-400 transition-colors duration-200">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -21,15 +21,15 @@
         @if (cartCount > 0)
         {
             <span class="absolute -top-1 -right-1 flex items-center justify-center
-                        min-w-[1.25rem] h-5 px-1 rounded-full
-                        bg-orange-500 text-white text-[0.65rem] font-bold leading-none">
+                min-w-[1.25rem] h-5 px-1 rounded-full
+                bg-orange-500 text-white text-[0.65rem] font-bold leading-none">
                 @(cartCount.ToString())
             </span>
         }
     </a>
 </nav>
 
-<div class="h-16"></div>
+<div class="h-24"></div>
 
 @code {
     private int cartCount;
@@ -55,15 +55,13 @@
     private async Task UpdateCartCount()
     {
         var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
-        foreach(var item in cart)
-        {
-            cartCount += item.Quantity;
-
-        }
+        cartCount = cart?.Sum(item => item.Quantity) ?? 0;
         StateHasChanged();
+
+        Console.WriteLine(cartCount);
     }
 
-@* Neessary? *@
+@* Necessary? *@
     public void Dispose()
     {
         LocalStorage.Changed -= OnLocalStorageChanged;
