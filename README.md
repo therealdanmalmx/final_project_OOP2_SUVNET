@@ -30,8 +30,8 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 
 ### För G
 - [x] Användning av **Asp.Net**, **EF Core** och **SQLite**.
-- [ ] Samtliga krav för hemsidan är uppfyllda.
-- [ ] Samtliga krav för REST-APIet är uppfyllda.
+- [x] Samtliga krav för hemsidan är uppfyllda.
+- [x] Samtliga krav för REST-APIet är uppfyllda.
 - [x] Minst 2 av 4 systemregler implementerade.
 - [ ] Checklista för inlämning (se ovan) har genomförts.
 - [ ] Förståelse kring vilka eventuella säkerhetsproblem applikationen kan ha.
@@ -99,7 +99,7 @@ Funktioner via REST API:
   - Adress
 
 - En order kan bara läggas om:
-  - [ ] Restaurangen är öppen.
+  - [x] Restaurangen är öppen.
   - [ ] Ordern läggs innan "Tid för sista beställning".
 
 - [ ] **Orderstatus** ska följa följande flöde:
@@ -107,15 +107,15 @@ Funktioner via REST API:
 
 ### Bud
 - Ett bud kan bara acceptera en order om:
-  - [ ] Inget annat bud har accepterat den redan.
-  - [ ] Orderstatus är `confirmed`.
+  - [x] Inget annat bud har accepterat den redan.
+  - [x] Orderstatus är `confirmed`.
 
 ---
 
 ## Extra VG-krav
 
 ### Hemsidan:
-- [ ] Det ska gå att lägga till **flera maträtter** till en beställning.
+- [x] Det ska gå att lägga till **flera maträtter** till en beställning.
 - [ ] Det ska vara möjligt att **avbryta en order**.
 - [x] **Externt API:**
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
