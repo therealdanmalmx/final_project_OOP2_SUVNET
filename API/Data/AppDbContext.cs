@@ -1,9 +1,10 @@
 using API.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Account>
     {
         public AppDbContext(DbContextOptions<AppDbContext> option) : base(option) { }
 
@@ -15,6 +16,8 @@ namespace API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // ← Add this as the first line
+
             modelBuilder.Entity<Order>()
                 .OwnsMany(o => o.OrderItems, oi =>
                 {
@@ -22,7 +25,7 @@ namespace API.Data
                     oi.Property<Guid>("Id");
                     oi.HasKey("Id");
                 });
-        }
+}
     }
 
 }
