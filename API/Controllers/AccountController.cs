@@ -3,53 +3,46 @@ using API.Models;
 using API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using API.Services;
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IAccountService _accountService;
 
-        public AccountController(AppDbContext dbContext)
+        public AccountController(IAccountService accountService)
         {
-            _dbContext = dbContext;
+            _accountService = accountService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAccounts()
+        public async Task<ActionResult<Account>> GetAllAccounts()
         {
-            var accounts = await _dbContext.Accounts.ToListAsync();
-
-            if(accounts is null)
+            try
             {
-                return BadRequest();
+                var accounts = await _accountService.GetAllAccounts();
+                return Ok(accounts);
             }
-
-            return Ok(accounts);
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewAccount(CreateAccountDTO newAccount)
+        public async Task<ActionResult<Account>> CreateNewAccount(CreateAccountDTO newAccount)
         {
-            if(newAccount is null)
+            try
             {
-                return BadRequest("Account can't be empty");
+                var account = await _accountService.CreateNewAccount(newAccount);
+                return Ok(account);
             }
-
-            var account = new Account
+            catch (ArgumentNullException ex)
             {
-                Name = newAccount.Name,
-                Address = newAccount.Address,
-                Phone = newAccount.Phone,
-                Email = newAccount.Email,
-                Role = newAccount.Role
-            };
-
-            _dbContext.Accounts.Add(account);
-            await _dbContext.SaveChangesAsync();
-
-            return Created($"/api/account", account);
+                return NotFound(new {error = ex.Message});
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 using API.DTO.OrderItem;
-namespace API.DTO.Order
+namespace API.DTO
 {
     public class CreateOrderDTO
     {

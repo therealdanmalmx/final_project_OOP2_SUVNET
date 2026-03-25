@@ -1,7 +1,7 @@
 using API.DTO.OrderItem;
 using API.Models;
 
-namespace API.DTO.Order
+namespace API.DTO
 {
     public class GetOrderDTO
     {

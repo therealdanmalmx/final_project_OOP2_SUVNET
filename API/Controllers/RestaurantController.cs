@@ -36,87 +36,54 @@ namespace API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<GetRestaurantsDTO>> GetRestaurantById(Guid id)
         {
-           
+            try
+            {
+                var restaurant = await _restaurantService.GetRestaurantById(id);
+                return Ok(restaurant);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<GetRestaurantsDTO>> AddNewRestaurant(CreateRestaurantsDTO restaurant)
         {
-            var newRestaurant = new Restaurant
+            try
             {
-                Name = restaurant.Name,
-                Description = restaurant.Description,
-                Address = restaurant.Address,
-                Opens = restaurant.Opens,
-                Closes = restaurant.Closes,
-                OrderCutOffTime = restaurant.OrderCutOffTime,
-                DeliveyCharge = restaurant.DeliveyCharge,
-                MinimumOrderValue = restaurant.MinimumOrderValue,
-                ServiceFee = restaurant.ServiceFee
-            };
-
-            if (newRestaurant is null)
-            {
-                return BadRequest("Could not add a new restaurant");
+                var newRestaurant = await _restaurantService.AddNewRestaurant(restaurant);
+                return Ok(newRestaurant);
             }
 
-            _dbContext.Restaurants.Add(newRestaurant);
-            await _dbContext.SaveChangesAsync();
-
-            return Created("/api/restaurant", newRestaurant);
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new {error = ex.Message});
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<GetRestaurantsDTO>> UpdateRestaurant(UpdateRestaurantsDTO updateRestaurant, Guid id)
         {
-        try
+            try
             {
-                var restaurant = await _restaurantService.UpdateRestaurantAsync(dto, id);
-
-                var result = new GetRestaurantsDTO
-                {
-                    Id = restaurant.Id,
-                    Name = restaurant.Name,
-                    Description = restaurant.Description,
-                    Address = restaurant.Address,
-                    Opens = restaurant.Opens,
-                    Closes = restaurant.Closes,
-                    OrderCutOffTime = restaurant.OrderCutOffTime,
-                    DeliveyCharge = restaurant.DeliveyCharge,
-                    MinimumOrderValue = restaurant.MinimumOrderValue,
-                    ServiceFee = restaurant.ServiceFee
-                };
-
-                return Ok(result);
+                var restaurant = await _restaurantService.UpdateRestaurant(updateRestaurant, id);
+                return Ok(restaurant);
             }
-            catch (KeyNotFoundException ex)
+
+            catch (ArgumentNullException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch (ArgumentNullException ex)
+
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<GetRestaurantsDTO>> DeleteRestaurant(Guid id)
-        {
-            var restaurantToDelete = await _dbContext.Restaurants.FindAsync(id);
-
-            if (restaurantToDelete is null)
-            {
-                return BadRequest($"No restaurant with id {id} exists");
-            }
-
-            _dbContext.Restaurants.Remove(restaurantToDelete);
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
         }
     }
 }

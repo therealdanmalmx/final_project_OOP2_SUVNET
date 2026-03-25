@@ -1,4 +1,4 @@
-namespace API.DTO.Order
+namespace API.DTO
 {
     public class UpdateOrderStatusDTO
     {

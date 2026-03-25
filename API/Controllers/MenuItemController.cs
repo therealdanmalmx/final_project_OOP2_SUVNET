@@ -3,111 +3,96 @@ using API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using API.Services;
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class MenuItemController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IMenuItemService _menuItemService;
 
-        public MenuItemController(AppDbContext dbContext)
+        public MenuItemController(IMenuItemService menuItemService)
         {
-            _dbContext = dbContext;
+            _menuItemService = menuItemService;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<MenuItem>>> GetAllMenuItemsByRestaurantId(Guid id)
         {
-            var menuItems = await _dbContext.MenuItems.Where(mi => mi.RestaurantId == id).ToListAsync();
-
-            if (menuItems is null)
+            try
             {
-                return NotFound($"No menu item with id {id} exists");
+                var menuItems = await _menuItemService.GetAllMenuItemsByRestaurantId(id);
+                return Ok(menuItems);
             }
-
-            return Ok(menuItems);
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
 
         [HttpGet("dish/{id}")]
-        public async Task<IActionResult> GetMenuItem(Guid id)
+        public async Task<ActionResult<MenuItem>> GetMenuItem(Guid id)
         {
-            var menuItem = await _dbContext.MenuItems.FindAsync(id);
-
-            if (menuItem is null)
+            try
             {
-                return NotFound($"No menu item with id {id} exists");
+                var menuItem = await _menuItemService.DeleteMenuItem(id);
+                return menuItem;
             }
-
-            Console.WriteLine("Hello");
-            return Ok(menuItem);
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewMenuItem(MenuItem newMenuItem)
+        public async Task<ActionResult<MenuItem>> AddNewMenuItem(CreateMenuItemDTO newMenuItem)
         {
-            var newItem = new MenuItem
+            try
             {
-                Name = newMenuItem.Name,
-                Description = newMenuItem.Description,
-                Price = newMenuItem.Price,
-                RestaurantId = newMenuItem.RestaurantId
-            };
-
-            if (newItem is null)
+                var menuItem = await _menuItemService.AddNewMenuItem(newMenuItem);
+                return Ok(menuItem);
+            }
+            catch (ArgumentException ex)
             {
-                return BadRequest("Could not add a new menu item");
+                return NotFound(new {error = ex.Message});
             }
 
-            _dbContext.MenuItems.Add(newItem);
-            await _dbContext.SaveChangesAsync();
-
-            return Created("/api/menuitem", newItem);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMenuItem(UpdateMenuItemDTO updateMenutItem, Guid id)
+        public async Task<ActionResult<MenuItem>> UpdateMenuItem(UpdateMenuItemDTO updateMenutItem, Guid id)
         {
-            var menuItemToUpdate = await _dbContext.MenuItems.FindAsync(id);
-
-            if (menuItemToUpdate is null)
+            try
             {
-                return BadRequest($"No menu item with id {id} exists");
+                var menuItem = await _menuItemService.UpdateMenuItem(updateMenutItem, id);
+                return menuItem;
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new {error = ex.Message});
             }
 
-            if (!string.IsNullOrWhiteSpace(updateMenutItem.Name))
-            {
-                menuItemToUpdate.Name = updateMenutItem.Name;
-            }
-            if (!string.IsNullOrWhiteSpace(updateMenutItem.Description))
-            {
-                menuItemToUpdate.Description = updateMenutItem.Description;
-            }
-            if (updateMenutItem.Price != 0.0m)
-            {
-                menuItemToUpdate.Price = updateMenutItem.Price;
-            }
-
-            _dbContext.MenuItems.Update(menuItemToUpdate);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(menuItemToUpdate);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMenuItem(Guid id)
+        public async Task<ActionResult<MenuItem>> DeleteMenuItem(Guid id)
         {
-            var menuItemToDelete = await _dbContext.MenuItems.FindAsync(id);
-
-            if (menuItemToDelete is null)
+            try
             {
-                return BadRequest($"Could not find a menut item with id {id}");
+                var menuItemToDelete = await _menuItemService.DeleteMenuItem(id);
+                return Ok(menuItemToDelete);
             }
 
-            _dbContext.MenuItems.Remove(menuItemToDelete);
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
     }
 }
