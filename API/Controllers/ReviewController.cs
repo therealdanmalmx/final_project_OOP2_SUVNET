@@ -21,17 +21,16 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetAllReviews(Guid orderId)
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<Review>> GetAllReviewByOrderId(Guid orderId)
         {
-            var reviews = await _dbContext.Reviews.FindAsync(orderId);
-
-            if (reviews is null)
+            var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
+            if (review is null)
             {
                 return NotFound("No reviews exist");
             }
 
-            return Ok(reviews);
+            return Ok(review);
         }
 
 
