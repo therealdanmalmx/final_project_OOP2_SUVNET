@@ -29,7 +29,7 @@ namespace API.Services.Account
 
             if (!result.Succeeded)
             {
-                return new AccountLoginResponse(false, "Email eller password are wrong");
+                return new AccountLoginResponse(false, "Email or password are wrong");
             }
 
             var claims = new []
