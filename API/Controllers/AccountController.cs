@@ -1,9 +1,5 @@
 using API.DTO.Account;
-using API.Models;
-using API.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Services;
 using API.Services.Account;
 namespace API.Controllers
 {
@@ -21,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AccountRegistrationResponse>>> GetAccounts()
+        public async Task<ActionResult<List<AccountRequestDTO>>> GetAccounts()
         {
             var result = await _accountRegisterService.GetAllAccounts();
             return Ok(result);

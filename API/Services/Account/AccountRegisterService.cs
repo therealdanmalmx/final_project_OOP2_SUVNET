@@ -40,14 +40,22 @@ namespace API.Services.Account
             return new AccountRegistrationResponse(true);
         }
 
-        public async Task<List<Models.Account>> GetAllAccounts()
+        public async Task<List<AccountRequestDTO>> GetAllAccounts()
         {
-            if (_accountManager.Users == null)
+            if (_accountManager.Users is null)
             {
                 return [];
             }
 
-            return await _accountManager.Users.ToListAsync();
+            return await _accountManager.Users.Select(u => new AccountRequestDTO
+            {
+                Name = u.Name,
+                Address = u.Address,
+                PhoneNumber = u.PhoneNumber,
+                Email = u.Email,
+                UserName = u.UserName
+            }).ToListAsync();
+
         }
     }
 }

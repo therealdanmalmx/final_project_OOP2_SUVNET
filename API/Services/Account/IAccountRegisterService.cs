@@ -9,6 +9,6 @@ namespace API.Services.Account
     public interface IAccountRegisterService
     {
         Task<AccountRegistrationResponse> RegisterAccount(AccountRegistrationRequest request);
-        Task<List<Models.Account>> GetAllAccounts();
+        Task<List<AccountRequestDTO>> GetAllAccounts();
     }
 }
