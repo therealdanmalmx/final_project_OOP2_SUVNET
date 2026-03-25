@@ -23,7 +23,11 @@ namespace API.Data
                     oi.Property<Guid>("Id");
                     oi.HasKey("Id");
                 });
-        }
+
+            modelBuilder.Entity<Review>()
+                .HasIndex(r => r.OrderId)
+                .IsUnique();
+            }
     }
 
 }
