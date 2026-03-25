@@ -6,6 +6,7 @@
 @using Client.Models
 @using System.Security.Principal
 @inject HttpClient Http
+@inject NavigationManager Nav
 @inject ILocalStorageService LocalStorage
 
 <div class="h-full">
@@ -111,6 +112,11 @@
         }
 
         StateHasChanged();
+
+        if (Order?.Status == Status.delivered)
+        {
+            Nav.NavigateTo($"/review/{Order.Id}");
+        }
     }
 
     private async Task<string> GetCourierName(Guid? courierId)
