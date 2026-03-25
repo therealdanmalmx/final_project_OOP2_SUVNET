@@ -55,5 +55,10 @@ namespace API.Services.Account
 
             return new AccountLoginResponse(true, null, jwt);
         }
+
+        Task<AccountLoginResponse> IAccountLoginService.Login(AccountLoginRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
