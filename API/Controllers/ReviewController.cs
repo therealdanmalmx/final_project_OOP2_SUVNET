@@ -6,6 +6,7 @@ using API.Data;
 using API.DTO.Review;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,6 +20,20 @@ namespace API.Controllers
         {
             _dbContext = dbContext;
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Review>> GetAllReviews(Guid orderId)
+        {
+            var reviews = await _dbContext.Reviews.FindAsync(orderId);
+
+            if (reviews is null)
+            {
+                return NotFound("No reviews exist");
+            }
+
+            return Ok(reviews);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<Review>> AddNewReview([FromBody] AddNewReviewDTO newReview)
@@ -43,6 +58,12 @@ namespace API.Controllers
             if (review is null)
             {
                 return BadRequest("Could not create new review");
+            }
+
+            var exists = await _dbContext.Reviews.AnyAsync(r => r.OrderId == newReview.OrderId);
+            if (exists)
+            {
+                return Conflict("Review already exists for this order.");
             }
 
             _dbContext.Reviews.Add(review);
