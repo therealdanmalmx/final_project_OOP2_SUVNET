@@ -1,4 +1,8 @@
 using API.Data;
+using API.Services;
+using API.Services.Account;
+using API.Services.MenuItem;
+using API.Services.Order;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -9,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IMenuItemService, MenuItemService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
