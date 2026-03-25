@@ -10,10 +10,10 @@ namespace API.Services
 {
     public interface IRestaurantService
     {
-        Task<GetRestaurantsDTO> GetAllRestaurants();
-        Task<GetRestaurantsDTO> GetRestaurantById(Guid id);
+        Task<List<Restaurant>> GetAllRestaurants();
+        Task<Restaurant> GetRestaurantById(Guid id);
         Task<Restaurant> AddNewRestaurant(CreateRestaurantsDTO restaurant);
         Task<Restaurant> UpdateRestaurant(UpdateRestaurantsDTO updateRestaurant, Guid id);
-        Task<GetRestaurantsDTO> DeleteRestaurant(Guid id);
+        Task<Restaurant> DeleteRestaurant(Guid id);
     }
 }
