@@ -46,7 +46,11 @@
             <div class="px-6 pb-5 space-y-2">
                 <div class="flex justify-between items-center text-sm text-gray-500">
                     <span>Leveransavgift</span>
-                    <span class="tabular-nums">@restaurantDeliveryCharge kr</span>
+                    <span class="tabular-nums">@(!delivery ? restaurantDeliveryCharge : 0) kr</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <BbLabel For="airplane-mode px-2" Class="font-normal text-gray-500">Hämta själv</BbLabel>
+                    <BbSwitch Id="airplane-mode" @bind-Checked="delivery" Size="SwitchSize.Small" />
                 </div>
                 <div class="flex justify-between items-center text-sm text-gray-500">
                     <span>Serviceavgift (@restaurantServiceFee%)</span>
@@ -55,13 +59,13 @@
                 <div class="flex justify-between items-center font-black text-gray-900 text-base pt-2">
                     <span>Totalt</span>
                     <span class="tabular-nums">
-                        @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                        @(itemTotal * (1 + restaurantServiceFee / 100) + (!delivery ? restaurantDeliveryCharge : 0)) kr
                     </span>
                 </div>
             </div>
         </BbCard>
 
-<BbCard class="rounded-2xl shadow-sm overflow-hidden">
+        <BbCard class="rounded-2xl shadow-sm overflow-hidden">
             <BbCardHeader class="px-6 pt-5 pb-3">
                 <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
                     Leveransuppgifter
@@ -106,7 +110,7 @@
                         Type="ButtonType.Submit"
                         Color="ButtonColor.Primary"
                         Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
-                        Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                        Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + (!delivery ? restaurantDeliveryCharge : 0)) kr
                     </BbButton>
 
                 </EditForm>
@@ -122,6 +126,7 @@
     decimal itemTotal = 0;
     decimal restaurantServiceFee = 0;
     decimal restaurantDeliveryCharge = 0;
+    bool delivery = false;
 
     private CreateOrderDTO createOrder {get; set;} = new();
 
