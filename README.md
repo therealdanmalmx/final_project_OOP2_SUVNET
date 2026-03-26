@@ -136,7 +136,7 @@ Funktioner via REST API:
 - [ ] API:et kräver **autentisering** (valfri metod).
 
 #### Regler för REST API:
-- [ ] En order kan endast **avbrytas** av kunden så länge den inte har nått status `preparing`.
+- [x] En order kan endast **avbrytas** av kunden så länge den inte har nått status `preparing`.
 - [ ] En order som är satt att **Hämtas Upp** kan inte få ett bud tilldelat.
 - [ ] En order som inte är betald börjar med status `awaiting_payment`.
 
