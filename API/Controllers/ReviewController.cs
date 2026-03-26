@@ -21,6 +21,19 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet("{restaurantId}")]
+        public async Task<ActionResult<Review>> GetAllReviewByRestaurantId(Guid restaurantId)
+        {
+            var reviews = await _dbContext.Reviews.Where(r => r.RestaurantId == restaurantId).ToListAsync();
+            if (reviews is null)
+            {
+                return NotFound("No reviews exist");
+            }
+
+            return Ok(reviews);
+        }
+
+
         [HttpGet("{orderId}")]
         public async Task<ActionResult<Review>> GetAllReviewByOrderId(Guid orderId)
         {
@@ -52,6 +65,7 @@ namespace API.Controllers
                 Score = newReview.Score,
                 Comment = newReview.Comment,
                 OrderId = newReview.OrderId,
+                RestaurantId = newReview.RestaurantId
             };
 
             if (review is null)
@@ -64,6 +78,8 @@ namespace API.Controllers
             {
                 return Conflict("Review already exists for this order.");
             }
+
+            // _dbContext.Restaurants.Select(r => r.Review).Add(review);
 
             _dbContext.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
