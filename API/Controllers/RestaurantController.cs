@@ -48,10 +48,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetRestaurantsDTO>> AddNewRestaurant(CreateRestaurantsDTO restaurant)
+        public async Task<ActionResult<Restaurant>> AddNewRestaurant(CreateRestaurantsDTO restaurant)
         {
             try
             {
+
                 var newRestaurant = await _restaurantService.AddNewRestaurant(restaurant);
                 return Ok(newRestaurant);
             }
