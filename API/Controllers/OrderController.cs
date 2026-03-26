@@ -72,7 +72,7 @@ namespace API.Controllers
         {
             try
             {
-                var order = _orderService.CreateNewOrder(newOrder);
+                var order = await _orderService.CreateNewOrder(newOrder);
                 return Ok(order);
 
             }
