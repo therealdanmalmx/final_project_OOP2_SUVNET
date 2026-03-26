@@ -10,11 +10,14 @@
 @inject ILocalStorageService LocalStorage
 
 
-<PageTitle>@restaurant.Name</PageTitle>
+
 @if (restaurant is null)
 {
     return;
 }
+
+<PageTitle>@restaurant?.Name</PageTitle>
+
 <RestaurantInfo restaurant="restaurant" isopen="isopen"/>
 
 <MenuItemCard restaurant="restaurant" isopen="isopen" />
