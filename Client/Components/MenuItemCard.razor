@@ -51,17 +51,17 @@ else
                     <BbButton Color="ButtonColor.Secondary"
                               Size="ButtonSize.Small"
                               Outline="true"
-                              onclick="@(() => DecreaseQuantity())"
+                              onclick="@(() => DecreaseQuantity(item.Id))"
                               Class="w-8 h-9 flex items-center justify-center border-0 rounded-none font-bold text-base leading-none hover:bg-gray-100">
                         −
                     </BbButton>
                     <span class="w-9 text-center text-sm font-semibold text-gray-800 tabular-nums select-none">
-                        @Quantity
+                        @GetQuantity(item.Id)
                     </span>
                     <BbButton Color="ButtonColor.Secondary"
                               Size="ButtonSize.Small"
                               Outline="true"
-                              onclick="@(() => IncreaseQuantity())"
+                              onclick="@(() => IncreaseQuantity(item.Id))"
                               Class="w-8 h-9 flex items-center justify-center border-0 rounded-none font-bold text-base leading-none hover:bg-gray-100">
                         +
                     </BbButton>
@@ -156,7 +156,7 @@ else
         Nav.NavigateTo($"/restaurant/{menuitem?.RestaurantId}");
     }
 
-    @* private Dictionary<Guid, int> quantities = new();
+    private Dictionary<Guid, int> quantities = new();
 
     private int GetQuantity(Guid id) =>
         quantities.TryGetValue(id, out var q) ? q : 1;
@@ -165,24 +165,6 @@ else
         quantities[id] = Math.Min(GetQuantity(id) + 1, 10);
 
     private void DecreaseQuantity(Guid id) =>
-        quantities[id] = Math.Max(GetQuantity(id) - 1, 1); *@
-
-            public void IncreaseQuantity()
-    {
-        Quantity++;
-        if (Quantity >= 10)
-        {
-            Quantity = 10;
-        }
-
-    }
-    public void DecreaseQuantity()
-    {
-        Quantity--;
-        if (Quantity <= 1)
-        {
-            Quantity = 1;
-        }
-    }
+        quantities[id] = Math.Max(GetQuantity(id) - 1, 1);
 
 }
