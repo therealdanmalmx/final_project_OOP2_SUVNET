@@ -130,8 +130,8 @@
 </div>
     @if (alreadyReviewed == true)
     {
-            <div class="block w-1/2 mx-auto pt-12">
-                <BbCard class="rounded-2xl shadow-sm overflow-hidden">
+        <div class="block w-1/2 mx-auto pt-12">
+            <BbCard class="rounded-2xl shadow-sm overflow-hidden">
                 <div class="px-8 py-10 text-center space-y-2">
                     <div class="flex justify-center mb-3">
                         <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
@@ -140,20 +140,21 @@
                             </svg>
                         </div>
                     </div>
-                    <p class="text-base font-bold text-gray-900">Du har redan lämnat ett omdöme</p>
+                    @if(Order is not null){<p class="text-base font-bold text-gray-900">Ordern #@(Order.Number) har ett omdöme</p>}
                     <p class="text-sm text-gray-500">Tack för din feedback!</p>
                 </div>
             </BbCard>
-
-            </div>
+        </div>
     }
 
 
 @code {
     [Parameter]
     public Guid Id { get; set; }
+
     [Parameter]
     public GetOrderDTO? Order { get; set; }
+
     private decimal rating = 0m;
     private string comment = "";
     private void SetRating(decimal value) => rating = value;
@@ -164,7 +165,8 @@
         Console.WriteLine(Id);
         var response = await Http.GetAsync($"/api/review/order/{Id}");
         alreadyReviewed = response.IsSuccessStatusCode;
-        Console.WriteLine($"alreadyReviewed: {alreadyReviewed}");
+        Order = await Http.GetFromJsonAsync<GetOrderDTO>($"api/order/{Id}");
+
     }
 
     private async Task SubmitReview()
