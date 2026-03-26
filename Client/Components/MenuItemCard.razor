@@ -7,7 +7,7 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager Nav;
 @inject HttpClient Http
-
+@inject IJSRuntime JS
 
 @if (restaurant is null)
 {
@@ -95,7 +95,6 @@ else
     public Guid Id { get; set; }
     [Parameter]
     public bool isopen {get; set; }
-
     [Parameter]
     public GetRestaurantsDTO? restaurant {get; set;}
     public GetMenuItemDTO? menuitem;
@@ -129,16 +128,21 @@ else
         }
         var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
 
-            if (cart.Any())
-            {
-                var existingRestaurantId = cart.First()?.Restaurant?.Id;
+        // 2. CHECK: Is there already something from a different restaurant?
+        if (cart.Any())
+        {
+            var existingId = cart.First().Restaurant.Id;
+            var currentId = Id;
 
-                if (existingRestaurantId != restaurant.Id)
-                {
-                    Console.WriteLine("You have items from another restaurant in your cart. Please clear your cart first!");
-                    return;
-                }
+            // DEBUG: Open your browser console (F12) to see these
+            Console.WriteLine($"Cart Restaurant: {existingId}");
+            Console.WriteLine($"Current Restaurant: {currentId}");
+
+            if (existingId.ToString().ToLower() != currentId.ToString().ToLower())        {
+                await JS.InvokeVoidAsync("alert", "Wait! You already have items from another restaurant.");
+                return;
             }
+        }
 
         var orderState = new OrderState {
             MenuItem = menuitem,
