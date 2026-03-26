@@ -80,8 +80,6 @@ else
             <span class="flex items-center mx-auto gap-1.5 bg-red-600 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
                 Restaurangen är stängd
             </span>
-            @* <span class="w-full text-center text-xs text-gray-400 py-1 block">
-            </span> *@
         }
     </BbCardFooter>
 
@@ -129,18 +127,29 @@ else
         {
             return;
         }
+        var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
+
+            if (cart.Any())
+            {
+                var existingRestaurantId = cart.First()?.Restaurant?.Id;
+
+                if (existingRestaurantId != restaurant.Id)
+                {
+                    Console.WriteLine("You have items from another restaurant in your cart. Please clear your cart first!");
+                    return;
+                }
+            }
 
         var orderState = new OrderState {
             MenuItem = menuitem,
             Restaurant = restaurant,
             Quantity = Quantity
         };
-
         var exists = await LocalStorage.ContainKeyAsync("cart");
 
         if (exists)
         {
-            var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
+            @* var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new(); *@
             cart.Add(orderState);
             await LocalStorage.SetItemAsync("cart", cart);
         }
