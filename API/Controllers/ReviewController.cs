@@ -34,17 +34,17 @@ namespace API.Controllers
         }
 
 
-        // [HttpGet("{orderId}")]
-        // public async Task<ActionResult<Review>> GetAllReviewByOrderId(Guid orderId)
-        // {
-        //     var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
-        //     if (review is null)
-        //     {
-        //         return NotFound("No reviews exist");
-        //     }
+        [HttpGet("order/{orderId}")]
+        public async Task<ActionResult<Review>> GetAllReviewByOrderId(Guid orderId)
+        {
+            var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
+            if (review is null)
+            {
+                return NotFound("No reviews exist");
+            }
 
-        //     return Ok(review);
-        // }
+            return Ok(review);
+        }
 
 
         [HttpPost]
