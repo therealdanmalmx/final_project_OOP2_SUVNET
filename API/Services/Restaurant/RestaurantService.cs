@@ -120,6 +120,7 @@ namespace API.Services
                 .Where(r => r.Id == id)
                 .Select(r => new Restaurant
                 {
+                    Id = r.Id,
                     Name = r.Name,
                     Description = r.Description,
                     Category = r.Category,
