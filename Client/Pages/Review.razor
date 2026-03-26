@@ -163,7 +163,6 @@
     {
         var response = await Http.GetAsync($"/api/review/{Id}");
         alreadyReviewed = response.IsSuccessStatusCode;
-        Console.WriteLine($"alreadyReviewed: {alreadyReviewed}");
     }
 
     private async Task SubmitReview()
@@ -184,10 +183,6 @@
         {
             alreadyReviewed = true;
             @* Nav.NavigateTo("/"); *@
-        }
-        else
-        {
-            Console.WriteLine($"Failed: {response.StatusCode}");
         }
     }
 }
