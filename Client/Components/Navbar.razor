@@ -57,8 +57,6 @@
         var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
         cartCount = cart?.Sum(item => item.Quantity) ?? 0;
         StateHasChanged();
-
-        Console.WriteLine(cartCount);
     }
 
 @* Necessary? *@

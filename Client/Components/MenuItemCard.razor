@@ -128,15 +128,11 @@ else
         }
         var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new();
 
-        // 2. CHECK: Is there already something from a different restaurant?
         if (cart.Any())
         {
             var existingId = cart.First().Restaurant.Id;
             var currentId = restaurant.Id;
 
-            // DEBUG: Open your browser console (F12) to see these
-            Console.WriteLine($"Cart Restaurant: {existingId}");
-            Console.WriteLine($"Current Restaurant: {currentId}");
 
             if (existingId.ToString().ToLower() != currentId.ToString().ToLower())        {
                 await JS.InvokeVoidAsync("alert", "Wait! You already have items from another restaurant.");
@@ -163,8 +159,6 @@ else
         }
 
         var getMenuItems = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
-
-        Console.WriteLine(getMenuItems);
 
         Nav.NavigateTo($"/restaurant/{menuitem?.RestaurantId}");
     }
