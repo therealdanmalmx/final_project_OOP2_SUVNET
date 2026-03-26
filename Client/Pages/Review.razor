@@ -1,4 +1,4 @@
-@page "/review/{id:guid}"
+@page "/review/order/{id:guid}"
 @using API.DTO.Review
 @using Client.DTO
 @inject NavigationManager Nav
@@ -36,7 +36,7 @@
 
     </div>
 
-    @if (alreadyReviewed == false || alreadyReviewed == null)
+    @if (alreadyReviewed == false)
     {
             <div class="w-full max-w-lg space-y-5">
 
@@ -161,12 +161,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync($"/api/review/{Id}");
+        Console.WriteLine(Id);
+        var response = await Http.GetAsync($"/api/review/order/{Id}");
         alreadyReviewed = response.IsSuccessStatusCode;
+        Console.WriteLine($"alreadyReviewed: {alreadyReviewed}");
     }
 
     private async Task SubmitReview()
     {
+        Console.WriteLine(alreadyReviewed);
         if (rating == 0) return;
         if (alreadyReviewed == true) return;
 
