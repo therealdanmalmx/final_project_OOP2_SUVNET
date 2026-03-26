@@ -132,7 +132,7 @@ else
         if (cart.Any())
         {
             var existingId = cart.First().Restaurant.Id;
-            var currentId = Id;
+            var currentId = restaurant.Id;
 
             // DEBUG: Open your browser console (F12) to see these
             Console.WriteLine($"Cart Restaurant: {existingId}");
