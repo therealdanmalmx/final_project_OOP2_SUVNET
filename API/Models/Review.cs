@@ -6,6 +6,6 @@ namespace API.Models
         public decimal Score { get; set; }
         public string Comment { get; set; } = string.Empty;
         public Guid? OrderId { get; set; }
-
+        public Guid? RestaurantId { get; set; }
     }
 }
