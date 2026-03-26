@@ -33,11 +33,10 @@
     {
         restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{Id}");
 
-        if(TimeOnly.FromDateTime(DateTime.Now) < restaurant.Opens || TimeOnly.FromDateTime(DateTime.Now) > restaurant.Closes)
+        if(TimeOnly.FromDateTime(DateTime.Now) < restaurant?.Opens || TimeOnly.FromDateTime(DateTime.Now) > restaurant?.Closes)
         {
             isopen = false;
         }
-
     }
 
 }

@@ -119,13 +119,13 @@ Funktioner via REST API:
 - [ ] Det ska vara möjligt att **avbryta en order**.
 - [x] **Externt API:**
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
-- [ ] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
+- [x] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
 - **Rekommendationer:**
   - [ ] Populära restauranger visas på förstasidan.
   - [ ] Populära rätter visas överst på menysidorna.
 - [ ] **Betalning:**
   Använd det fejkade API:et *Swipe* för kortbetalningar innan en order godkänns. Se separat dokumentation.
-- [ ] **Leverans eller Upphämtning:**
+- [x] **Leverans eller Upphämtning:**
   Möjlighet att välja mellan leverans (med utkomstningskostnad) eller att hämta upp ordern.
 - [ ] **Pay It Forward:**
   När en order betalas kan en extra summa läggas till i en gemensam pott. Vid senare beställning kan ordern betalas helt eller delvis från den ihopsamlade potten (kräver Swipe-betalningslösningen).

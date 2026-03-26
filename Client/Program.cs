@@ -10,6 +10,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5095") });
+builder.Services.AddScoped(sp => new System.Text.Json.JsonSerializerOptions
+{
+    PropertyNameCaseInsensitive = true
+});
 
 builder.Services.AddBlazorBlueprintComponents();
 

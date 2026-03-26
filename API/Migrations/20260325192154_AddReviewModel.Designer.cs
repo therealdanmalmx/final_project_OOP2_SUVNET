@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325192154_AddReviewModel")]
+    partial class AddReviewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,16 +208,10 @@ namespace API.Migrations
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("RestaurantId")
-                        .HasColumnType("uuid");
-
                     b.Property<decimal>("Score")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
 
                     b.ToTable("Reviews");
                 });
@@ -268,21 +265,9 @@ namespace API.Migrations
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("API.Models.Review", b =>
-                {
-                    b.HasOne("API.Models.Order", null)
-                        .WithMany("ReviewList")
-                        .HasForeignKey("OrderId");
-                });
-
             modelBuilder.Entity("API.Models.Courier", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("API.Models.Order", b =>
-                {
-                    b.Navigation("ReviewList");
                 });
 
             modelBuilder.Entity("API.Models.Restaurant", b =>

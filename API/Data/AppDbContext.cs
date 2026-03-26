@@ -12,6 +12,7 @@ namespace API.Data
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<Courier> Couriers => Set<Courier>();
+        public DbSet<Review> Reviews => Set<Review>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +23,11 @@ namespace API.Data
                     oi.Property<Guid>("Id");
                     oi.HasKey("Id");
                 });
-        }
+
+            modelBuilder.Entity<Review>()
+                .HasIndex(r => r.OrderId)
+                .IsUnique();
+            }
     }
 
 }
