@@ -1,0 +1,39 @@
+@page "/deleted"
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="h-full flex items-center justify-center p-4">
+    <div class="w-full max-w-lg text-center space-y-6">
+
+        <div class="flex justify-center">
+            <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center">
+                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
+                Order Avbokad
+            </h1>
+            <p class="text-gray-500 text-base leading-relaxed">
+                Din beställning har avbokats. Välkommen att beställa igen!
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-3 pt-2">
+            <BbButton
+                Color="ButtonColor.Primary"
+                @onclick=@(() => Nav.NavigateTo("/"))
+                Class="w-full py-3.5 rounded-xl font-black text-sm tracking-widest uppercase">
+                Gör en ny beställning
+            </BbButton>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+}
