@@ -1,7 +1,6 @@
 @page "/order-summary/{Id:guid}"
 @using API.DTO
 @using Client.DTO
-@using API.Models
 @using Blazored.LocalStorage
 @using Client.Models
 @using System.Security.Principal
@@ -79,7 +78,7 @@
                         Color="ButtonColor.Danger"
                         Outline="true"
                         Class="w-full py-3.5 rounded-xl font-black text-sm tracking-widest uppercase"
-                        onclick="@CancelOrder">
+                        @onclick="(() => CancelOrder(Order.Id))">
                         Avbryt order
                     </BbButton>
                 }
@@ -132,7 +131,19 @@
         return courier?.Name ?? "Ej tilldelad";
     }
 
-    private void CancelOrder() { }
+    private async Task CancelOrder(Guid Id)
+    {
+        var response = await Http.DeleteAsync($"/api/order/{Id}");
+
+        if(!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Could not delete the order");
+        }
+
+        var order = await response.Content.ReadFromJsonAsync<Order>();
+
+        Nav.NavigateTo($"/deleted");
+    }
 
     public string ConvertStatusCode(Status code)
     {
@@ -158,7 +169,7 @@
             Status.courier_accepted => Random.Shared.Next(20, 30).ToString(),
             Status.preparing => Random.Shared.Next(20, 25).ToString(),
             Status.ready_for_pickup => Random.Shared.Next(15, 20).ToString(),
-            Status.in_transit => Random.Shared.Next(5, 15).ToString(),
+            Status.in_transit => Random.Shared.Next(5, 10).ToString(),
             _ => "Status unknown"
         };
     }
