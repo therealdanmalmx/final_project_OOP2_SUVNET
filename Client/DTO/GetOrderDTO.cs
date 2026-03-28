@@ -18,6 +18,7 @@ namespace Client.DTO
         public string Instructions { get; init;} = string.Empty;
         public Guid? CourierId { get; set; }
         public Status Status { get;  init; }
+        public bool Delivery { get; set; }
         public List<GetOrderItemDTO> OrderItems { get; set; }
     }
 }

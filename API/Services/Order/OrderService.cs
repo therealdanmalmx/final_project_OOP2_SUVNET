@@ -29,6 +29,11 @@ namespace API.Services.Order
                 throw new ArgumentException("Only confirmed and not yet accepted orders can be assigned to a courier");
             }
 
+            if (!order.Delivery)
+            {
+                throw new ArgumentException("Customer is picking the order up. Can't be assigned");
+            }
+
             var courier = await _dbContext.Couriers.FindAsync(courierId);
 
             if (courier is null)
@@ -72,6 +77,7 @@ namespace API.Services.Order
                 Address = newOrder.Address,
                 Phone = newOrder.Phone,
                 Instructions = newOrder.Instructions,
+                Delivery = newOrder.Delivery,
             };
 
             foreach (var item in newOrder.OrderItems)
@@ -133,7 +139,8 @@ namespace API.Services.Order
                 Phone = order.Phone,
                 Status = order.Status,
                 CourierId = order.CourierId,
-                AccountId = order.AccountId
+                AccountId = order.AccountId,
+                Delivery = order.Delivery
             };
 
             return getOrder;

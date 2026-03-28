@@ -24,6 +24,7 @@ namespace Client.DTO
         public Status Status { get; set; }
         public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
+        public bool Delivery { get; set; }
         public List<CreateOrderItemDTO> OrderItems { get; set; } = [];
 
         public void AddOrderItem(string name, decimal price, int quantity)

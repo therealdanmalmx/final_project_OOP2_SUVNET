@@ -14,6 +14,7 @@ namespace API.Models
         public Status Status { get; set; } = Status.received;
         public Guid? CourierId { get; set; }
         public Courier? Courier { get; set; }
+        public bool Delivery { get; set; }
         public Guid? AccountId { get; set; }
         public List<OrderItem> OrderItems { get; private set; } = [];
 

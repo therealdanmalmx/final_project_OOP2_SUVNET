@@ -12,5 +12,6 @@ namespace API.DTO
         public string Instructions { get;} = string.Empty;
         public Status Status { get;  }
         public List<GetOrderItemDTO>? OrderItems { get; set; }
+        public bool Delivery { get; set; }
     }
 }
