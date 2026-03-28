@@ -100,7 +100,7 @@ Funktioner via REST API:
 
 - En order kan bara läggas om:
   - [x] Restaurangen är öppen.
-  - [ ] Ordern läggs innan "Tid för sista beställning".
+  - [x] Ordern läggs innan "Tid för sista beställning".
 
 - [ ] **Orderstatus** ska följa följande flöde:
   - `received` → `confirmed` → `courier_accepted` → `preparing` → `ready_for_pickup` → `in_transit` → `delivered`.
@@ -116,7 +116,7 @@ Funktioner via REST API:
 
 ### Hemsidan:
 - [x] Det ska gå att lägga till **flera maträtter** till en beställning.
-- [ ] Det ska vara möjligt att **avbryta en order**.
+- [x] Det ska vara möjligt att **avbryta en order**.
 - [x] **Externt API:**
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
 - [x] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
