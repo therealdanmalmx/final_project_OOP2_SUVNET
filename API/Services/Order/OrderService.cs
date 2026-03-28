@@ -141,6 +141,7 @@ namespace API.Services.Order
 
         public async Task<Models.Order> UpdateOrderStatus(Guid id, UpdateOrderStatusDTO dto)
         {
+
             var order = await _dbContext.Orders.FindAsync(id);
 
             if (order is null)
@@ -148,12 +149,18 @@ namespace API.Services.Order
                 throw new ArgumentException($"Order with id {id} does not exist");
             }
 
-            if (!Enum.TryParse<Status>(dto.Status.ToString(), true, out var status))
+            if(dto.Status < Status.received || dto.Status > Status.delivered)
             {
-                throw new InvalidOperationException("Invalid status value");
+                throw new InvalidOperationException("Invalid status");
             }
 
-            order.Status = status;
+            if(dto.Status -1 < order.Status || dto.Status + 1 > order.Status)
+            {
+                throw new ArgumentException($"Status can only be changed to '{order.Status +1}'");
+
+            }
+
+            order.Status = dto.Status;
 
             await _dbContext.SaveChangesAsync();
 
