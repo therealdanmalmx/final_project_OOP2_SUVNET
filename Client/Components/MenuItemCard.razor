@@ -135,9 +135,15 @@ else
 
 
             if (existingId.ToString().ToLower() != currentId.ToString().ToLower())        {
-                await JS.InvokeVoidAsync("alert", "Wait! You already have items from another restaurant.");
+                await JS.InvokeVoidAsync("alert", "You can't add an item from a different restaurant");
                 return;
             }
+        }
+
+        if (TimeOnly.FromDateTime(DateTime.Now) > restaurant.OrderCutOffTime)
+        {
+                await JS.InvokeVoidAsync("alert", "Sorry, it's passed the order cutoff time");
+                return;
         }
 
         var orderState = new OrderState {
