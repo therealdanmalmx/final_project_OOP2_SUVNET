@@ -116,5 +116,19 @@ namespace API.Controllers
             }
 
         }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<Order>> DeleteOrder(Guid id)
+        {
+            try
+            {
+                var order = await _orderService.DeleteOrder(id);
+                return Ok(order);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new {error = ex.Message});
+            }
+        }
     }
 }

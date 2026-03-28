@@ -1,6 +1,7 @@
 using API.Data;
 using API.DTO;
 using API.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services.Order
@@ -173,5 +174,22 @@ namespace API.Services.Order
 
             return order;
         }
+
+        public async Task<Models.Order> DeleteOrder(Guid id)
+        {
+            var order = await _dbContext.Orders.FindAsync(id);
+
+            if (order is null)
+            {
+                throw new ArgumentException($"Order with id {id} does not exist");
+            }
+
+            _dbContext.Remove(order);
+            await _dbContext.SaveChangesAsync();
+
+            return order;
+
+        }
+
     }
 }

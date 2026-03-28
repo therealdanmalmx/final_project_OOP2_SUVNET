@@ -16,6 +16,7 @@ namespace API.Services
         Task<Models.Order> AssignOrderToCourier(Guid orderId, Guid courierId);
 
         Task<Models.Order> UpdateOrderStatus(Guid id, UpdateOrderStatusDTO dto);
+        Task<Models.Order> DeleteOrder(Guid id);
 
     }
 }
