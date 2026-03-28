@@ -98,7 +98,7 @@ namespace API.Controllers
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}/status")]
         public async Task<ActionResult<Order>> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDTO dto)
         {
             try
