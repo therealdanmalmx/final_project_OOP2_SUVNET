@@ -137,7 +137,7 @@ Funktioner via REST API:
 
 #### Regler för REST API:
 - [x] En order kan endast **avbrytas** av kunden så länge den inte har nått status `preparing`.
-- [ ] En order som är satt att **Hämtas Upp** kan inte få ett bud tilldelat.
+- [x] En order som är satt att **Hämtas Upp** kan inte få ett bud tilldelat.
 - [ ] En order som inte är betald börjar med status `awaiting_payment`.
 
 ---
