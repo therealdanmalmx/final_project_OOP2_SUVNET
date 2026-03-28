@@ -102,7 +102,7 @@ Funktioner via REST API:
   - [x] Restaurangen är öppen.
   - [x] Ordern läggs innan "Tid för sista beställning".
 
-- [ ] **Orderstatus** ska följa följande flöde:
+- [x] **Orderstatus** ska följa följande flöde:
   - `received` → `confirmed` → `courier_accepted` → `preparing` → `ready_for_pickup` → `in_transit` → `delivered`.
 
 ### Bud
