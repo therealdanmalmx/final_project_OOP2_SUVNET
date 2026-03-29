@@ -79,12 +79,24 @@ namespace API.Controllers
                 return Conflict("Review already exists for this order.");
             }
 
-            // _dbContext.Restaurants.Select(r => r.Review).Add(review);
-
             _dbContext.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
 
+            var avgScore = await _dbContext.Reviews
+                .Where(r => r.RestaurantId == review.RestaurantId)
+                .AverageAsync(r => r.Score);
+
+            var restaurant = await _dbContext.Restaurants
+                .FirstOrDefaultAsync(r => r.Id == review.RestaurantId);
+
+            if (restaurant is not null)
+            {
+                restaurant.Review = avgScore;
+                await _dbContext.SaveChangesAsync();
+            }
+
             return Created("/api/review", review);
+
         }
     }
 }
