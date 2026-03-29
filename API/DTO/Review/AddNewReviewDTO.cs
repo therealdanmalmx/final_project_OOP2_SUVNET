@@ -7,7 +7,7 @@ namespace API.DTO.Review
 {
     public class AddNewReviewDTO
     {
-        public decimal Score { get; set; }
+        public float Score { get; set; }
         public string Comment { get; set; } = string.Empty;
         public Guid? OrderId { get; set; }
         public Guid? RestaurantId { get; set; }
