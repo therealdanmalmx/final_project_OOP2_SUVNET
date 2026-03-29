@@ -121,7 +121,7 @@ Funktioner via REST API:
   T.ex. [TheMealDB](https://www.themealdb.com/api.php) för att ladda in bilder på maträtter eller [smhis-api](#) för att lägga på en extra kostnad vid ful-väder.
 - [x] **Rating:** Möjlighet att sätta betyg på en restaurang via en order som är `delivered`.
 - **Rekommendationer:**
-  - [ ] Populära restauranger visas på förstasidan.
+  - [x] Populära restauranger visas på förstasidan.
   - [ ] Populära rätter visas överst på menysidorna.
 - [ ] **Betalning:**
   Använd det fejkade API:et *Swipe* för kortbetalningar innan en order godkänns. Se separat dokumentation.
