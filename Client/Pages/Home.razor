@@ -10,17 +10,19 @@
     {
         @foreach(var restaurant in restaurants)
         {
-            <RestaurantCard restaurant="restaurant" />
+            <RestaurantCard restaurant="restaurant" topReview="topReview" />
         }
     }
 </div>
 
 @code {
     public List<GetRestaurantsDTO> restaurants {get; set; }
+    public GetRestaurantsDTO topReview {get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         restaurants = await Http.GetFromJsonAsync<List<GetRestaurantsDTO>>("api/restaurant");
+        topReview = restaurants.MaxBy(r => r.Review);
 
     }
 }
