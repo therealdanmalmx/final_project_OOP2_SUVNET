@@ -1,20 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
 
-namespace API.DTO.Account
+namespace API.DTO
 {
     public class AccountRegistrationRequest
     {
-        public required string Name { get; set; }
-        public required string Address { get; set; }
-        public required string UserName { get; set; }
-        public required string Email { get; set; }
-        public required string PhoneNumber { get; set; }
-        public required string Password { get; set; }
-        public required string ConfirmPassword { get; set; }
-        public required Role Role { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Address { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        [Required]
+        public string PhoneNumber { get; set; } = string.Empty;
+        [Required, PasswordPropertyText]
+        public string Password { get; set; } = string.Empty;
+        [Required, PasswordPropertyText]
+        public string ConfirmPassword { get; set; } = string.Empty;
+        [Required]
+        public Role Role { get; set; }
     }
 }
