@@ -1,0 +1,140 @@
+@page "/register"
+@using API.DTO
+@using API.Services.Auth
+@inject IAuthService authService
+@inject NavigationManager Nav
+<PageTitle>Register Account</PageTitle>
+
+<EditForm  EditContext="editContext" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator />
+    <div class="h-full flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-lg space-y-5">
+
+            <div>
+                <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">Skapa konto</h1>
+            </div>
+
+            <BbCard class="rounded-2xl shadow-sm overflow-hidden px-8 pt-7 pb-4">
+
+                <div class="px-8 pb-8 space-y-4">
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold tracking-wide uppercase text-gray-400">Namn</label>
+                        <InputText
+                            class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="För- och efternamn"
+                            @bind-Value="newAccount.Name"
+                        />
+                    <ValidationMessage For="() => newAccount.Name" />
+                    </div>
+
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold tracking-wide uppercase text-gray-400">Email</label>
+                        <InputText
+                            type="email"
+                            class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="din@email.se"
+                            @bind-Value="newAccount.Email"
+                        />
+                        <ValidationMessage For="() => newAccount.Email" />
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold tracking-wide uppercase text-gray-400">Adress</label>
+                        <InputText
+                            class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="Gatuadress, posnummer och ort"
+                            @bind-Value="newAccount.Address"
+                        />
+                        <ValidationMessage For="() => newAccount.Address" />
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold tracking-wide uppercase text-gray-400">Telefon</label>
+                        <InputText
+                            type="tel"
+                            class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                            placeholder="07X XXX XX XX"
+                            @bind-Value="newAccount.PhoneNumber"
+                        />
+                        <ValidationMessage For="() => newAccount.PhoneNumber" />
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-4 space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold tracking-wide uppercase text-gray-400">Lösenord</label>
+                            <InputText
+                                type="password"
+                                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                placeholder="Minst 8 tecken"
+                            @bind-Value="newAccount.Password"
+                            />
+                            <ValidationMessage for="() => newAccount.Password" />
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <BbLabel class="text-xs font-semibold tracking-wide uppercase text-gray-400">Upprepa lösenord</BbLabel>
+                            <InputText
+                                type="password"
+                                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                placeholder="Samma lösenord igen"
+                                @bind-Value="newAccount.ConfirmPassword"
+
+                            />
+                            <ValidationMessage for="() => newAccount.ConfirmPassword" />
+                        </div>
+                    </div>
+
+
+                    <BbButton
+                        Color="ButtonColor.Primary"
+                        Disabled=@(!isValid)
+                        Class="w-full mt-2 py-3.5 rounded-xl font-black text-sm tracking-widest uppercase"
+                        onclick="@HandleRegistration">
+                        Skapa konto →
+                    </BbButton>
+
+                    <p class="text-center text-xs text-gray-400 pt-1">
+                        Har du redan ett konto?
+                        <a href="/login" class="text-gray-700 font-semibold underline underline-offset-2 hover:text-gray-900 transition-colors">
+                            Logga in
+                        </a>
+                    </p>
+
+                </div>
+            </BbCard>
+
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private bool IsFormFilled() =>
+    !string.IsNullOrWhiteSpace(newAccount.Name) &&
+    !string.IsNullOrWhiteSpace(newAccount.Email) &&
+    !string.IsNullOrWhiteSpace(newAccount.Address) &&
+    !string.IsNullOrWhiteSpace(newAccount.PhoneNumber) &&
+    !string.IsNullOrWhiteSpace(newAccount.Password) &&
+    !string.IsNullOrWhiteSpace(newAccount.ConfirmPassword);
+    private EditContext editContext = default!;
+    private bool isValid;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(newAccount);
+        editContext.OnFieldChanged += (_, _) =>
+        {
+            isValid = IsFormFilled();
+            StateHasChanged();
+        };
+    }
+    AccountRegistrationRequest newAccount = new AccountRegistrationRequest();
+
+    async Task HandleRegistration()
+    {
+        await authService.Register(newAccount);
+
+    }
+
+}
