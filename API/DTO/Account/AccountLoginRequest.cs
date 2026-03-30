@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.DTO.Account
+namespace API.DTO
 {
     public class AccountLoginRequest
     {
-        public required string UserName { get; set; }
-        public required string Password { get; set; }
+        [Required]
+        public string UserName { get; set; } = string.Empty;
+        [Required]
+        public string Password { get; set; } = string.Empty;
     }
 }

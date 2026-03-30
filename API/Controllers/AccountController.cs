@@ -1,6 +1,6 @@
-using API.DTO.Account;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
-using API.Services.Account;
+using API.Services;
 namespace API.Controllers
 {
     [ApiController]

@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.DTO.Account;
+using API.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Services.Account
+namespace API.Services
 {
     public class AccountRegisterService : IAccountRegisterService
     {

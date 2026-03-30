@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
 
-namespace API.DTO.Account
+namespace API.DTO
 {
     public class CreateAccountDTO
     {

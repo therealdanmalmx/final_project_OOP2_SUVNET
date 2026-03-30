@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using API.DTO.Account;
+using API.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Services.Account
+namespace API.Services
 {
     public class AccountLoginService : IAccountLoginService
     {
