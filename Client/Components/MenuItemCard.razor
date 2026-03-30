@@ -7,7 +7,7 @@
 
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager Nav;
-@inject AuthStateProvider authStateProvider
+@inject AuthenticationStateProvider authStateProvider
 @inject IJSRuntime JS
 
 
@@ -130,7 +130,8 @@ else
         var authenticated = await authStateProvider.GetAuthenticationStateAsync();
         if (!authenticated.User.Identity.IsAuthenticated)
         {
-            await JS.InvokeConstructorAsync("alert", "You have to be logged in to make an order");
+            await JS.InvokeVoidAsync("alert", "You have to be logged in to make an order");
+            return;
         }
         if (restaurant is null || menuitem is null)
         {
