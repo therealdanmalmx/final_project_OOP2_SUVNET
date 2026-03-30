@@ -4,9 +4,9 @@ namespace API.Models
 {
     public class Account : IdentityUser
     {
-        public required string Name { get; set; }
-        public required string Address { get; set; }
-        public required Role Role { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public Role Role { get; set; }
 
         public Account() { }
         public Account(string name, string address, string userName, string email, string phoneNumber, Role role)
