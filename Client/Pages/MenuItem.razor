@@ -3,7 +3,6 @@
 @using Client.Models
 @using System.Runtime.InteropServices
 @page "/menuitem/dish/{Id:guid}"
-@inject HttpClient Http
 @inject NavigationManager Nav
 @inject ILocalStorageService LocalStorage
 
@@ -87,7 +86,7 @@
         {
             return;
         }
-        
+
         var orderState = new OrderState {
             MenuItem = menuitem,
             Restaurant = restaurant,
