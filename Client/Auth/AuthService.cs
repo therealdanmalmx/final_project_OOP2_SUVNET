@@ -19,8 +19,6 @@ namespace API.Services.Auth
         private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly IToastService _toastService;
-
-
         public AuthService(HttpClient http, NavigationManager nav, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, IToastService toastService)
         {
             _http = http;
@@ -86,11 +84,10 @@ namespace API.Services.Auth
                 }
                 else
                 {
-                    _toastService.ShowSuccess("Du har registrerart dig");
+                    _toastService.ShowSuccess("Du har registrerat dig");
+                    _nav.NavigateTo("/login");
                 }
-
             }
-
         }
     }
 }
