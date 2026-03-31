@@ -7,7 +7,6 @@ namespace API.Models
         public string Category { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public float Review { get; set; }
         public TimeOnly Opens { get; set; }
         public TimeOnly Closes { get; set; }
         public TimeOnly OrderCutOffTime { get; set; }
