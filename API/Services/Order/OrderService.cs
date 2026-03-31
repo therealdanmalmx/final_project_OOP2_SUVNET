@@ -30,7 +30,7 @@ namespace API.Services.Order
                 throw new ArgumentException("Only confirmed and not yet accepted orders can be assigned to a courier");
             }
 
-            if (!order.Delivery)
+            if (order.Delivery)
             {
                 throw new ArgumentException("Customer is picking the order up. Can't be assigned");
             }
