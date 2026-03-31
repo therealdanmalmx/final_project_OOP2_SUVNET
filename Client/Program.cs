@@ -7,6 +7,7 @@ using API.Services.Auth;
 using Client.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.Toast;
+using Client.State;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -18,6 +19,7 @@ builder.Services.AddScoped(sp => new System.Text.Json.JsonSerializerOptions
 {
     PropertyNameCaseInsensitive = true
 });
+builder.Services.AddScoped<CartStateService>();
 
 builder.Services.AddBlazorBlueprintComponents();
 builder.Services.AddBlazoredToast();

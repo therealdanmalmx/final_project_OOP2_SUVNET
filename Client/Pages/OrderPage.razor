@@ -5,6 +5,9 @@
 @using Client.DTO
 @using Client.Models
 @using System.ComponentModel.DataAnnotations
+@using Client.State
+
+@inject CartStateService cartStateService
 
 <AuthorizeView>
     <NotAuthorized>
@@ -169,6 +172,8 @@
         if (response.IsSuccessStatusCode)
         {
             var createdOrder = await response.Content.ReadFromJsonAsync<CreateOrderDTO>();
+                await LocalStorage.RemoveItemAsync("cart");
+                cartStateService.NotifyCartChanged();
 
             Nav.NavigateTo($"/order-summary/{createdOrder?.Id}");
         }

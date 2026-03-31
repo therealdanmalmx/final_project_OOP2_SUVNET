@@ -1,5 +1,8 @@
 @using Blazored.LocalStorage
 @using Client.Models
+@using Client.State
+@inject CartStateService CartState
+
 @implements IDisposable
 
 <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-16
@@ -45,6 +48,10 @@
 @code {
     private int cartCount;
 
+    protected override void OnInitialized()
+    {
+        CartState.OnCartChanged += OnCartChanged;
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -62,6 +69,11 @@
             StateHasChanged();
         }
     }
+    private async void OnCartChanged()
+    {
+        await UpdateCartCount();
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task UpdateCartCount()
     {
@@ -70,9 +82,10 @@
         StateHasChanged();
     }
 
-@* Necessary? *@
     public void Dispose()
     {
         LocalStorage.Changed -= OnLocalStorageChanged;
+        CartState.OnCartChanged -= OnCartChanged;
+
     }
 }
