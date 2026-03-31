@@ -21,6 +21,18 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<AddNewReviewDTO>> GetAllReviews()
+        {
+            var reviews = await _dbContext.Reviews.ToListAsync();
+
+            if (reviews is null)
+            {
+                return NotFound("no reviews found");
+            }
+
+            return Ok(reviews);
+        }
         [HttpGet("{restaurantId}")]
         public async Task<ActionResult<Review>> GetAllReviewByRestaurantId(Guid restaurantId)
         {
@@ -81,19 +93,6 @@ namespace API.Controllers
 
             _dbContext.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
-
-            var avgScore = await _dbContext.Reviews
-                .Where(r => r.RestaurantId == review.RestaurantId)
-                .AverageAsync(r => r.Score);
-
-            var restaurant = await _dbContext.Restaurants
-                .FirstOrDefaultAsync(r => r.Id == review.RestaurantId);
-
-            if (restaurant is not null)
-            {
-                restaurant.Review = avgScore;
-                await _dbContext.SaveChangesAsync();
-            }
 
             return Created("/api/review", review);
 
