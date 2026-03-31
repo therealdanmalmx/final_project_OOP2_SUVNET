@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using API.DTO.Review
 @using Client.Components
 @using Client.DTO
 @inject HttpClient Http
@@ -17,12 +18,14 @@
 
 @code {
     public List<GetRestaurantsDTO> restaurants {get; set; }
-    public GetRestaurantsDTO topReview {get; set; }
+    public AddNewReviewDTO topReview {get; set; }
+    public List<AddNewReviewDTO> reviews {get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         restaurants = await Http.GetFromJsonAsync<List<GetRestaurantsDTO>>("api/restaurant");
-        topReview = restaurants.MaxBy(r => r.Review);
+        reviews = await Http.GetFromJsonAsync<List<AddNewReviewDTO>>("api/review");
 
+        topReview = reviews.Any() ? reviews.MaxBy(r => r.Score) : null;
     }
 }

@@ -125,7 +125,6 @@ namespace API.Services
                     Description = r.Description,
                     Category = r.Category,
                     Image = r.Image,
-                    Review = r.Review,
                     Opens = r.Opens,
                     OrderCutOffTime = r.OrderCutOffTime,
                     Closes = r.Closes,
