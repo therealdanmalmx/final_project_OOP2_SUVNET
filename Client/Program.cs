@@ -6,6 +6,7 @@ using Blazored.LocalStorage;
 using API.Services.Auth;
 using Client.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.Toast;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -15,6 +16,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5095") });
 
 builder.Services.AddBlazorBlueprintComponents();
+builder.Services.AddBlazoredToast();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();

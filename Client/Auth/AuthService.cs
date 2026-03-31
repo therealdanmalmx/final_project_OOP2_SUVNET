@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using API.DTO;
 using Blazored.LocalStorage;
+using Blazored.Toast.Services;
 using Client.DTO;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,13 +18,16 @@ namespace API.Services.Auth
         private readonly NavigationManager _nav;
         private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationStateProvider _authStateProvider;
+        private readonly IToastService _toastService;
 
-        public AuthService(HttpClient http, NavigationManager nav, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider)
+
+        public AuthService(HttpClient http, NavigationManager nav, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider, IToastService toastService)
         {
             _http = http;
             _nav = nav;
             _localStorage = localStorage;
             _authStateProvider = authStateProvider;
+            _toastService = toastService;
         }
 
         public async Task Login(AccountLoginRequest request)
@@ -39,7 +43,7 @@ namespace API.Services.Auth
                 }
                 else if (!response.IsSuccessful)
                 {
-                    Console.WriteLine("An unexpected error occured");
+                    _toastService.ShowError("Ett oväntat fel inträffade. Prova igen");
                 }
                 else
                 {
@@ -48,7 +52,7 @@ namespace API.Services.Auth
                         await _localStorage.SetItemAsStringAsync("authToken", response.Token);
                         await _authStateProvider.GetAuthenticationStateAsync();
                     }
-                    Console.WriteLine("Successful login");
+                    _toastService.ShowSuccess("Du är inloggad");
                     _nav.NavigateTo("/");
                 }
             }
@@ -73,16 +77,16 @@ namespace API.Services.Auth
                 {
                     foreach (var error in response.Errors)
                     {
-                        Console.WriteLine(error);
+                        _toastService.ShowError(error);
                     }
                 }
                 else if (!response.IsSuccessful)
                 {
-                    Console.WriteLine("An unexpected error occured");
+                    _toastService.ShowError("An unexpected error occured");
                 }
                 else
                 {
-                    Console.WriteLine("Successful registration");
+                    _toastService.ShowSuccess("Du har registrerart dig");
                 }
 
             }
