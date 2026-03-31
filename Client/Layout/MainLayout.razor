@@ -4,6 +4,16 @@
     <div>
         <Navbar />
     </div>
+    @using Blazored.Toast.Configuration
+
+    <BlazoredToasts
+        Position="Blazored.Toast.Configuration.ToastPosition.TopRight"
+        Timeout="10"
+        IconType="IconType.FontAwesome"
+        SuccessClass="success-toast-override"
+        SuccessIcon="fa fa-thumbs-up"
+        ErrorIcon="fa fa-bug"
+    />
 
     <main>
         @* <div class="top-row px-4">

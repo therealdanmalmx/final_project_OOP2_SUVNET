@@ -1,4 +1,5 @@
 @using Blazored.LocalStorage
+@using Client.Auth
 @using Client.Components
 @using Client.DTO
 @using Client.Models
@@ -6,8 +7,9 @@
 
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager Nav;
-@inject HttpClient Http
+@inject AuthenticationStateProvider authStateProvider
 @inject IJSRuntime JS
+
 
 @if (restaurant is null)
 {
@@ -120,8 +122,14 @@ else
         return meals.FirstOrDefault(m => m.strMeal.Trim().ToLower() == name.Trim().ToLower()) ? .strMealThumb ?? "";
 
     }
-        private async Task ProceedToOrder(GetMenuItemDTO menuitem)
+    private async Task ProceedToOrder(GetMenuItemDTO menuitem)
     {
+        var authenticated = await authStateProvider.GetAuthenticationStateAsync();
+        if (!authenticated.User.Identity.IsAuthenticated)
+        {
+            await JS.InvokeVoidAsync("alert", "You have to be logged in to make an order");
+            return;
+        }
         if (restaurant is null || menuitem is null)
         {
             return;

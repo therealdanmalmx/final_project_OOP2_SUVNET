@@ -6,12 +6,13 @@ using API.Models;
 
 namespace API.DTO
 {
-    public class CreateAccountDTO
+    public class AccountRequestDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Phone { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
         public Role Role { get; set; }
     }
 }

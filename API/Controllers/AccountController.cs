@@ -1,8 +1,5 @@
-using API.DTO.Account;
-using API.Models;
-using API.Data;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using API.Services;
 namespace API.Controllers
 {
@@ -10,39 +7,47 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountService _accountService;
+        private readonly IAccountRegisterService _accountRegisterService;
+        private readonly IAccountLoginService _accountLoginService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountRegisterService accountRegisterService, IAccountLoginService accountLoginService)
         {
-            _accountService = accountService;
+            _accountRegisterService = accountRegisterService;
+            _accountLoginService = accountLoginService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Account>> GetAllAccounts()
+        public async Task<ActionResult<List<AccountRequestDTO>>> GetAccounts()
         {
-            try
-            {
-                var accounts = await _accountService.GetAllAccounts();
-                return Ok(accounts);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(new {error = ex.Message});
-            }
+            var result = await _accountRegisterService.GetAllAccounts();
+            return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Account>> CreateNewAccount(CreateAccountDTO newAccount)
+        [HttpPost("register")]
+        public async Task<ActionResult<AccountRegistrationResponse>> RegisterParticipant(
+            AccountRegistrationRequest request)
         {
-            try
+            var result = await _accountRegisterService.RegisterAccount(request);
+
+            if (!result.IsSuccessful)
             {
-                var account = await _accountService.CreateNewAccount(newAccount);
-                return Ok(account);
+                return BadRequest(new AccountRegistrationResponse(false, result.Errors));
             }
-            catch (ArgumentNullException ex)
+
+            return Ok(new AccountRegistrationResponse(true));
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<AccountLoginResponse>> Login(AccountLoginRequest request)
+        {
+            var result = await _accountLoginService.Login(request);
+
+            if (!result.IsSuccessful)
             {
-                return NotFound(new {error = ex.Message});
+                return new AccountLoginResponse(false, result.Errors);
             }
+
+            return Ok(result);
         }
     }
 }

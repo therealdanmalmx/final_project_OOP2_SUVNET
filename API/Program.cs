@@ -1,10 +1,14 @@
+using System.Text;
 using API.Data;
+using API.Models;
 using API.Services;
-using API.Services.Account;
 using API.Services.MenuItem;
 using API.Services.Order;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using SymmetricSecurityKey = Microsoft.IdentityModel.Tokens.SymmetricSecurityKey;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +21,32 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddScoped<IAccountRegisterService, AccountRegisterService>();
+builder.Services.AddScoped<IAccountLoginService, AccountLoginService>();
+
+builder.Services.AddDefaultIdentity<Account>().AddEntityFrameworkStores<AppDbContext>();
 
 // Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("foodgetitDb")));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidAudience = builder.Configuration["JwtAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!)
+            )
+        };
+    });
 
 builder.Services.AddCors(options =>
 {

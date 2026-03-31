@@ -9,39 +9,44 @@
 @using Client.Models
 @using System.ComponentModel.DataAnnotations
 
-<div class="h-full flex items-start justify-center">
-    <div class="w-full max-w-lg">
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Du måste vara inloggad för att se denna sida</p>
+    </NotAuthorized>
+    <Authorized Context="authContext">
+        <div class="h-full flex items-start justify-center">
+            <div class="w-full max-w-lg">
 
-        <div class="mb-8">
-            <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
-                Orderbekräftelse
-            </h1>
-            <p class="text-sm text-gray-500 mt-1.5">Granska din beställning och fyll i leveransuppgifter</p>
-        </div>
+                <div class="mb-8">
+                    <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
+                        Orderbekräftelse
+                    </h1>
+                    <p class="text-sm text-gray-500 mt-1.5">Granska din beställning och fyll i leveransuppgifter</p>
+                </div>
 
-        <BbCard class="rounded-2xl shadow-sm overflow-hidden mb-5">
-            <BbCardHeader class="px-6 pt-5 pb-3">
-                <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
-                    Din beställning
-                </BbCardTitle>
-            </BbCardHeader>
+                <BbCard class="rounded-2xl shadow-sm overflow-hidden mb-5">
+                    <BbCardHeader class="px-6 pt-5 pb-3">
+                        <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
+                            Din beställning
+                        </BbCardTitle>
+                    </BbCardHeader>
 
-            <div class="px-6 pb-2 space-y-3">
-                @foreach (var item in cart)
-                {
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm font-semibold text-gray-900">@item?.MenuItem?.Name</span>
-                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">x@(item?.Quantity)</span>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-800 tabular-nums">
-                            @(item?.Quantity * item?.MenuItem?.Price) kr
-                        </span>
+                    <div class="px-6 pb-2 space-y-3">
+                        @foreach (var item in cart)
+                        {
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-semibold text-gray-900">@item?.MenuItem?.Name</span>
+                                    <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">x@(item?.Quantity)</span>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-800 tabular-nums">
+                                    @(item?.Quantity * item?.MenuItem?.Price) kr
+                                </span>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
 
-            <div class="mx-6 my-3 border-t border-gray-100" />
+                    <div class="mx-6 my-3 border-t border-gray-100" />
 
             <div class="px-6 pb-5 space-y-2">
                 <div class="flex justify-between items-center text-sm text-gray-500">
@@ -106,19 +111,17 @@
                             @bind="createOrder.Instructions">
                         </textarea>
                     </div>
-
-                    <BbButton
-                        Type="ButtonType.Submit"
-                        Color="ButtonColor.Primary"
-                        Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
-                        Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + (delivery ? restaurantDeliveryCharge : 0)) kr
-                    </BbButton>
-
-                </EditForm>
+                </BbCard>
             </div>
-        </BbCard>
-    </div>
-</div>
+        </div>
+
+        <BbButton
+            Type="ButtonType.Submit"
+            Color="ButtonColor.Primary"
+            Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
+            Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + (delivery ? restaurantDeliveryCharge : 0)) kr
+        </BbButton>
+
 
 @code {
     private List<OrderState> cart = new();

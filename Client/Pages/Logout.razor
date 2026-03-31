@@ -1,0 +1,11 @@
+@page "/logout"
+@using API.Services.Auth
+
+@inject IAuthService authService
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await authService.Logout();
+    }
+}
