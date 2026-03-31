@@ -133,7 +133,7 @@ Funktioner via REST API:
   Efter mottagen order kan användaren välja att ge dricks till restaurangen eller budet (kräver Swipe-betalningslösningen).
 
 ### REST API:
-- [ ] API:et kräver **autentisering** (valfri metod).
+- [x] API:et kräver **autentisering** (valfri metod).
 
 #### Regler för REST API:
 - [x] En order kan endast **avbrytas** av kunden så länge den inte har nått status `preparing`.
