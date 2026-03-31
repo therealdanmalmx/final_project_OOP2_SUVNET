@@ -8,86 +8,93 @@
 @inject HttpClient Http
 @inject ILocalStorageService LocalStorage
 
-<div class="h-full">
-    <div class="w-full max-w-md mx-auto">
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Du måste vara inloggad för att se denna sida</p>
+    </NotAuthorized>
+    <Authorized>
+        <div class="h-full">
+            <div class="w-full max-w-md mx-auto">
 
-        @if (Order is null)
-        {
-            <div id="app"> </div>
-        }
-        else
-        {
-           <div class="h-full bg-gray-50 flex items-start justify-center px-4 py-12">
-            <div class="w-full max-w-lg space-y-5">
-
-                <div>
-                    <p class="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-1">Orderbekräftelse</p>
-                    <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
-                        #@Order.Number
-                    </h1>
-                </div>
-
-                <BbCard class="rounded-2xl shadow-sm overflow-hidden">
-                    <div class="p-6">
-                        <div class="text-xl font-semibold tracking-widest text-slate-900-400">
-                            Beställning från
-                            <p>@restaurantName</p>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Status</span>
-                            <span class="text-sm font-bold text-gray-900">@ConvertStatusCode(Order.Status)</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Beräknad leveranstid</span>
-                            <span class="text-sm font-bold text-gray-900">@GetDeliveryTimes(Order.Status) min</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Bud</span>
-                            <span class="text-sm font-bold text-gray-900">@courierName</span>
-                        </div>
-                    </div>
-                </BbCard>
-
-                <BbCard class="rounded-2xl shadow-sm overflow-hidden">
-                    <div class="px-8">
-                        @foreach (var item in Order.OrderItems)
-                        {
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-semibold text-gray-900">@item.Name</span>
-                                <span class="text-xs text-gray-400 bg-gray-100 px-2 rounded-full">x@item.Quantity</span>
-                            </div>
-                        }
-                    </div>
-                </BbCard>
-
-                <BbCard class="rounded-2xl shadow-sm overflow-hidden p-6">
-                    <div class="flex flex-col gap-2">
-                        <div class="text-xl font-semibold tracking-widest text-slate-800">
-                            Levereras till
-                        </div>
-                        <div>
-                            <span class="text-sm font-bold text-gray-900">@Order.Name</span>
-                            <p class="text-sm text-gray-500">@Order.Address</p>
-                        </div>
-                    </div>
-                </BbCard>
-
-                @if (Order.Status < Status.preparing)
+                @if (Order is null)
                 {
-                    <BbButton
-                        Color="ButtonColor.Danger"
-                        Outline="true"
-                        Class="w-full py-3.5 rounded-xl font-black text-sm tracking-widest uppercase"
-                        onclick="@CancelOrder">
-                        Avbryt order
-                    </BbButton>
+                    <div id="app"> </div>
                 }
+                else
+                {
+                <div class="h-full bg-gray-50 flex items-start justify-center px-4 py-12">
+                    <div class="w-full max-w-lg space-y-5">
 
+                        <div>
+                            <p class="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-1">Orderbekräftelse</p>
+                            <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
+                                #@Order.Number
+                            </h1>
+                        </div>
+
+                        <BbCard class="rounded-2xl shadow-sm overflow-hidden">
+                            <div class="p-6">
+                                <div class="text-xl font-semibold tracking-widest text-slate-900-400">
+                                    Beställning från
+                                    <p>@restaurantName</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">Status</span>
+                                    <span class="text-sm font-bold text-gray-900">@ConvertStatusCode(Order.Status)</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">Beräknad leveranstid</span>
+                                    <span class="text-sm font-bold text-gray-900">@GetDeliveryTimes(Order.Status) min</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">Bud</span>
+                                    <span class="text-sm font-bold text-gray-900">@courierName</span>
+                                </div>
+                            </div>
+                        </BbCard>
+
+                        <BbCard class="rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-8">
+                                @foreach (var item in Order.OrderItems)
+                                {
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-semibold text-gray-900">@item.Name</span>
+                                        <span class="text-xs text-gray-400 bg-gray-100 px-2 rounded-full">x@item.Quantity</span>
+                                    </div>
+                                }
+                            </div>
+                        </BbCard>
+
+                        <BbCard class="rounded-2xl shadow-sm overflow-hidden p-6">
+                            <div class="flex flex-col gap-2">
+                                <div class="text-xl font-semibold tracking-widest text-slate-800">
+                                    Levereras till
+                                </div>
+                                <div>
+                                    <span class="text-sm font-bold text-gray-900">@Order.Name</span>
+                                    <p class="text-sm text-gray-500">@Order.Address</p>
+                                </div>
+                            </div>
+                        </BbCard>
+
+                        @if (Order.Status < Status.preparing)
+                        {
+                            <BbButton
+                                Color="ButtonColor.Danger"
+                                Outline="true"
+                                Class="w-full py-3.5 rounded-xl font-black text-sm tracking-widest uppercase"
+                                onclick="@CancelOrder">
+                                Avbryt order
+                            </BbButton>
+                        }
+
+                    </div>
+                </div>
+                }
             </div>
         </div>
-        }
-    </div>
-</div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
     [Parameter]

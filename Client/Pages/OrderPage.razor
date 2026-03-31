@@ -9,111 +9,120 @@
 @using Client.Models
 @using System.ComponentModel.DataAnnotations
 
-<div class="h-full flex items-start justify-center">
-    <div class="w-full max-w-lg">
+<AuthorizeView>
+    <NotAuthorized>
+        <p>Du måste vara inloggad för att se denna sida</p>
+    </NotAuthorized>
+    <Authorized Context="authContext">
+        <div class="h-full flex items-start justify-center">
+            <div class="w-full max-w-lg">
 
-        <div class="mb-8">
-            <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
-                Orderbekräftelse
-            </h1>
-            <p class="text-sm text-gray-500 mt-1.5">Granska din beställning och fyll i leveransuppgifter</p>
+                <div class="mb-8">
+                    <h1 class="text-4xl font-black tracking-tight text-gray-900 leading-none">
+                        Orderbekräftelse
+                    </h1>
+                    <p class="text-sm text-gray-500 mt-1.5">Granska din beställning och fyll i leveransuppgifter</p>
+                </div>
+
+                <BbCard class="rounded-2xl shadow-sm overflow-hidden mb-5">
+                    <BbCardHeader class="px-6 pt-5 pb-3">
+                        <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
+                            Din beställning
+                        </BbCardTitle>
+                    </BbCardHeader>
+
+                    <div class="px-6 pb-2 space-y-3">
+                        @foreach (var item in cart)
+                        {
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-semibold text-gray-900">@item?.MenuItem?.Name</span>
+                                    <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">x@(item?.Quantity)</span>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-800 tabular-nums">
+                                    @(item?.Quantity * item?.MenuItem?.Price) kr
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mx-6 my-3 border-t border-gray-100" />
+
+                    <div class="px-6 pb-5 space-y-2">
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>Leveransavgift</span>
+                            <span class="tabular-nums">@restaurantDeliveryCharge kr</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>Serviceavgift (@restaurantServiceFee%)</span>
+                            <span class="tabular-nums">@(itemTotal * (restaurantServiceFee / 100)) kr</span>
+                        </div>
+                        <div class="flex justify-between items-center font-black text-gray-900 text-base pt-2">
+                            <span>Totalt</span>
+                            <span class="tabular-nums">
+                                @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                            </span>
+                        </div>
+                    </div>
+                </BbCard>
+
+        <BbCard class="rounded-2xl shadow-sm overflow-hidden">
+                    <BbCardHeader class="px-6 pt-5 pb-3">
+                        <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
+                            Leveransuppgifter
+                        </BbCardTitle>
+                    </BbCardHeader>
+
+                    <div class="p-6">
+                        <EditForm Model="@createOrder" OnValidSubmit="ConfirmOrder">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary class="text-sm text-red-500 mb-4" />
+
+                            <div class="flex flex-col gap-4">
+                                <input
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                    placeholder="Namn"
+                                    @bind="createOrder.Name" />
+
+                                <input
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                    placeholder="Adress"
+                                    @bind="createOrder.Address" />
+
+                                <input
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                    placeholder="Telefon"
+                                    @bind="createOrder.Phone" />
+
+                                <input
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
+                                    placeholder="Email"
+                                    type="email"
+                                    @bind="createOrder.Email" />
+
+                                <textarea
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150 resize-none h-28"
+                                    placeholder="Leveransinstruktioner (valfritt)"
+                                    @bind="createOrder.Instructions">
+                                </textarea>
+                            </div>
+
+                            <BbButton
+                                Type="ButtonType.Submit"
+                                Color="ButtonColor.Primary"
+                                Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
+                                Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
+                            </BbButton>
+
+                        </EditForm>
+                    </div>
+                </BbCard>
+            </div>
         </div>
 
-        <BbCard class="rounded-2xl shadow-sm overflow-hidden mb-5">
-            <BbCardHeader class="px-6 pt-5 pb-3">
-                <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
-                    Din beställning
-                </BbCardTitle>
-            </BbCardHeader>
+    </Authorized>
+</AuthorizeView>
 
-            <div class="px-6 pb-2 space-y-3">
-                @foreach (var item in cart)
-                {
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm font-semibold text-gray-900">@item?.MenuItem?.Name</span>
-                            <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">x@(item?.Quantity)</span>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-800 tabular-nums">
-                            @(item?.Quantity * item?.MenuItem?.Price) kr
-                        </span>
-                    </div>
-                }
-            </div>
-
-            <div class="mx-6 my-3 border-t border-gray-100" />
-
-            <div class="px-6 pb-5 space-y-2">
-                <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span>Leveransavgift</span>
-                    <span class="tabular-nums">@restaurantDeliveryCharge kr</span>
-                </div>
-                <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span>Serviceavgift (@restaurantServiceFee%)</span>
-                    <span class="tabular-nums">@(itemTotal * (restaurantServiceFee / 100)) kr</span>
-                </div>
-                <div class="flex justify-between items-center font-black text-gray-900 text-base pt-2">
-                    <span>Totalt</span>
-                    <span class="tabular-nums">
-                        @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
-                    </span>
-                </div>
-            </div>
-        </BbCard>
-
-<BbCard class="rounded-2xl shadow-sm overflow-hidden">
-            <BbCardHeader class="px-6 pt-5 pb-3">
-                <BbCardTitle class="text-sm font-semibold tracking-widest uppercase text-gray-400">
-                    Leveransuppgifter
-                </BbCardTitle>
-            </BbCardHeader>
-
-            <div class="p-6">
-                <EditForm Model="@createOrder" OnValidSubmit="ConfirmOrder">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary class="text-sm text-red-500 mb-4" />
-
-                    <div class="flex flex-col gap-4">
-                        <input
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
-                            placeholder="Namn"
-                            @bind="createOrder.Name" />
-
-                        <input
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
-                            placeholder="Adress"
-                            @bind="createOrder.Address" />
-
-                        <input
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
-                            placeholder="Telefon"
-                            @bind="createOrder.Phone" />
-
-                        <input
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150"
-                            placeholder="Email"
-                            type="email"
-                            @bind="createOrder.Email" />
-
-                        <textarea
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-gray-400 focus:bg-white transition-colors duration-150 resize-none h-28"
-                            placeholder="Leveransinstruktioner (valfritt)"
-                            @bind="createOrder.Instructions">
-                        </textarea>
-                    </div>
-
-                    <BbButton
-                        Type="ButtonType.Submit"
-                        Color="ButtonColor.Primary"
-                        Class="w-full mt-5 py-3 rounded-xl font-black text-sm tracking-widest uppercase">
-                        Bekräfta · @(itemTotal * (1 + restaurantServiceFee / 100) + restaurantDeliveryCharge) kr
-                    </BbButton>
-
-                </EditForm>
-            </div>
-        </BbCard>
-    </div>
-</div>
 
 @code {
     private List<OrderState> cart = new();
