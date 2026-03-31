@@ -1,15 +1,9 @@
 @page "/restaurant/{Id:guid}"
-@inject NavigationManager Nav;
 @using Blazored.LocalStorage
 @using Client.Components
 @using Client.DTO
 @using Client.Models
 @using System.Runtime.InteropServices
-
-@inject HttpClient Http
-@inject ILocalStorageService LocalStorage
-
-
 
 @if (restaurant is null)
 {
