@@ -10,7 +10,6 @@ namespace Client.DTO
         public string Description { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public int MyProperty { get; set; }
-        public float Review { get; set; }
         public TimeOnly Opens { get; set; }
         public TimeOnly Closes { get; set; }
         public TimeOnly OrderCutOffTime { get; set; }
