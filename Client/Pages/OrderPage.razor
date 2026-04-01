@@ -51,7 +51,7 @@
                                 <span>Leveransavgift</span>
                                 <span class="tabular-nums">@(!delivery ? restaurantDeliveryCharge : 0) kr</span>
                             </div>
-                            <div class="flex items-center space-x-2" onchange="Print()">
+                            <div class="flex items-center space-x-2">
                                 <BbLabel For="airplane-mode px-2" Class="font-normal text-gray-500">Hämta själv</BbLabel>
                                 <BbSwitch Id="airplane-mode" @bind-Checked="delivery" Size="SwitchSize.Small" />
                             </div>
@@ -157,14 +157,12 @@
     }
     public async Task ConfirmOrder()
     {
-        Console.WriteLine($"delivery: {delivery}");
         foreach(var item in cart)
         {
             createOrder.AddOrderItem(item.MenuItem.Name, item.MenuItem.Price, item.Quantity);
         }
 
         createOrder.Delivery = delivery;
-        Console.WriteLine($"createOrder.Delivery: {createOrder.Delivery}");
 
         var response = await Http.PostAsJsonAsync("/api/order", createOrder);
 
@@ -176,11 +174,5 @@
 
             Nav.NavigateTo($"/order-summary/{createdOrder?.Id}");
         }
-    }
-
-    public bool Print()
-    {
-        Console.WriteLine(delivery);
-        return delivery =! delivery;
     }
 }

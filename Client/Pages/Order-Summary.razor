@@ -5,6 +5,8 @@
 @using Client.Models
 @using System.Security.Principal
 
+@inject IToastService toastService
+
 <AuthorizeView>
     <NotAuthorized>
         <p>Du måste vara inloggad för att se denna sida</p>
@@ -141,7 +143,7 @@
 
         if(!response.IsSuccessStatusCode)
         {
-            Console.WriteLine("Could not delete the order");
+            toastService.ShowError("Ordern kunde inte bli borttagen. Försök igen.");
         }
 
         var order = await response.Content.ReadFromJsonAsync<Order>();

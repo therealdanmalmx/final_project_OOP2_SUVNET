@@ -168,7 +168,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(Id);
         var response = await Http.GetAsync($"/api/review/order/{Id}");
         alreadyReviewed = response.IsSuccessStatusCode;
         Order = await Http.GetFromJsonAsync<GetOrderDTO>($"api/order/{Id}");
@@ -177,7 +176,6 @@
 
     private async Task SubmitReview()
     {
-        Console.WriteLine(alreadyReviewed);
         if (rating == 0) return;
         if (alreadyReviewed == true) return;
 

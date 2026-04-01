@@ -37,7 +37,8 @@ namespace API.Services.Auth
 
                 if (!response.IsSuccessful && response.Errors is not null)
                 {
-                    Console.WriteLine(response.Errors);
+                    _toastService.ShowError(response.Errors);
+
                 }
                 else if (!response.IsSuccessful)
                 {
