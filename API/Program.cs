@@ -12,10 +12,7 @@ using SymmetricSecurityKey = Microsoft.IdentityModel.Tokens.SymmetricSecurityKey
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
@@ -27,7 +24,6 @@ builder.Services.AddScoped<IAccountLoginService, AccountLoginService>();
 
 builder.Services.AddDefaultIdentity<Account>().AddEntityFrameworkStores<AppDbContext>();
 
-// Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("foodgetitDb")));
 
@@ -61,7 +57,6 @@ var app = builder.Build();
 
 app.UseCors("AllowBlazor");
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
