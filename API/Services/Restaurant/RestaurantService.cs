@@ -19,7 +19,7 @@ namespace API.Services
 
             if (restaurant is null)
             {
-                throw new ArgumentNullException("Restaurant can't be empty");
+                throw new NullReferenceException("Restaurant can't be empty");
             }
 
             if (string.IsNullOrWhiteSpace(restaurant.Name))

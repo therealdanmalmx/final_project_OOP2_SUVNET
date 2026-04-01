@@ -24,77 +24,82 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<AddNewReviewDTO>> GetAllReviews()
         {
-            var reviews = await _dbContext.Reviews.ToListAsync();
-
-            if (reviews is null)
+            try
             {
-                return NotFound("no reviews found");
+                var reviews = await _dbContext.Reviews.ToListAsync();
+                return Ok(reviews);
             }
 
-            return Ok(reviews);
+            catch (NullReferenceException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
+
         }
         [HttpGet("{restaurantId}")]
         public async Task<ActionResult<Review>> GetAllReviewByRestaurantId(Guid restaurantId)
         {
-            var reviews = await _dbContext.Reviews.Where(r => r.RestaurantId == restaurantId).ToListAsync();
-            if (reviews is null)
+            try
             {
-                return NotFound("No reviews exist");
+                var reviews = await _dbContext.Reviews.Where(r => r.RestaurantId == restaurantId).ToListAsync();
+                return Ok(reviews);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(new {error = ex.Message});
             }
 
-            return Ok(reviews);
         }
 
 
         [HttpGet("order/{orderId}")]
         public async Task<ActionResult<Review>> GetAllReviewByOrderId(Guid orderId)
         {
-            var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
-            if (review is null)
+            try
             {
-                return NotFound("No reviews exist");
+                var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
+                return Ok(review);
             }
 
-            return Ok(review);
+            catch (NullReferenceException ex)
+            {
+                return NotFound(new {error = ex.Message});
+            }
         }
 
 
         [HttpPost]
         public async Task<ActionResult<Review>> AddNewReview([FromBody] AddNewReviewDTO newReview)
         {
-            if (newReview.Score <= 0)
+            try
             {
-                return BadRequest("Score has to be between 1 and 5");
+                var review = new Review
+                {
+                    Score = newReview.Score,
+                    Comment = newReview.Comment,
+                    OrderId = newReview.OrderId,
+                    RestaurantId = newReview.RestaurantId
+                };
+
+                _dbContext.Reviews.Add(review);
+                await _dbContext.SaveChangesAsync();
+
+                return Created("/api/review", review);
+
             }
-
-            if (newReview.OrderId == null || newReview.OrderId == Guid.Empty)
+            catch (ArgumentOutOfRangeException ex)
             {
-                return BadRequest("OrderId cannot be empty");
+                 return BadRequest(new { error = ex.Message });
             }
-
-            var review = new Review
+            catch (ArgumentNullException ex)
             {
-                Score = newReview.Score,
-                Comment = newReview.Comment,
-                OrderId = newReview.OrderId,
-                RestaurantId = newReview.RestaurantId
-            };
-
-            if (review is null)
-            {
-                return BadRequest("Could not create new review");
+                return BadRequest(new { error = ex.Message });
             }
-
-            var exists = await _dbContext.Reviews.AnyAsync(r => r.OrderId == newReview.OrderId);
-            if (exists)
+            catch (ApplicationException ex)
             {
-                return Conflict("Review already exists for this order.");
+                return StatusCode(500, new { error = "An unexpected error occurred: ", ex });
+
             }
-
-            _dbContext.Reviews.Add(review);
-            await _dbContext.SaveChangesAsync();
-
-            return Created("/api/review", review);
 
         }
     }
