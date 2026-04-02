@@ -35,7 +35,7 @@ namespace API.Services.Order
                 throw new ArgumentException("Customer is picking the order up. Can't be assigned");
             }
 
-            var courier = await _dbContext.Accounts.FindAsync(courierId);
+            var courier = await _dbContext.Accounts.FindAsync(courierId.ToString());
 
             if (courier is null)
             {
@@ -47,7 +47,7 @@ namespace API.Services.Order
                 throw new ArgumentException($"Account with id {courierId} is not a courier");
             }
 
-            order.CourierId = courierId;
+            order.AccountId = courierId;
             order.CourierIsAssigned = true;
 
             await _dbContext.SaveChangesAsync();
@@ -145,7 +145,6 @@ namespace API.Services.Order
                 Address = order.Address,
                 Phone = order.Phone,
                 Status = order.Status,
-                CourierId = order.CourierId,
                 AccountId = order.AccountId,
                 Delivery = order.Delivery
             };
