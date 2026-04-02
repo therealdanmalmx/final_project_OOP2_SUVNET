@@ -1,5 +1,3 @@
-using Models;
-
 namespace Client.DTO
 {
     public class GetRestaurantsDTO

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Models;
+using Client.Models;
 
 namespace Client.DTO
 {
@@ -16,7 +11,7 @@ namespace Client.DTO
         public string Phone { get; init; } = string.Empty;
         public string Email { get; init; } = string.Empty;
         public string Instructions { get; init;} = string.Empty;
-        public Guid? CourierId { get; set; }
+        public Guid? AccountId { get; set; }
         public Status Status { get;  init; }
         public bool Delivery { get; set; }
         public List<GetOrderItemDTO> OrderItems { get; set; }
