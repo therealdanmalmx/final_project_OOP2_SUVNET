@@ -22,7 +22,6 @@ namespace Client.DTO
         public string? Email { get; set; }
         public string? Instructions { get; set; }
         public Status Status { get; set; }
-        public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
         public bool Delivery { get; set; }
         public List<CreateOrderItemDTO> OrderItems { get; set; } = [];
