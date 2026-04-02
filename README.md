@@ -42,7 +42,7 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
   - [x] Alla G-systemregler.
   - [ ] En övergripande bra struktur på koden med motivering kring val under code review.
   - [x] Minst 7 av 14 extrakrav:
-  - [ ] God felhantering av data.
+  - [x] God felhantering av data.
 
 **Viktigt:**
 Se till att kryssa i alla krav du lyckats med. Sätt bara ett x innanför [ ] i denna readmefil så bockas de i.
