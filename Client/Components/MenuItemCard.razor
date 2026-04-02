@@ -104,9 +104,11 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        var response = await Http.GetFromJsonAsync<MealList>(
+        var response = await Http.GetFromJsonAsync<MealList>($"/api/restaurant/mealspicttures?category={restaurant?.Category}"
+);
+        @* var response = await Http.GetFromJsonAsync<MealList>(
             $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
-        );
+        ); *@
 
         meals = response?.Meals;
 

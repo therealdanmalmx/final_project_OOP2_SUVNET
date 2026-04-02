@@ -32,6 +32,23 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("mealspicttures")]
+        public async Task<IActionResult> GetMeals(string category)
+        {
+            var client = new HttpClient();
+            var result = await client.GetStringAsync(
+                $"https://www.themealdb.com/api/json/v1/1/filter.php?a={category}"
+            );
+
+            return Content(result, "application/json");
+        }
+
+        public async Task<IActionResult> GetMeals()
+        {
+            var client = new HttpClient();
+            var result = await client.GetStringAsync("https://www.themealdb.com/api/json/v1/1/filter.php?a=French");
+            return Content(result, "application/json");
+        }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<GetRestaurantsDTO>> GetRestaurantById(Guid id)
