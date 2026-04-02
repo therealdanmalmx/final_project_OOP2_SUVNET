@@ -10,7 +10,6 @@ namespace API.DTO
         public string? Email { get; set; } = string.Empty;
         public string? Instructions { get; set; } = string.Empty;
         public List<CreateOrderItemDTO> OrderItems { get; set; } = [];
-        public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
         public bool Delivery { get; set; }
         public bool CourierIsAssigned { get; set; }
