@@ -12,7 +12,6 @@ namespace API.Data
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<Account> Accounts => Set<Account>();
-        public DbSet<Courier> Couriers => Set<Courier>();
         public DbSet<Review> Reviews => Set<Review>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
