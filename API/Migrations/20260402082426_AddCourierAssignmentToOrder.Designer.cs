@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260402082426_AddCourierAssignmentToOrder")]
+    partial class AddCourierAssignmentToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,9 +154,6 @@ namespace API.Migrations
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AccountId1")
-                        .HasColumnType("text");
-
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
@@ -188,8 +188,6 @@ namespace API.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId1");
 
                     b.HasIndex("CourierId");
 
@@ -419,11 +417,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Order", b =>
                 {
-                    b.HasOne("API.Models.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId1");
-
-                    b.HasOne("API.Models.Courier", null)
+                    b.HasOne("API.Models.Courier", "Courier")
                         .WithMany("Orders")
                         .HasForeignKey("CourierId");
 
@@ -456,7 +450,7 @@ namespace API.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("Account");
+                    b.Navigation("Courier");
 
                     b.Navigation("OrderItems");
                 });
