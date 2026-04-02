@@ -35,14 +35,20 @@ namespace API.Services.Order
                 throw new ArgumentException("Customer is picking the order up. Can't be assigned");
             }
 
-            var courier = await _dbContext.Couriers.FindAsync(courierId);
+            var courier = await _dbContext.Accounts.FindAsync(courierId);
 
             if (courier is null)
             {
-                throw new ArgumentException($"Courier with id {courierId} can't be found");
+                throw new ArgumentException($"Account with id {courierId} can't be found");
+            }
+
+            if(courier.Role != Role.Courier)
+            {
+                throw new ArgumentException($"Account with id {courierId} is not a courier");
             }
 
             order.CourierId = courierId;
+            order.CourierIsAssigned = true;
 
             await _dbContext.SaveChangesAsync();
 

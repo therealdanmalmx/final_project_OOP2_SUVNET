@@ -13,5 +13,7 @@ namespace API.DTO
         public Status Status { get;  }
         public List<GetOrderItemDTO>? OrderItems { get; set; }
         public bool Delivery { get; set; }
+        public bool CourierIsAssigned { get; set; }
+
     }
 }

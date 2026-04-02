@@ -15,6 +15,7 @@ namespace API.Models
         public Guid? CourierId { get; set; }
         public Courier? Courier { get; set; }
         public bool Delivery { get; set; }
+        public bool CourierIsAssigned { get; set; }
         public Guid? AccountId { get; set; }
         public List<OrderItem> OrderItems { get; private set; } = [];
 

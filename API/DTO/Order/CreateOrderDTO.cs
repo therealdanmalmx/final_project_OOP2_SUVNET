@@ -13,5 +13,7 @@ namespace API.DTO
         public Guid? CourierId { get; set; }
         public Guid? AccountId { get; set; }
         public bool Delivery { get; set; }
+        public bool CourierIsAssigned { get; set; }
+
     }
 }
