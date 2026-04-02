@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTO.Review;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ReviewController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IReviewService _reviewService;
 
-        public ReviewController(AppDbContext dbContext)
+        public ReviewController(IReviewService reviewService)
         {
-            _dbContext = dbContext;
+            _reviewService = reviewService;
         }
 
         [HttpGet]
@@ -26,7 +27,7 @@ namespace API.Controllers
         {
             try
             {
-                var reviews = await _dbContext.Reviews.ToListAsync();
+                var reviews = await _reviewService.GetAllReviews();
                 return Ok(reviews);
             }
 
@@ -41,7 +42,7 @@ namespace API.Controllers
         {
             try
             {
-                var reviews = await _dbContext.Reviews.Where(r => r.RestaurantId == restaurantId).ToListAsync();
+                var reviews = await _reviewService.GetAllReviewByRestaurantId(restaurantId);
                 return Ok(reviews);
             }
             catch (NullReferenceException ex)
@@ -57,7 +58,7 @@ namespace API.Controllers
         {
             try
             {
-                var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.OrderId == orderId);
+                var review = await _reviewService.GetAllReviewByOrderId(orderId);
                 return Ok(review);
             }
 
@@ -80,9 +81,6 @@ namespace API.Controllers
                     OrderId = newReview.OrderId,
                     RestaurantId = newReview.RestaurantId
                 };
-
-                _dbContext.Reviews.Add(review);
-                await _dbContext.SaveChangesAsync();
 
                 return Created("/api/review", review);
 
