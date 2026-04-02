@@ -23,6 +23,17 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<AccountRequestDTO>> GetAccountById(Guid id)
+        {
+            var result = await _accountRegisterService.GetAccountById(id);
+            if (result is null)
+            {
+                return NotFound("Hittade inte account");
+            }
+            return Ok(result);
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult<AccountRegistrationResponse>> RegisterParticipant(
             AccountRegistrationRequest request)
