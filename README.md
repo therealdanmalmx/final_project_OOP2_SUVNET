@@ -40,7 +40,7 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 ### För VG
 - Samtliga G-krav ovan, plus:
   - [x] Alla G-systemregler.
-  - [ ] En övergripande bra struktur på koden med motivering kring val under code review.
+  - [x] En övergripande bra struktur på koden med motivering kring val under code review.
   - [x] Minst 7 av 14 extrakrav:
   - [x] God felhantering av data.
 
