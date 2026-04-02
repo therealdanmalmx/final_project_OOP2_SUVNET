@@ -4,6 +4,7 @@ using API.Models;
 using API.Services;
 using API.Services.MenuItem;
 using API.Services.Order;
+using API.Services.Review;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 
 builder.Services.AddScoped<IAccountRegisterService, AccountRegisterService>();
 builder.Services.AddScoped<IAccountLoginService, AccountLoginService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 builder.Services.AddDefaultIdentity<Account>().AddEntityFrameworkStores<AppDbContext>();
 
