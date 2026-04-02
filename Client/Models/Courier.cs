@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace API.Models
+namespace Client.Models
 {
     public class Courier
     {

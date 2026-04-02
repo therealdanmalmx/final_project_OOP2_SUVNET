@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO;
+using API.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
@@ -53,9 +56,31 @@ namespace API.Services
                 Address = u.Address,
                 PhoneNumber = u.PhoneNumber,
                 Email = u.Email,
-                UserName = u.UserName
+                UserName = u.UserName,
+                Role = u.Role
             }).ToListAsync();
-
         }
+        public async Task<AccountRequestDTO> GetAccountById(Guid id)
+        {
+             var account = await _accountManager.Users
+                .Where(u => u.Id == id.ToString())
+                .Select(u => new AccountRequestDTO
+                {
+                    Name = u.Name,
+                    Address = u.Address,
+                    PhoneNumber = u.PhoneNumber,
+                    Email = u.Email,
+                    UserName = u.UserName,
+                    Role = u.Role
+                }).FirstOrDefaultAsync();
+
+                if (account is null)
+                {
+                    Console.WriteLine("No account");
+                }
+
+                return account;
+
+            }
     }
 }

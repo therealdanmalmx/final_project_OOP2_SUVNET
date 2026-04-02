@@ -111,9 +111,10 @@
         var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart");
         restaurantName = cart?.FirstOrDefault()?.Restaurant?.Name ?? "";
 
-        if (Order?.CourierId is not null)
+        if (Order?.AccountId is not null)
         {
-            courierName = await GetCourierName(Order.CourierId);
+            courierName = await GetCourierName(Order.AccountId);
+            Console.WriteLine("courierName", courierName);
         }
 
         StateHasChanged();
@@ -126,14 +127,14 @@
 
     private async Task<string> GetCourierName(Guid? courierId)
     {
-        var response = await Http.GetAsync($"/api/courier/{courierId}");
+        var courier = await Http.GetFromJsonAsync<Account>($"/api/account/{courierId}");
 
-        if (!response.IsSuccessStatusCode)
+
+        if (courier is null)
         {
             return "Ej tilldelad";
         }
 
-        var courier = await response.Content.ReadFromJsonAsync<GetCourierDTO>();
         return courier?.Name ?? "Ej tilldelad";
     }
 

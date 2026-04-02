@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace API.Models
+namespace Client.Models
 {
-    public class Order
+public class Order
     {
         public Guid Id { get; set; }
         public int Number { get; set; }
@@ -12,11 +12,10 @@ namespace API.Models
         public string? Email { get; set; }
         public string? Instructions { get; set; }
         public Status Status { get; set; } = Status.received;
-        public Guid? CourierId { get; set; }
-        public Courier? Courier { get; set; }
+        public Guid AccountId { get; set; }
+        public Account? Account { get; set; }
         public bool Delivery { get; set; }
         public bool CourierIsAssigned { get; set; }
-        public Guid? AccountId { get; set; }
         public List<OrderItem> OrderItems { get; private set; } = [];
 
         public void AddOrderItem(string name, decimal price, int quantity)

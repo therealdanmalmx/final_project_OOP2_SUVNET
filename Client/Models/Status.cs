@@ -1,4 +1,4 @@
-namespace API.Models
+namespace Client.Models
 {
     public enum Status
     {
