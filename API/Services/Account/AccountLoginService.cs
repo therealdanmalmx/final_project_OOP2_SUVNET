@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using API.DTO;
+using API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,12 +11,14 @@ namespace API.Services
     public class AccountLoginService : IAccountLoginService
     {
         private readonly SignInManager<Models.Account> _signInManager;
+        private readonly UserManager<Account> _accountManager;
         private readonly IConfiguration _config;
 
-        public AccountLoginService(SignInManager<Models.Account> signInManager, IConfiguration config)
+        public AccountLoginService(SignInManager<Account> signInManager, IConfiguration config, UserManager<Account> accountManager)
         {
             _signInManager = signInManager;
             _config = config;
+            _accountManager = accountManager;
         }
 
         public async Task<AccountLoginResponse> Login(AccountLoginRequest request)
@@ -32,10 +35,20 @@ namespace API.Services
                 return new AccountLoginResponse(false, "Email or password are wrong");
             }
 
-            var claims = new []
+            var user = await _accountManager.FindByNameAsync(request.UserName);
+            if (user == null)
             {
-                new Claim(ClaimTypes.Name, request.UserName)
+                return new AccountLoginResponse(false, "Användaren finns inte");
+            }
+
+            var accountRoles = await _accountManager.GetRolesAsync(user);
+
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, request.UserName),
             };
+            claims.AddRange(accountRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["JwtsecurityKey"]!)
