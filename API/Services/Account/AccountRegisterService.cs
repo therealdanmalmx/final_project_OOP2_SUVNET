@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO;
+using API.DTO.Account;
 using API.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -13,26 +14,27 @@ namespace API.Services
 {
     public class AccountRegisterService : IAccountRegisterService
     {
-        private readonly UserManager<Models.Account> _accountManager;
+        private readonly UserManager<Account> _accountManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountRegisterService(UserManager<Models.Account> accountManager)
+        public AccountRegisterService(UserManager<Account> accountManager, RoleManager<IdentityRole> roleManager)
         {
             _accountManager = accountManager;
+            _roleManager = roleManager;
         }
 
         public async Task<AccountRegistrationResponse> RegisterAccount(AccountRegistrationRequest request)
         {
-            var newTenant = new Models.Account
+            var newAccount = new Models.Account
             {
                 Name = request.Name,
                 Address = request.Address,
                 UserName = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 Email = request.Email,
-                Role = request.Role
             };
 
-            var result = await _accountManager.CreateAsync(newTenant, request.Password);
+            var result = await _accountManager.CreateAsync(newAccount, request.Password);
 
             if (!result.Succeeded)
             {
@@ -57,7 +59,6 @@ namespace API.Services
                 PhoneNumber = u.PhoneNumber,
                 Email = u.Email,
                 UserName = u.UserName,
-                Role = u.Role
             }).ToListAsync();
         }
         public async Task<AccountRequestDTO> GetAccountById(Guid id)
@@ -71,7 +72,6 @@ namespace API.Services
                     PhoneNumber = u.PhoneNumber,
                     Email = u.Email,
                     UserName = u.UserName,
-                    Role = u.Role
                 }).FirstOrDefaultAsync();
 
                 if (account is null)
@@ -82,5 +82,26 @@ namespace API.Services
                 return account;
 
             }
+
+        public async Task AssignRole(string userName, string roleName)
+        {
+            if (roleName != "Admin".ToLower() || roleName != "Customer".ToLower() || roleName != "Courier".ToLower())
+            {
+                throw new ArgumentException($"{roleName} is not a valid role. Has to be admin, customer or courier");
+            }
+
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            var account = await _accountManager.FindByEmailAsync(userName);
+            await _accountManager.AddToRoleAsync(account!, roleName);
+        }
+
+        Task<AssignRoleDTO> IAccountRegisterService.AssignRole(string userName, string roleName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
