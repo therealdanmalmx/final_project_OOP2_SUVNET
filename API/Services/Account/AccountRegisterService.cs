@@ -99,9 +99,5 @@ namespace API.Services
             await _accountManager.AddToRoleAsync(account!, roleName);
         }
 
-        Task<AssignRoleDTO> IAccountRegisterService.AssignRole(string userName, string roleName)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
