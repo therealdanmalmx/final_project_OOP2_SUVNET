@@ -8,7 +8,6 @@ namespace DTO
         public TimeOnly Opens { get; set; }
         public TimeOnly Closes { get; set; }
         public TimeOnly OrderCutOffTime { get; set; }
-        public decimal MinimumOrderValue { get; set; }
         public decimal DeliveyCharge { get; set; }
         public decimal ServiceFee { get; set; }
     }

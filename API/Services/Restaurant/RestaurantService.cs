@@ -53,11 +53,6 @@ namespace API.Services
                 throw new ArgumentException(nameof(restaurant.DeliveyCharge), "Delivery charge must be set");
             }
 
-            if (restaurant.MinimumOrderValue == default)
-            {
-                throw new ArgumentException(nameof(restaurant.MinimumOrderValue), "Minimum order value must be set");
-            }
-
             if (restaurant.ServiceFee == default)
             {
                 throw new ArgumentException(nameof(restaurant.ServiceFee), "Service fee must be set");
@@ -72,7 +67,6 @@ namespace API.Services
                 Closes = restaurant.Closes,
                 OrderCutOffTime = restaurant.OrderCutOffTime,
                 DeliveyCharge = restaurant.DeliveyCharge,
-                MinimumOrderValue = restaurant.MinimumOrderValue,
                 ServiceFee = restaurant.ServiceFee
             };
 
@@ -129,7 +123,6 @@ namespace API.Services
                     OrderCutOffTime = r.OrderCutOffTime,
                     Closes = r.Closes,
                     DeliveyCharge = r.DeliveyCharge,
-                    MinimumOrderValue = r.MinimumOrderValue,
                     ServiceFee = r.ServiceFee,
                     MenuItems = r.MenuItems
                 })
@@ -182,12 +175,6 @@ namespace API.Services
                 throw new ArgumentException(nameof(updateRestaurant.OrderCutOffTime), "Order cutoff time must be set");
             }
                 resturantToUpdate.OrderCutOffTime = updateRestaurant.OrderCutOffTime;
-
-            if (updateRestaurant.MinimumOrderValue == 0.0m)
-            {
-                throw new ArgumentException(nameof(updateRestaurant.MinimumOrderValue), "Minimum order value must be set");
-            }
-            resturantToUpdate.MinimumOrderValue = updateRestaurant.MinimumOrderValue;
 
             if (updateRestaurant.ServiceFee == 0.0m)
             {
