@@ -2,6 +2,7 @@ using API.Data;
 using API.DTO;
 using API.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services.Order
@@ -42,7 +43,9 @@ namespace API.Services.Order
                 throw new ArgumentException($"Account with id {courierId} can't be found");
             }
 
-            if(courier.Role != Role.Courier)
+            //FIX
+
+            if(courier.Id  .Role != Role.Courier)
             {
                 throw new ArgumentException($"Account with id {courierId} is not a courier");
             }
