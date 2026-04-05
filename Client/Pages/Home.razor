@@ -10,21 +10,35 @@
     {
         @foreach(var restaurant in restaurants)
         {
-            <RestaurantCard restaurant="restaurant" topReview="topReview" />
+            <RestaurantCard restaurant="restaurant" topReviewId="topReviewId" />
         }
     }
 </div>
 
 @code {
-    public List<GetRestaurantsDTO> restaurants {get; set; }
-    public AddNewReviewDTO topReview {get; set; }
-    public List<AddNewReviewDTO> reviews {get; set; }
+    private List<GetRestaurantsDTO> restaurants {get; set; } = new();
+    private List<AddNewReviewDTO> reviews {get; set; } = new();
+    private Guid? topReviewId {get; set; }
+    private Dictionary<Guid, decimal> averageReview = new();
+
 
     protected override async Task OnInitializedAsync()
     {
-        restaurants = await Http.GetFromJsonAsync<List<GetRestaurantsDTO>>("api/restaurant");
-        reviews = await Http.GetFromJsonAsync<List<AddNewReviewDTO>>("api/review");
+        restaurants = await Http.GetFromJsonAsync<List<GetRestaurantsDTO>>("api/restaurant") ?? new();
+        reviews = await Http.GetFromJsonAsync<List<AddNewReviewDTO>>("api/review") ?? new();
 
-        topReview = reviews.Any() ? reviews.MaxBy(r => r.Score) : null;
+        averageReview = reviews
+            .Where(r => r.RestaurantId.HasValue)
+            .GroupBy(r => r.RestaurantId!.Value)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Average(r => r.Score)
+            );
+
+        topReviewId = averageReview.Any()
+            ? averageReview.MaxBy(x => x.Value).Key
+            : null;
+
+        Console.WriteLine(topReviewId);
     }
 }
