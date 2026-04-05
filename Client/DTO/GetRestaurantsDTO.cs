@@ -1,3 +1,5 @@
+using API.DTO.Review;
+
 namespace Client.DTO
 {
     public class GetRestaurantsDTO
@@ -16,5 +18,7 @@ namespace Client.DTO
         public decimal ServiceFee { get; set; }
         public string Image { get; set; } = string.Empty;
         public List<GetMenuItemDTO>? MenuItems { get; set; }
+        public List<AddNewReviewDTO> Reviews { get; set; }
+
     }
 }

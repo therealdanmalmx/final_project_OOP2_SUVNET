@@ -16,6 +16,8 @@ namespace DTO
         public decimal ServiceFee { get; set; }
         public string Image { get; set; } = string.Empty;
         public List<MenuItem>? MenuItems { get; set; }
+        public List<Review> Reviews { get; set; }
+
 
 
 

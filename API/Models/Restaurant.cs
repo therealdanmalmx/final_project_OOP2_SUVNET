@@ -15,6 +15,7 @@ namespace API.Models
         public decimal DeliveyCharge { get; set; }
         public string Image { get; set; } = string.Empty;
         public List<MenuItem>? MenuItems { get; set; }
+        public List<Review> Reviews { get; set; }
 
         public Restaurant() { }
         public Restaurant(string name, string description, string address, string openingHours, TimeOnly opens, TimeOnly closes, decimal deliveyCharge, decimal minimumOrderValue, decimal serviceFee)
