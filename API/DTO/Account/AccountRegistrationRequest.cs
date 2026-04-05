@@ -23,7 +23,6 @@ namespace API.DTO
         public string Password { get; set; } = string.Empty;
         [Required, PasswordPropertyText]
         public string ConfirmPassword { get; set; } = string.Empty;
-        [Required]
-        public Role Role { get; set; }
+
     }
 }
