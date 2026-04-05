@@ -11,10 +11,12 @@ namespace API.Services.Order
     {
 
         private readonly AppDbContext _dbContext;
+        private readonly UserManager<Account> _accountManager;
 
-        public OrderService(AppDbContext dbContext)
+        public OrderService(AppDbContext dbContext, UserManager<Account> accountManager)
         {
             _dbContext = dbContext;
+            _accountManager = accountManager;
         }
 
         public async Task<Models.Order> AssignOrderToCourier(Guid orderId, Guid courierId)
@@ -36,16 +38,14 @@ namespace API.Services.Order
                 throw new ArgumentException("Customer is picking the order up. Can't be assigned");
             }
 
-            var courier = await _dbContext.Accounts.FindAsync(courierId.ToString());
+            var courier = await _accountManager.FindByIdAsync(courierId.ToString());
 
             if (courier is null)
             {
                 throw new ArgumentException($"Account with id {courierId} can't be found");
             }
 
-            //FIX
-
-            if(courier.Id  .Role != Role.Courier)
+            if (!await _accountManager.IsInRoleAsync(courier, "Courier"))
             {
                 throw new ArgumentException($"Account with id {courierId} is not a courier");
             }
