@@ -6,6 +6,7 @@ using API.Services.MenuItem;
 using API.Services.Order;
 using API.Services.Review;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -25,12 +26,17 @@ builder.Services.AddScoped<IAccountRegisterService, AccountRegisterService>();
 builder.Services.AddScoped<IAccountLoginService, AccountLoginService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 
-builder.Services.AddDefaultIdentity<Account>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<Account, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("foodgetitDb")));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    })
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
