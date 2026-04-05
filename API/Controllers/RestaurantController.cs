@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
@@ -17,6 +19,7 @@ namespace API.Controllers
             _restaurantService = restaurantService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<GetRestaurantsDTO>> GetAllRestaurants()
         {
@@ -32,6 +35,7 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [AllowAnonymous]
         [HttpGet("mealspicttures")]
         public async Task<IActionResult> GetMeals(string category)
         {
@@ -50,6 +54,7 @@ namespace API.Controllers
             return Content(result, "application/json");
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<GetRestaurantsDTO>> GetRestaurantById(Guid id)
         {
