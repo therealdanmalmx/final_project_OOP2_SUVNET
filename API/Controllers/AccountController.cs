@@ -1,6 +1,8 @@
 using API.DTO;
 using Microsoft.AspNetCore.Mvc;
 using API.Services;
+using Microsoft.AspNetCore.Identity;
+using API.DTO.Account;
 namespace API.Controllers
 {
     [ApiController]
@@ -59,6 +61,13 @@ namespace API.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpPost("role")]
+        public async Task<ActionResult> AssignRole([FromBody] AssignRoleDTO request)
+        {
+            await _accountRegisterService.AssignRole(request.UserName, request.RoleName);
+            return Ok();
         }
     }
 }
