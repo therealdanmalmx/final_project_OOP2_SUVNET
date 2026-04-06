@@ -35,7 +35,7 @@ Obligatorisk självständig inlämningsuppgift för **BY-SUVNET OOP2**
 - [x] Minst 2 av 4 systemregler implementerade.
 - [x] Checklista för inlämning (se ovan) har genomförts.
 - [x] Förståelse kring vilka eventuella säkerhetsproblem applikationen kan ha.
-- [ ] Testerna beskrivna längst ner i projektet är gjorda.
+- [x] Testerna beskrivna längst ner i projektet är gjorda.
 
 ### För VG
 - Samtliga G-krav ovan, plus:
