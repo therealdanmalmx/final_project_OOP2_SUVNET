@@ -2,7 +2,7 @@ namespace API.Models
 {
     public class MenuItem
     {
-        public Guid Id { get; set; } = Guid.CreateVersion7();
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
