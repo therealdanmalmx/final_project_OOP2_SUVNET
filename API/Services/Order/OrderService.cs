@@ -28,6 +28,11 @@ namespace API.Services.Order
                 throw new ArgumentException($"Order with id {orderId} can't be found");
             }
 
+            if (order.CourierIsAssigned)
+            {
+                throw new ArgumentException("This order already has a courier assigned");
+            }
+
             if (order.Status > Status.confirmed && order.Status < Status.courier_accepted)
             {
                 throw new ArgumentException("Only confirmed and not yet accepted orders can be assigned to a courier");
