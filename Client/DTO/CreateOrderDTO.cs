@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Client.Models;
+using Client.DTO;
 
 namespace Client.DTO
 {

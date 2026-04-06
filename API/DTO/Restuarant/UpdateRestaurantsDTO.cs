@@ -10,5 +10,6 @@ namespace DTO
         public TimeOnly OrderCutOffTime { get; set; }
         public decimal DeliveyCharge { get; set; }
         public decimal ServiceFee { get; set; }
+        public string Image { get; set; }
     }
 }

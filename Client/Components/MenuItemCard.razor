@@ -2,7 +2,6 @@
 @using Client.Auth
 @using Client.Components
 @using Client.DTO
-@using Client.Models
 @using System.Runtime.InteropServices
 
 @inject AuthenticationStateProvider authStateProvider
@@ -126,7 +125,7 @@ else
     private async Task ProceedToOrder(GetMenuItemDTO menuitem)
     {
         var authenticated = await authStateProvider.GetAuthenticationStateAsync();
-        if (!authenticated.User.Identity.IsAuthenticated)
+        if (authenticated.User?.Identity?.IsAuthenticated != true)
         {
             toastService.ShowInfo("Du måste vara inloggad för att göra en order");
             return;
@@ -139,11 +138,11 @@ else
 
         if (cart.Any())
         {
-            var existingId = cart.First().Restaurant.Id;
+            var existingId = cart?.First().Restaurant?.Id;
             var currentId = restaurant.Id;
 
 
-            if (existingId.ToString().ToLower() != currentId.ToString().ToLower())
+            if (existingId?.ToString().ToLower() != currentId.ToString().ToLower())
             {
                 toastService.ShowError("Du kan inte lägga till en rätt från en annan restaurang");
                 return;
@@ -166,7 +165,7 @@ else
         if (exists)
         {
             @* var cart = await LocalStorage.GetItemAsync<List<OrderState>>("cart") ?? new(); *@
-            cart.Add(orderState);
+            cart?.Add(orderState);
             await LocalStorage.SetItemAsync("cart", cart);
         }
         else

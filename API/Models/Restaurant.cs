@@ -17,13 +17,14 @@ namespace API.Models
         public List<Review> Reviews { get; set; }
 
         public Restaurant() { }
-        public Restaurant(string name, string description, string address, string openingHours, TimeOnly opens, TimeOnly closes, decimal deliveyCharge, decimal serviceFee)
+        public Restaurant(string name, string description, string address, TimeOnly opens, TimeOnly closes, TimeOnly orderCutOffTime, decimal deliveyCharge, decimal serviceFee)
         {
             Name = name;
             Description = description;
             Address = address;
             Opens = opens;
             Closes = closes;
+            OrderCutOffTime = orderCutOffTime;
             DeliveyCharge = deliveyCharge;
             ServiceFee = serviceFee;
         }

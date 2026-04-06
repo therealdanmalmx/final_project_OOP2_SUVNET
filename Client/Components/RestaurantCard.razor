@@ -3,19 +3,19 @@
 @using Client.DTO
 
 <div class="w-[360px]">
-    <p class="px-4 text-white font-bold h-8 mb-0 @(topReviewId == restaurant.Id ? "bg-green-600 rounded-t-2xl" : "")">
-        @(topReviewId == restaurant.Id ? "Populär restaurang" : "")
+    <p class="px-4 text-white font-bold h-8 mb-0 @(topReviewId == restaurant?.Id ? "bg-green-600 rounded-t-2xl" : "")">
+        @(topReviewId == restaurant?.Id ? "Populär restaurang" : "")
     </p>
-    <BbCard class="@(topReviewId == restaurant.Id ? "rounded-t-none rounded-b-2xl shadow-lg" : "rounded-2xl overflow-hidden shadow-lg bg-white group ")">
+    <BbCard class="@(topReviewId == restaurant?.Id ? "rounded-t-none rounded-b-2xl shadow-lg" : "rounded-2xl overflow-hidden shadow-lg bg-white group ")">
         <div class="relative">
-            <img src="@restaurant.Image"
-                alt="@restaurant.Name"
+            <img src="@restaurant?.Image"
+                alt="@restaurant?.Name"
                 class="w-full h-56 object-cover" />
 
             <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
 
             <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-semibold tracking-widest uppercase text-gray-700 px-3 py-1 rounded-full shadow-sm">
-                @restaurant.Category
+                @restaurant?.Category
             </span>
 
             <div class="absolute bottom-3 left-4 flex items-center gap-1.5">
@@ -28,16 +28,16 @@
 
         <BbCardHeader class="pb-2 pt-4 px-5">
             <BbCardTitle class="text-xl font-bold tracking-tight text-gray-900 leading-snug">
-                @restaurant.Name
+                @restaurant?.Name
             </BbCardTitle>
             <BbCardDescription class="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-                @restaurant.Description
+                @restaurant?.Description
             </BbCardDescription>
         </BbCardHeader>
 
         <BbCardFooter class="px-5 pb-5 pt-1">
             <BbButton
-                @onclick="@(() => Nav.NavigateTo($"/restaurant/{restaurant.Id}"))"
+                @onclick="@(() => Nav.NavigateTo($"/restaurant/{restaurant?.Id}"))"
                 class="w-full bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold tracking-wide py-2.5 rounded-xl transition-colors duration-200">
                 Se meny →
             </BbButton>
@@ -49,17 +49,17 @@
 
 @code {
     [Parameter]
-    public GetRestaurantsDTO restaurant { get; set; }
+    public GetRestaurantsDTO? restaurant { get; set; }
     [Parameter]
     public Guid? topReviewId {get; set; }
-    public List<AddNewReviewDTO> reviews {get; set; }
+    public List<AddNewReviewDTO>? reviews {get; set; }
     public decimal ReviewAverage {get; set; }
 
 
 
     protected override async Task OnParametersSetAsync()
     {
-        reviews = await Http.GetFromJsonAsync<List<AddNewReviewDTO>>($"api/review/{restaurant.Id}")
+        reviews = await Http.GetFromJsonAsync<List<AddNewReviewDTO>>($"api/review/{restaurant?.Id}")
             ?? new List<AddNewReviewDTO>();
 
         ReviewAverage = reviews.Any() ? reviews.Average(r => r.Score) : 0m;

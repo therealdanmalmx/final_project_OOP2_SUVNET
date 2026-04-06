@@ -1,4 +1,4 @@
-namespace Client.Models
+namespace Client.DTO
 {
     public class Account
     {
