@@ -54,14 +54,15 @@ namespace Client.Auth
         {
             var payload = jwt.Split(".")[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonBytes)
+                ?? new Dictionary<string, JsonElement>();
 
             var claims = new List<Claim>();
             foreach (var kvp in keyValuePairs)
             {
-                if(kvp.Value is JsonElement element && element.ValueKind == JsonValueKind.Array)
+                if (kvp.Value.ValueKind == JsonValueKind.Array)
                 {
-                    foreach(var item in element.EnumerateArray())
+                    foreach (var item in kvp.Value.EnumerateArray())
                     {
                         claims.Add(new Claim(kvp.Key, item.ToString()));
                     }
