@@ -1,14 +1,28 @@
 using API.DTO;
 using API.DTO.OrderItem;
+using API.Models;
 using API.Services.Order;
+using Microsoft.AspNetCore.Identity;
+using Moq;
 
 namespace Tests;
 public class OrderTests
 {
-    private readonly OrderService _service = new(null!);
+    private readonly OrderService _service;
+
+    public OrderTests()
+    {
+        var userStoreMock = new Mock<IUserStore<Account>>();
+        var accountManagerMock = new Mock<UserManager<Account>>(
+            userStoreMock.Object, null, null, null, null, null, null, null, null
+        );
+
+        _service = new OrderService(null!, accountManagerMock.Object);
+    }
 
     private CreateOrderDTO ValidOrderDTO() => new()
     {
+
 
         Name = "Lars Pettersson",
         Address = "Torgilsgatan 16c, 506 35 Borås",
