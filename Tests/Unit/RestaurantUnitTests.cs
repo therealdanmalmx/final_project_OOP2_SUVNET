@@ -1,5 +1,5 @@
 ﻿using API.Services;
-using DTO;
+using API.DTO;
 
 namespace Tests;
 public class RestaurantUnitTests

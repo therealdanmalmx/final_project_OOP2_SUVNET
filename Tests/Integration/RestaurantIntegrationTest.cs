@@ -1,6 +1,6 @@
 using API.Data;
 using API.Services;
-using DTO;
+using API.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests;

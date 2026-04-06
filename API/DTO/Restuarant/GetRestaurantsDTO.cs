@@ -1,5 +1,4 @@
-using API.Models;
-namespace DTO
+namespace API.DTO
 {
     public class GetRestaurantsDTO
     {
@@ -14,8 +13,8 @@ namespace DTO
         public decimal DeliveyCharge { get; set; }
         public decimal ServiceFee { get; set; }
         public string Image { get; set; } = string.Empty;
-        public List<MenuItem>? MenuItems { get; set; }
-        public List<Review> Reviews { get; set; }
+        public List<Models.MenuItem>? MenuItems { get; set; }
+        public List<Models.Review> Reviews { get; set; }
 
 
 

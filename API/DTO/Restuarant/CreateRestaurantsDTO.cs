@@ -1,4 +1,4 @@
-namespace DTO
+namespace API.DTO
 {
     public class CreateRestaurantsDTO
     {

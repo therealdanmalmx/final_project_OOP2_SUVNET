@@ -1,10 +1,7 @@
 
 using API.DTO;
 using API.Models;
-using API.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.DTO;
 using API.Services;
 
 namespace API.Controllers

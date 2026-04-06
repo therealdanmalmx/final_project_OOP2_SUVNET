@@ -1,7 +1,6 @@
 using API.DTO;
 using Microsoft.AspNetCore.Mvc;
 using API.Services;
-using Microsoft.AspNetCore.Identity;
 using API.DTO.Account;
 namespace API.Controllers
 {

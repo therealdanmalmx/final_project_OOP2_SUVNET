@@ -1,4 +1,4 @@
-namespace API.DTO.OrderItem
+namespace API.DTO
 {
     public class GetOrderItemDTO
     {

@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.DTO;
 using API.DTO.Account;
 using API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
@@ -56,9 +50,9 @@ namespace API.Services
             {
                 Name = u.Name,
                 Address = u.Address,
-                PhoneNumber = u.PhoneNumber,
-                Email = u.Email,
-                UserName = u.UserName,
+                PhoneNumber = u.PhoneNumber!,
+                Email = u.Email!,
+                UserName = u.UserName!,
             }).ToListAsync();
         }
         public async Task<AccountRequestDTO> GetAccountById(Guid id)
@@ -69,9 +63,9 @@ namespace API.Services
                 {
                     Name = u.Name,
                     Address = u.Address,
-                    PhoneNumber = u.PhoneNumber,
-                    Email = u.Email,
-                    UserName = u.UserName,
+                    PhoneNumber = u.PhoneNumber!,
+                    Email = u.Email!,
+                    UserName = u.UserName!,
                 }).FirstOrDefaultAsync();
 
                 if (account is null)
@@ -79,7 +73,7 @@ namespace API.Services
                     Console.WriteLine("No account");
                 }
 
-                return account;
+                return account!;
 
             }
 

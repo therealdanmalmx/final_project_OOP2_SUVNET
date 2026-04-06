@@ -1,4 +1,3 @@
-using API.DTO.OrderItem;
 namespace API.DTO
 {
     public class CreateOrderDTO

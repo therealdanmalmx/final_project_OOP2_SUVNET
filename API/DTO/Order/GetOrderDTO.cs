@@ -1,4 +1,4 @@
-using API.DTO.OrderItem;
+using API.DTO;
 using API.Models;
 
 namespace API.DTO
