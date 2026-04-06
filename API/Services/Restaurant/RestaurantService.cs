@@ -45,7 +45,6 @@ namespace API.Services
             if (restaurant.OrderCutOffTime == default)
             {
                 throw new ArgumentException(nameof(restaurant.OrderCutOffTime), "Order cutoff time must be set");
-
             }
 
             if (restaurant.DeliveyCharge == default)
@@ -62,6 +61,7 @@ namespace API.Services
             {
                 Name = restaurant.Name,
                 Description = restaurant.Description,
+                Category = restaurant.Category,
                 Address = restaurant.Address,
                 Opens = restaurant.Opens,
                 Closes = restaurant.Closes,
@@ -145,42 +145,41 @@ namespace API.Services
                 throw new ArgumentNullException(nameof(resturantToUpdate), $"Restaurant can't be empty.");
             }
 
-            if (string.IsNullOrWhiteSpace(updateRestaurant.Name))
+            if (!string.IsNullOrWhiteSpace(updateRestaurant.Name))
             {
-                throw new ArgumentException(nameof(updateRestaurant.Name), "Name must be set");
+                resturantToUpdate.Name = updateRestaurant.Name;
             }
-            resturantToUpdate.Name = updateRestaurant.Name;
 
-            if (string.IsNullOrWhiteSpace(updateRestaurant.Description))
+            if (!string.IsNullOrWhiteSpace(updateRestaurant.Description))
             {
-                throw new ArgumentException(nameof(updateRestaurant.Description), "Description must be set");
+                resturantToUpdate.Description = updateRestaurant.Description;
             }
-            resturantToUpdate.Description = updateRestaurant.Description;
 
-            if (string.IsNullOrWhiteSpace(updateRestaurant.Address))
+            if (!string.IsNullOrWhiteSpace(updateRestaurant.Address))
             {
-                throw new ArgumentException(nameof(updateRestaurant.Address), "Address must be set");
+                resturantToUpdate.Address = updateRestaurant.Address;
             }
-            resturantToUpdate.Address = updateRestaurant.Address;
 
-            if (updateRestaurant.Opens == default || updateRestaurant.Closes == default)
+            if (updateRestaurant.Opens != default || updateRestaurant.Closes != default)
             {
-                throw new ArgumentException("Opening hour must be set");
+                resturantToUpdate.Opens = updateRestaurant.Opens;
+                resturantToUpdate.Closes = updateRestaurant.Closes;
             }
-            resturantToUpdate.Opens = updateRestaurant.Opens;
-            resturantToUpdate.Closes = updateRestaurant.Closes;
 
-            if (updateRestaurant.OrderCutOffTime != default)
+            if (updateRestaurant.OrderCutOffTime == default)
             {
-                throw new ArgumentException(nameof(updateRestaurant.OrderCutOffTime), "Order cutoff time must be set");
-            }
                 resturantToUpdate.OrderCutOffTime = updateRestaurant.OrderCutOffTime;
-
-            if (updateRestaurant.ServiceFee == 0.0m)
-            {
-                throw new ArgumentException(nameof(updateRestaurant.ServiceFee), "Service fee must be set");
             }
-            resturantToUpdate.ServiceFee = updateRestaurant.ServiceFee;
+
+            if (updateRestaurant.ServiceFee != 0.0m)
+            {
+                resturantToUpdate.ServiceFee = updateRestaurant.ServiceFee;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateRestaurant.Image))
+            {
+                resturantToUpdate.Image = updateRestaurant.Image;
+            }
 
             _dbContext.Restaurants.Update(resturantToUpdate);
             await _dbContext.SaveChangesAsync();
