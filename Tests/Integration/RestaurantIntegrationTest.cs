@@ -23,7 +23,6 @@ public class RestaurantIntegrationTest
         Closes = new TimeOnly(22, 0),
         OrderCutOffTime = new TimeOnly(21, 30),
         DeliveyCharge = 25m,
-        MinimumOrderValue = 150m,
         ServiceFee = 5m
     };
 
@@ -42,7 +41,6 @@ public class RestaurantIntegrationTest
         Assert.Equal(dto.Opens, result.Opens);
         Assert.Equal(dto.Closes, result.Closes);
         Assert.Equal(dto.DeliveyCharge, result.DeliveyCharge);
-        Assert.Equal(dto.MinimumOrderValue, result.MinimumOrderValue);
         Assert.Equal(dto.ServiceFee, result.ServiceFee);
     }
 
