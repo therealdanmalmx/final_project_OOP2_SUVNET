@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
+
     public class MenuItemController : ControllerBase
     {
         private readonly IMenuItemService _menuItemService;
@@ -17,6 +20,7 @@ namespace API.Controllers
             _menuItemService = menuItemService;
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<List<MenuItem>>> GetAllMenuItemsByRestaurantId(Guid id)
         {
@@ -30,7 +34,7 @@ namespace API.Controllers
                 return NotFound(new {error = ex.Message});
             }
         }
-
+        [AllowAnonymous]
         [HttpGet("dish/{id}")]
         public async Task<ActionResult<MenuItem>> GetMenuItem(Guid id)
         {
@@ -44,6 +48,7 @@ namespace API.Controllers
                 return NotFound(new {error = ex.Message});
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult<MenuItem>> AddNewMenuItem(CreateMenuItemDTO newMenuItem)
