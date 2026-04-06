@@ -14,7 +14,6 @@ public class RestaurantUnitTests
         Closes = new TimeOnly(22, 0),
         OrderCutOffTime = new TimeOnly(21, 30),
         DeliveyCharge = 25m,
-        MinimumOrderValue = 150m,
         ServiceFee = 5m
     };
 
@@ -111,19 +110,6 @@ public class RestaurantUnitTests
     {
         var dto = ValidRestaurantDTO();
         dto.DeliveyCharge = 0;
-
-        var exception = await Record.ExceptionAsync(() =>
-            _service.AddNewRestaurant(dto));
-
-        Assert.NotNull(exception);
-        Assert.IsType<ArgumentException>(exception);
-    }
-
-    [Fact]
-    public async Task AddNewRestaurant_MinimumOrderValueIsNull()
-    {
-        var dto = ValidRestaurantDTO();
-        dto.MinimumOrderValue = 0;
 
         var exception = await Record.ExceptionAsync(() =>
             _service.AddNewRestaurant(dto));
