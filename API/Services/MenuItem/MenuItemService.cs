@@ -108,23 +108,20 @@ namespace API.Services.MenuItem
                 throw new ArgumentNullException(nameof(menuItemToUpdate), $"No menu item with id {id} exists");
             }
 
-            if (string.IsNullOrWhiteSpace(updateMenutItem.Name))
+            if (!string.IsNullOrWhiteSpace(updateMenutItem.Name))
             {
-                throw new ArgumentException(nameof(updateMenutItem.Name), "Name must be set");
+                menuItemToUpdate.Name = updateMenutItem.Name;
             }
-            menuItemToUpdate.Name = updateMenutItem.Name;
 
-            if (string.IsNullOrWhiteSpace(updateMenutItem.Description))
+            if (!string.IsNullOrWhiteSpace(updateMenutItem.Description))
             {
-                throw new ArgumentException(nameof(updateMenutItem.Description), "Description must be set");
+                menuItemToUpdate.Description = updateMenutItem.Description;
             }
-            menuItemToUpdate.Description = updateMenutItem.Description;
 
-            if (updateMenutItem.Price == 0.0m)
+            if (updateMenutItem.Price != 0.0m)
             {
-                throw new ArgumentException(nameof(updateMenutItem.Price), "Price must be set");
+                menuItemToUpdate.Price = updateMenutItem.Price;
             }
-            menuItemToUpdate.Price = updateMenutItem.Price;
 
             _dbContext.MenuItems.Update(menuItemToUpdate);
             await _dbContext.SaveChangesAsync();
