@@ -2,8 +2,10 @@ using API.Controllers;
 using API.Data;
 using API.Models;
 using API.Services.Order;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace Tests.Integration
 {
@@ -28,7 +30,11 @@ namespace Tests.Integration
             );
             await db.SaveChangesAsync();
 
-            var service = new OrderService(db);
+            var userStoreMock = new Mock<IUserStore<Account>>();
+            var accountManagerMock = new Mock<UserManager<Account>>(
+                userStoreMock.Object, null, null, null, null, null, null, null, null
+            );
+            var service = new OrderService(db, accountManagerMock.Object);
             var controller = new OrderController(service);
 
             var result = await controller.GetAllOrder();
