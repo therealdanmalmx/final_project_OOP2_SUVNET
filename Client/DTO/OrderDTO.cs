@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
+using Client.DTO;
 
-namespace Client.Models
+namespace Client.DTO
 {
 public class Order
     {

@@ -1,4 +1,4 @@
-using Client.Models;
+using Client.DTO;
 
 namespace Client.DTO
 {
@@ -14,6 +14,6 @@ namespace Client.DTO
         public Guid? AccountId { get; set; }
         public Status Status { get;  init; }
         public bool Delivery { get; set; }
-        public List<GetOrderItemDTO> OrderItems { get; set; }
+        public List<GetOrderItemDTO>? OrderItems { get; set; }
     }
 }
