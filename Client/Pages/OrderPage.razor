@@ -1,9 +1,7 @@
 @page "/cart"
 
-@using API.Models
 @using Blazored.LocalStorage
 @using Client.DTO
-@using Client.Models
 @using System.ComponentModel.DataAnnotations
 @using Client.State
 
@@ -125,8 +123,6 @@
 
 @code {
     private List<OrderState> cart = new();
-    decimal itemPrice = 0;
-    int itemQuantity = 0;
     decimal itemTotal = 0;
     decimal restaurantServiceFee = 0;
     decimal restaurantDeliveryCharge = 0;
@@ -143,13 +139,16 @@
 
             foreach (var item in cart)
             {
-                itemTotal += item.MenuItem.Price * item.Quantity;
+                if (item?.MenuItem is not null)
+                {
+                    itemTotal += item.MenuItem.Price * item.Quantity;
+                }
             }
 
             if (cart.Count > 0)
             {
-                restaurantServiceFee = cart[0].Restaurant.ServiceFee;
-                restaurantDeliveryCharge = cart[0].Restaurant.DeliveyCharge;
+                restaurantServiceFee = cart[0].Restaurant?.ServiceFee ?? 0;
+                restaurantDeliveryCharge = cart[0].Restaurant?.DeliveyCharge ?? 0;
             }
 
             StateHasChanged();
@@ -159,7 +158,10 @@
     {
         foreach(var item in cart)
         {
-            createOrder.AddOrderItem(item.MenuItem.Name, item.MenuItem.Price, item.Quantity);
+            if (item?.MenuItem is not null)
+            {
+                createOrder.AddOrderItem(item.MenuItem.Name ?? string.Empty, item.MenuItem.Price, item.Quantity);
+            }
         }
 
         createOrder.Delivery = delivery;

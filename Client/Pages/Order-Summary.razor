@@ -2,7 +2,6 @@
 @using API.DTO
 @using Client.DTO
 @using Blazored.LocalStorage
-@using Client.Models
 @using System.Security.Principal
 
 @inject IToastService toastService
@@ -54,12 +53,15 @@
 
                         <BbCard class="rounded-2xl shadow-sm overflow-hidden">
                             <div class="px-8">
-                                @foreach (var item in Order.OrderItems)
+                                @if (Order?.OrderItems is not null)
                                 {
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm font-semibold text-gray-900">@item.Name</span>
-                                        <span class="text-xs text-gray-400 bg-gray-100 px-2 rounded-full">x@item.Quantity</span>
-                                    </div>
+                                    @foreach (var item in Order.OrderItems)
+                                    {
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-semibold text-gray-900">@item.Name</span>
+                                            <span class="text-xs text-gray-400 bg-gray-100 px-2 rounded-full">x@item.Quantity</span>
+                                        </div>
+                                    }
                                 }
                             </div>
                         </BbCard>

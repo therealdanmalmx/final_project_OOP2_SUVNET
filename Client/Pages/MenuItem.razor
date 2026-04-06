@@ -1,6 +1,5 @@
 @using Blazored.LocalStorage
 @using Client.DTO
-@using Client.Models
 @using System.Runtime.InteropServices
 @page "/menuitem/dish/{Id:guid}"
 
@@ -67,7 +66,7 @@
     {
 
         menuitem = await Http.GetFromJsonAsync<GetMenuItemDTO>($"/api/menuitem/dish/{Id}");
-        restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{menuitem.RestaurantId}");
+        restaurant = await Http.GetFromJsonAsync<GetRestaurantsDTO>($"api/restaurant/{menuitem?.RestaurantId}");
         var response = await Http.GetFromJsonAsync<MealList>(
             $"https://www.themealdb.com/api/json/v1/1/filter.php?a={restaurant?.Category}"
         );
