@@ -64,11 +64,11 @@ namespace API.Services.Auth
         {
             var result = await _http.PostAsJsonAsync("api/account/register", request);
 
-            if (result is not null)
+            if (result != null)
             {
                 var response = await result.Content.ReadFromJsonAsync<AccountRegistrationResponse>();
 
-                if(!response.IsSuccessful &&response.Errors != null)
+                if(!response.IsSuccessful && response.Errors != null)
                 {
                     foreach (var error in response.Errors)
                     {
