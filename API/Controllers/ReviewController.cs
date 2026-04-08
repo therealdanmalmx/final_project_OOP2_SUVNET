@@ -68,15 +68,15 @@ namespace API.Controllers
         {
             try
             {
-                var review = new Review
+                var review = new AddNewReviewDTO
                 {
                     Score = newReview.Score,
                     Comment = newReview.Comment,
                     OrderId = newReview.OrderId,
                     RestaurantId = newReview.RestaurantId
                 };
-
-                return Created("/api/review", review);
+                var createdReview = await _reviewService.AddNewReview(review);
+                return Created($"/api/review/order/{createdReview.OrderId}", createdReview);
 
             }
             catch (ArgumentOutOfRangeException ex)
