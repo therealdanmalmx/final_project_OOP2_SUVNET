@@ -57,12 +57,10 @@
 
                         <div class="px-8 pb-7 space-y-3">
 
-                            @* {{! Star display }} *@
                             <div class="flex items-center gap-1">
                                 @for (int i = 1; i <= 5; i++)
                                 {
                                     var step = i;
-                                    @* {{! Full star }} *@
                                     if (rating >= step)
                                     {
                                         <button @onclick="@(() => SetRating(step))"
@@ -72,7 +70,6 @@
                                             </svg>
                                         </button>
                                     }
-                                    @* {{! Half star }} *@
                                     else if (rating >= step - 0.5m)
                                     {
                                         <button @onclick="@(() => SetRating(step - 0.5m))"
@@ -85,7 +82,6 @@
                                             </svg>
                                         </button>
                                     }
-                                    @* {{! Empty star — clicking sets full, right-half sets half }} *@
                                     else
                                     {
                                         <span class="relative w-9 h-9 inline-block">
@@ -168,7 +164,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync($"/api/review/order/{Id}");
+        var response = await Http.GetAsync($"api/review/order/{Id}");
         alreadyReviewed = response.IsSuccessStatusCode;
         Order = await Http.GetFromJsonAsync<GetOrderDTO>($"api/order/{Id}");
 
