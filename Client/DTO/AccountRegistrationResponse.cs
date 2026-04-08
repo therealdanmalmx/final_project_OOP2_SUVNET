@@ -5,6 +5,7 @@ namespace Client.DTO
         public bool IsSuccessful { get; set; }
         public IEnumerable<string>? Errors { get; set; }
 
+        public AccountRegistrationResponse() { }
         public AccountRegistrationResponse(bool isSuccessful)
         {
             IsSuccessful = isSuccessful;
@@ -13,6 +14,6 @@ namespace Client.DTO
         {
             IsSuccessful = isSuccessful;
             Errors = errors;
-    }
+        }
     }
 }
