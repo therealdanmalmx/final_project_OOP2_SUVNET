@@ -8,14 +8,16 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  server:
+  foodGetAboutIt_api:
+    platform: linux/arm64
+    image: api:v1
     build:
       context: .
       target: final
     ports:
       - 8080:8080
     environment:
-      ConnectionStrings__FoodGetItDb: Host=ep-lively-sound-agm569ne-pooler.c-2.eu-central-1.aws.neon.tech; Database=foodgetitDb; Username=neondb_owner; Password=npg_wMkRbnf45NgP; SSL Mode=VerifyFull; Channel Binding=Require;
+      ConnectionStrings__FoodGetItDb: "Host=ep-lively-sound-agm569ne-pooler.c-2.eu-central-1.aws.neon.tech; Database=foodgetitDb; Username=neondb_owner; Password=npg_wMkRbnf45NgP; SSL Mode=VerifyFull; Channel Binding=Require;"
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

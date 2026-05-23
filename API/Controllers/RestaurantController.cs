@@ -26,9 +26,13 @@ namespace API.Controllers
                 return Ok(existingRestaurants);
 
             }
-            catch (ArgumentNullException ex)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, $"En databasfel upstod medans restauranger hämtades: {ex}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, $"Ett fel uppstod: {ex}");
             }
         }
         [HttpGet("mealspicttures")]
@@ -59,7 +63,7 @@ namespace API.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                return NotFound(new {error = ex.Message});
+                return NotFound(new { error = ex.Message });
             }
         }
 
@@ -75,11 +79,11 @@ namespace API.Controllers
 
             catch (ArgumentNullException ex)
             {
-                return NotFound(new {error = ex.Message});
+                return NotFound(new { error = ex.Message });
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new {error = ex.Message});
+                return BadRequest(new { error = ex.Message });
             }
         }
 

@@ -75,10 +75,10 @@ namespace API.Services
                 throw new ArgumentException(nameof(newRestaurant), "You can't create a restaurant withour fillin in all details");
             }
 
-                _dbContext.Restaurants.Add(newRestaurant);
-                await _dbContext.SaveChangesAsync();
+            _dbContext.Restaurants.Add(newRestaurant);
+            await _dbContext.SaveChangesAsync();
 
-                return newRestaurant;
+            return newRestaurant;
         }
 
         public async Task<Restaurant> DeleteRestaurant(Guid id)
@@ -98,14 +98,8 @@ namespace API.Services
 
         public async Task<List<Restaurant>> GetAllRestaurants()
         {
-            List<Restaurant> restaurants = await _dbContext.Restaurants.ToListAsync();
+            return await _dbContext.Restaurants.ToListAsync();
 
-            if (restaurants is null)
-            {
-                throw new NotImplementedException();
-            }
-
-            return restaurants;
         }
 
         public async Task<Restaurant> GetRestaurantById(Guid id)
@@ -128,12 +122,12 @@ namespace API.Services
                 })
                 .FirstOrDefaultAsync();
 
-                if (restaurant is null)
-                {
-                    throw new ArgumentNullException(nameof(restaurant), "Resturant can't have empty fields");
-                }
+            if (restaurant is null)
+            {
+                throw new ArgumentNullException(nameof(restaurant), "Resturant can't have empty fields");
+            }
 
-                return restaurant;
+            return restaurant;
         }
 
         public async Task<Restaurant> UpdateRestaurant(UpdateRestaurantsDTO updateRestaurant, Guid id)

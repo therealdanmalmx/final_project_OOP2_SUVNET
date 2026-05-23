@@ -29,7 +29,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddIdentity<Account, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("foodgetitDb")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("foodGetItDb_AWS")));
 
 builder.Services.AddAuthentication(options =>
     {
@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor", policy =>
-        policy.WithOrigins("http://localhost:5224","https://localhost:5224")
+        policy.WithOrigins("http://localhost:5224", "https://localhost:5224")
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
