@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260523164114_UpdateDb")]
-    partial class UpdateDb
+    [Migration("20260523182438_SwitchToAWSDB")]
+    partial class SwitchToAWSDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

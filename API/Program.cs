@@ -31,6 +31,8 @@ builder.Services.AddIdentity<Account, IdentityRole>().AddEntityFrameworkStores<A
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("foodGetItDb_AWS")));
 
+
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,5 +88,15 @@ app.MapControllers();
 
 app.MapFallbackToFile("index.html");
 
+app.MapGet("/", () =>
+{
+    return "OK";
+});
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
